@@ -1,6 +1,6 @@
-# Examples of boostrap App
+# Examples of bootstrap App
 
-Here are some examples of boostrap App.
+Here are some examples of bootstrap App.
 ## detection-hid   
 This App is an example of using HID Detection.  
 ## example1
