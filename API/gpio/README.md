@@ -1,24 +1,16 @@
 nsISystemAPBGpioOutput interface Reference
 ==========================================
 
-    #include <nsISystemAPBGpioOutput.idl>
-
 Public Attributes
 -----------------
 
 -   attribute boolean writeValue
 
-    *Value to set on the gpio.*
-
 -   void removeObserver ( in nsISystemGpioOuputObserver aObserver)
-
-    *Remove observer on service provider.*
 
 <!-- -->
 
 -   void addObserver ( in nsISystemGpioOuputObserver aObserver)
-
-    *Add observer on service provider.*
 
 Detailed Description
 --------------------
@@ -242,19 +234,18 @@ The nsISystemAPBGpioOutput interface allows to write value to Gpio. Here is an e
 
     </body>
 
-Definition at line 38 of file nsISystemAPBGpioOutput.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAPBGpioOutput.idl
-
 Member Data Documentation
 -------------------------
+
+### attribute boolean nsISystemAPBGpioOutput::writeValue
+
+Value to set on the gpio
 
 void nsISystemAPBGpioOutput::removeObserver (in nsISystemGpioOuputObserver aObserver)
 -------------------------------------------------------------------------------------
 
-Remove observer on service provider.
+Remove observer on service provider
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -272,7 +263,8 @@ Remove observer on service provider.
 void nsISystemAPBGpioOutput::addObserver (in nsISystemGpioOuputObserver aObserver)
 ----------------------------------------------------------------------------------
 
-Add observer on service provider.
+Add observer on service provider
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -290,43 +282,34 @@ Add observer on service provider.
 nsISystemAPBGpioInput interface Reference
 =========================================
 
-    #include <nsISystemAPBGpioInput.idl>
-
 Public Attributes
 -----------------
 
 -   readonly attribute boolean readValue
 
-    *Read the value of the gpio.*
-
 -   void removeObserver ( in nsISystemGpioObserver aObserver)
-
-    *Remove observer on service provider.*
 
 <!-- -->
 
 -   void addObserver ( in nsISystemGpioObserver aObserver)
-
-    *Add observer on service provider.*
 
 Detailed Description
 --------------------
 
 The nsISystemAPBGpioInput interface allows to read the Gpio
 
-Definition at line 36 of file nsISystemAPBGpioInput.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAPBGpioInput.idl
-
 Member Data Documentation
 -------------------------
+
+### readonly attribute boolean nsISystemAPBGpioInput::readValue
+
+Read the value of the gpio
 
 void nsISystemAPBGpioInput::removeObserver (in nsISystemGpioObserver aObserver)
 -------------------------------------------------------------------------------
 
-Remove observer on service provider.
+Remove observer on service provider
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -344,7 +327,8 @@ Remove observer on service provider.
 void nsISystemAPBGpioInput::addObserver (in nsISystemGpioObserver aObserver)
 ----------------------------------------------------------------------------
 
-Add observer on service provider.
+Add observer on service provider
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -364,12 +348,11 @@ nsISystemGpioOuputObserver interface Reference
 
 -   void onChange ( in nsISystemAPBGpioOutput aAPBGpioOutput, in boolean aOldValue, in boolean aNewValue)
 
-    *Callback called on changes.*
-
 void nsISystemGpioOuputObserver::onChange (in nsISystemAPBGpioOutput aAPBGpioOutput, in boolean aOldValue, in boolean aNewValue)
 --------------------------------------------------------------------------------------------------------------------------------
 
-Callback called on changes.
+Callback called on changes
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -397,12 +380,11 @@ nsISystemGpioObserver interface Reference
 
 -   void onChange ( in nsISystemAPBGpioInput aAPBGpioInput, in boolean aOldValue, in boolean aNewValue)
 
-    *Callback : onChange.*
-
 void nsISystemGpioObserver::onChange (in nsISystemAPBGpioInput aAPBGpioInput, in boolean aOldValue, in boolean aNewValue)
 -------------------------------------------------------------------------------------------------------------------------
 
-Callback : onChange.
+Callback : onChange
+
 <table>
 <caption>Parameters</caption>
 <colgroup>

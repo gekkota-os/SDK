@@ -1,120 +1,80 @@
 nsISystemAdapterNfc interface Reference
 =======================================
 
-    #include <nsISystemAdapterNfc.idl>
-
 Public Attributes
 -----------------
 
 -   const unsigned short MODULATION\_ISO14443A
 
-    *type ISO 14443 A*
-
 <!-- -->
 
 -   const unsigned short MODULATION\_JEWEL
-
-    *type Jewel*
 
 <!-- -->
 
 -   const unsigned short MODULATION\_ISO14443B
 
-    *type ISO 14443 B*
-
 <!-- -->
 
 -   const unsigned short MODULATION\_ISO14443BI
-
-    *type pre ISO 14443 B or ISO 14443 B'*
 
 <!-- -->
 
 -   const unsigned short MODULATION\_ISO14443B2SR
 
-    *type ISO 14443 2B ST SRx*
-
 <!-- -->
 
 -   const unsigned short MODULATION\_ISO14443B2CT
-
-    *type ISO 14443 2B ASK CTx*
 
 <!-- -->
 
 -   const unsigned short MODULATION\_FELICA
 
-    *type Felica*
-
 <!-- -->
 
 -   const unsigned short MODULATION\_DEP
-
-    *protocol ISO DEP*
 
 <!-- -->
 
 -   const unsigned short BAUD\_106
 
-    *baud rate 106 kbit/s*
-
 <!-- -->
 
 -   const unsigned short BAUD\_212
-
-    *baud rate 212 kbit/s*
 
 <!-- -->
 
 -   const unsigned short BAUD\_424
 
-    *baud rate 424 kbit/s*
-
 <!-- -->
 
 -   const unsigned short BAUD\_847
-
-    *baud rate 847 kbit/s*
 
 <!-- -->
 
 -   readonly attribute nsIArray supportedModulations
 
-    *array of bags*
-
 -   void configurePolling ( in PRUint32 aModulationLength, in unsigned short aModulation, in PRUint32 aBaudRateLength, in unsigned short aBaudRate)
-
-    *Configure type of polling.*
 
 <!-- -->
 
 -   void configureMultipleModulations ( in nsIPropertyBag aModulations, in PRUint32 aModulationLength)
 
-    *Specify type(s) of polling.*
-
 <!-- -->
 
 -   boolean isSupported ( in unsigned short aModulation, in unsigned short aBaudRate)
-
-    *Tell if the current device supports the modulation and its baud rate.*
 
 <!-- -->
 
 -   nsIEnumerator scanTargets ( )
 
-    *Detect synchronously the targets in the near field.*
-
 <!-- -->
 
 -   unsigned long startPoll ( in nsISystemAdapterNfcObserver aObserver)
 
-    *Start polling to detect some targets.*
-
 <!-- -->
 
 -   void stopPoll ( in unsigned long aObserverId)
-
-    *Stop polling.*
 
 Detailed Description
 --------------------
@@ -368,14 +328,56 @@ the nsISystemAdapterNfc interface is the point of entry for using NFC. Here is a
     </body>
     </html>
 
-Definition at line 183 of file nsISystemAdapterNfc.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAdapterNfc.idl
-
 Member Data Documentation
 -------------------------
+
+### const unsigned short nsISystemAdapterNfc::MODULATION\_ISO14443A
+
+type ISO 14443 A
+
+### const unsigned short nsISystemAdapterNfc::MODULATION\_JEWEL
+
+type Jewel
+
+### const unsigned short nsISystemAdapterNfc::MODULATION\_ISO14443B
+
+type ISO 14443 B
+
+### const unsigned short nsISystemAdapterNfc::MODULATION\_ISO14443BI
+
+type pre ISO 14443 B or ISO 14443 B'
+
+### const unsigned short nsISystemAdapterNfc::MODULATION\_ISO14443B2SR
+
+type ISO 14443 2B ST SRx
+
+### const unsigned short nsISystemAdapterNfc::MODULATION\_ISO14443B2CT
+
+type ISO 14443 2B ASK CTx
+
+### const unsigned short nsISystemAdapterNfc::MODULATION\_FELICA
+
+type Felica
+
+### const unsigned short nsISystemAdapterNfc::MODULATION\_DEP
+
+protocol ISO DEP
+
+### const unsigned short nsISystemAdapterNfc::BAUD\_106
+
+baud rate 106 kbit/s
+
+### const unsigned short nsISystemAdapterNfc::BAUD\_212
+
+baud rate 212 kbit/s
+
+### const unsigned short nsISystemAdapterNfc::BAUD\_424
+
+baud rate 424 kbit/s
+
+### const unsigned short nsISystemAdapterNfc::BAUD\_847
+
+baud rate 847 kbit/s
 
 ### readonly attribute nsIArray nsISystemAdapterNfc::supportedModulations
 
@@ -386,17 +388,10 @@ the array could be
      { modulationType:2, baudRates: [ 3 ]} 
     ] 
 
-Definition at line 255 of file nsISystemAdapterNfc.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAdapterNfc.idl
-
 void nsISystemAdapterNfc::configurePolling (in PRUint32 aModulationLength, \[array, size\_is(aModulationLength)\] in unsigned short aModulation, in PRUint32 aBaudRateLength, \[array, size\_is(aBaudRateLength)\] in unsigned short aBaudRate)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Configure type of polling.
-Must be called before startPoll if configurePolling() is not called, polling use all supported modulations (slower).
+Configure type of polling. Must be called before startPoll if configurePolling() is not called, polling use all supported modulations (slower).
 
 <table>
 <caption>Parameters</caption>
@@ -435,8 +430,7 @@ use configureMultipleModulations instead
 void nsISystemAdapterNfc::configureMultipleModulations (\[array, size\_is(aModulationLength)\] in nsIPropertyBag aModulations, in PRUint32 aModulationLength)
 -------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Specify type(s) of polling.
-For each modulation desired, specify one or more baud rates. Must be called before startPoll. if configureMultipleModulations() is not called or if empty array, polling use all supported modulations (slower).
+Specify type(s) of polling. For each modulation desired, specify one or more baud rates. Must be called before startPoll. if configureMultipleModulations() is not called or if empty array, polling use all supported modulations (slower).
 
 <table>
 <caption>Parameters</caption>
@@ -467,7 +461,8 @@ Void.
 boolean nsISystemAdapterNfc::isSupported (in unsigned short aModulation, in unsigned short aBaudRate)
 -----------------------------------------------------------------------------------------------------
 
-Tell if the current device supports the modulation and its baud rate.
+Tell if the current device supports the modulation and its baud rate
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -493,7 +488,8 @@ true is the modulation is supported
 nsIEnumerator nsISystemAdapterNfc::scanTargets ()
 -------------------------------------------------
 
-Detect synchronously the targets in the near field.
+Detect synchronously the targets in the near field
+
 **Returns:.**
 
 the list of nsISystemAdapterNfcTarget targets
@@ -515,8 +511,7 @@ the list of nsISystemAdapterNfcTarget targets
 unsigned long nsISystemAdapterNfc::startPoll (in nsISystemAdapterNfcObserver aObserver)
 ---------------------------------------------------------------------------------------
 
-Start polling to detect some targets.
-Polling is based on configured modulation if there (polling faster), or all supported modulations (polling is a bit slower).
+Start polling to detect some targets. Polling is based on configured modulation if there (polling faster), or all supported modulations (polling is a bit slower).
 
 <table>
 <caption>Parameters</caption>
@@ -539,7 +534,8 @@ the ID for this observer
 void nsISystemAdapterNfc::stopPoll (in unsigned long aObserverId)
 -----------------------------------------------------------------
 
-Stop polling.
+Stop polling
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -557,51 +553,34 @@ Stop polling.
 nsISystemAdapterNfcObserver interface Reference
 ===============================================
 
-    #include <nsISystemAdapterNfc.idl>
-
 -   void onTargetFound ( in nsISystemAdapterNfcTarget aTarget)
-
-    *Callback called when a target enter the near field of the device.*
 
 <!-- -->
 
 -   void onTargetLost ( in nsISystemAdapterNfcTarget aTarget)
 
-    *Callback called when a target leave the near field of the device.*
-
 <!-- -->
 
 -   void onMessageRead ( in nsISystemAdapterNfcTarget aTarget, in nsIArray aRecords)
-
-    *Callback called when a Peer send a message to the device.*
 
 <!-- -->
 
 -   void onPollStop ( )
 
-    *Callback called when polling is disabled.*
-
 <!-- -->
 
 -   void onPollStart ( )
-
-    *Callback called when polling is enabled.*
 
 Detailed Description
 --------------------
 
 The nsISystemAdapterNfcObserver interface provides some callbacks for polling and detection of targets
 
-Definition at line 106 of file nsISystemAdapterNfc.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAdapterNfc.idl
-
 void nsISystemAdapterNfcObserver::onTargetFound (in nsISystemAdapterNfcTarget aTarget)
 --------------------------------------------------------------------------------------
 
-Callback called when a target enter the near field of the device.
+Callback called when a target enter the near field of the device
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -619,7 +598,8 @@ Callback called when a target enter the near field of the device.
 void nsISystemAdapterNfcObserver::onTargetLost (in nsISystemAdapterNfcTarget aTarget)
 -------------------------------------------------------------------------------------
 
-Callback called when a target leave the near field of the device.
+Callback called when a target leave the near field of the device
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -637,7 +617,8 @@ Callback called when a target leave the near field of the device.
 void nsISystemAdapterNfcObserver::onMessageRead (in nsISystemAdapterNfcTarget aTarget, in nsIArray aRecords)
 ------------------------------------------------------------------------------------------------------------
 
-Callback called when a Peer send a message to the device.
+Callback called when a Peer send a message to the device
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -673,93 +654,87 @@ Callback called when a Peer send a message to the device.
 void nsISystemAdapterNfcObserver::onPollStop ()
 -----------------------------------------------
 
-Callback called when polling is disabled.
+Callback called when polling is disabled
+
 void nsISystemAdapterNfcObserver::onPollStart ()
 ------------------------------------------------
 
-Callback called when polling is enabled.
+Callback called when polling is enabled
+
 nsISystemAdapterNfcTarget interface Reference
 =============================================
-
-    #include <nsISystemAdapterNfc.idl>
 
 Public Attributes
 -----------------
 
 -   const unsigned long TARGET\_TAG
 
-    *type tag*
-
 <!-- -->
 
 -   const unsigned long TARGET\_PEER
-
-    *type peer*
 
 <!-- -->
 
 -   readonly attribute AString targetId
 
-    *NFC ID Identifer.*
-
 <!-- -->
 
 -   readonly attribute unsigned short targetModulation
-
-    *see MODULATION\_XXX constants*
 
 <!-- -->
 
 -   readonly attribute unsigned short targetBaudRate
 
-    *see BAUD\_XXX constants*
-
 <!-- -->
 
 -   readonly attribute unsigned long targetType
-
-    *Type of the target tag or peer.*
 
 <!-- -->
 
 -   readonly attribute boolean ndefCompatible
 
-    *Indicate if the target can process NDEF Message.*
-
 <!-- -->
 
 -   readonly attribute boolean isPresent
 
-    *Indicate if the target is still into the near field.*
-
 -   void writeMessage ( in PRUint32 aLength, in nsISystemAdapterNDEFRecord aRecords)
-
-    *Write NDEF message to TAG or Peer.*
 
 Detailed Description
 --------------------
 
 The nsISystemAdapterNfcTarget interface describes the NFC targets
 
-Definition at line 65 of file nsISystemAdapterNfc.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAdapterNfc.idl
-
 Member Data Documentation
 -------------------------
 
+### const unsigned long nsISystemAdapterNfcTarget::TARGET\_TAG
+
+type tag
+
+### const unsigned long nsISystemAdapterNfcTarget::TARGET\_PEER
+
+type peer
+
+### readonly attribute AString nsISystemAdapterNfcTarget::targetId
+
+NFC ID Identifer
+
+### readonly attribute unsigned short nsISystemAdapterNfcTarget::targetModulation
+
+see MODULATION\_XXX constants
+
+### readonly attribute unsigned short nsISystemAdapterNfcTarget::targetBaudRate
+
+see BAUD\_XXX constants
+
 ### readonly attribute unsigned long nsISystemAdapterNfcTarget::targetType
 
-Definition at line 81 of file nsISystemAdapterNfc.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAdapterNfc.idl
+Type of the target tag or peer.
 
 ### readonly attribute boolean nsISystemAdapterNfcTarget::ndefCompatible
 
+Indicate if the target can process NDEF Message.
+
 <table>
 <caption>Exceptions</caption>
 <colgroup>
@@ -773,15 +748,11 @@ The Documentation for this struct was generated from the following file:
 </tr>
 </tbody>
 </table>
-
-Definition at line 86 of file nsISystemAdapterNfc.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAdapterNfc.idl
 
 ### readonly attribute boolean nsISystemAdapterNfcTarget::isPresent
 
+Indicate if the target is still into the near field
+
 <table>
 <caption>Exceptions</caption>
 <colgroup>
@@ -795,17 +766,12 @@ The Documentation for this struct was generated from the following file:
 </tr>
 </tbody>
 </table>
-
-Definition at line 91 of file nsISystemAdapterNfc.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAdapterNfc.idl
 
 void nsISystemAdapterNfcTarget::writeMessage (in PRUint32 aLength, \[array, size\_is(aLength)\] in nsISystemAdapterNDEFRecord aRecords)
 ---------------------------------------------------------------------------------------------------------------------------------------
 
-Write NDEF message to TAG or Peer.
+Write NDEF message to TAG or Peer
+
 <table>
 <caption>Parameters</caption>
 <colgroup>

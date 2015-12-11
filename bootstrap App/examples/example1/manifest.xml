@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:pzpm="ns.innes.gekkota.manifest" xmlns:xpf="ns.innes.xpf.3">
+    <Description about="ns.innes.gekkota.manifest#metadata">
+        <pzpm:publish-id>1e98da14-c667-4b4e-9507-200acf6d47a5</pzpm:publish-id>
+        <pzpm:publish-size>2268463</pzpm:publish-size>
+        <pzpm:publish-generator>Innes Screen Composer G3 V3.11.12 Beta 01</pzpm:publish-generator>
+        <pzpm:publish-date>2015-11-27T12:57:23.371Z</pzpm:publish-date>
+    </Description>
+    <Description about="ns.innes.gekkota.manifest#launcher">
+        <pzpm:bootstrap src="player.xpf"/>
+    </Description>
+    <Description about="urn:innes:manifest:cache">
+        <Bag>
+            <li>medias/example.svg</li>
+            <li>medias/yellow.jpg</li>
+            <li>manifest.xml</li>
+            <li>player.xpf</li>
+        </Bag>
+    </Description>
+</RDF>

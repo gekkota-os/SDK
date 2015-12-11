@@ -1,14 +1,10 @@
 nsIMessaging interface Reference
 ================================
 
-    #include <nsIMessaging.idl>
-
 Public Attributes
 -----------------
 
 -   readonly attribute nsIEmailManager email
-
-    *Email read-only.*
 
 Detailed Description
 --------------------
@@ -310,55 +306,44 @@ Here is an example
 
 
 
-Definition at line 12 of file nsIMessaging.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIMessaging.idl
-
 Member Data Documentation
 -------------------------
 
+### readonly attribute nsIEmailManager nsIMessaging::email
+
+Email read-only
+
 nsIEmailManager interface Reference
 ===================================
-
-    #include <nsIEmailManager.idl>
 
 Public Attributes
 -----------------
 
 -   readonly attribute jsval accounts
 
-    *array of nsISmtpAccount*
-
 -   nsIEmailRequest send ( in nsIEmailRecipientsList aReciptientsList, in nsIEmailMessage aMessage)
-
-    *Send message.*
 
 <!-- -->
 
 -   void cancel ( )
-
-    *Cancel.*
 
 Detailed Description
 --------------------
 
 The nsIEmailManager interface allows to send en email.
 
-Definition at line 14 of file nsIEmailManager.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIEmailManager.idl
-
 Member Data Documentation
 -------------------------
+
+### readonly attribute jsval nsIEmailManager::accounts
+
+array of nsISmtpAccount
 
 nsIEmailRequest nsIEmailManager::send (in nsIEmailRecipientsList aReciptientsList, in nsIEmailMessage aMessage)
 ---------------------------------------------------------------------------------------------------------------
 
-Send message.
+Send message
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -380,89 +365,87 @@ Send message.
 void nsIEmailManager::cancel ()
 -------------------------------
 
-Cancel.
+Cancel
+
 nsIEmailMessage interface Reference
 ===================================
-
-    #include <nsIEmailMessage.idl>
 
 Public Attributes
 -----------------
 
 -   attribute DOMString subject
 
-    *subject*
-
 <!-- -->
 
 -   attribute PRUint32 priority
-
-    *priority*
 
 <!-- -->
 
 -   attribute nsISmtpAccount smtpAccount
 
-    *SMTP account.*
-
 <!-- -->
 
 -   attribute nsIEmailBody body
-
-    *body*
 
 <!-- -->
 
 -   attribute boolean hasMDN
 
-    *has Message Disposition Notifications*
-
 <!-- -->
 
 -   readonly attribute AUTF8String data
 
-    *data read-only*
-
 -   void addAttachment ( in nsIEmailAttachment aAttachment)
-
-    *Add email attachment.*
 
 <!-- -->
 
 -   void removeAttachment ( in nsIEmailAttachment aAttachment)
 
-    *Remove email attachment.*
-
 <!-- -->
 
 -   void getAttachments ( out PRUint32 aLength, out nsIEmailAttachment aAttachments)
 
-    *Get email attachment.*
-
 <!-- -->
 
 -   void buildData ( in nsIEmailRecipientsList aRecipientsList)
-
-    *Build data from list of recipients.*
 
 Detailed Description
 --------------------
 
 The nsIEmailMessage interface allows to create an email message
 
-Definition at line 36 of file nsIEmailMessage.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIEmailMessage.idl
-
 Member Data Documentation
 -------------------------
+
+### attribute DOMString nsIEmailMessage::subject
+
+subject
+
+### attribute PRUint32 nsIEmailMessage::priority
+
+priority
+
+### attribute nsISmtpAccount nsIEmailMessage::smtpAccount
+
+SMTP account
+
+### attribute nsIEmailBody nsIEmailMessage::body
+
+body
+
+### attribute boolean nsIEmailMessage::hasMDN
+
+has Message Disposition Notifications
+
+### readonly attribute AUTF8String nsIEmailMessage::data
+
+data read-only
 
 void nsIEmailMessage::addAttachment (in nsIEmailAttachment aAttachment)
 -----------------------------------------------------------------------
 
-Add email attachment.
+Add email attachment
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -480,7 +463,8 @@ Add email attachment.
 void nsIEmailMessage::removeAttachment (in nsIEmailAttachment aAttachment)
 --------------------------------------------------------------------------
 
-Remove email attachment.
+Remove email attachment
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -498,7 +482,8 @@ Remove email attachment.
 void nsIEmailMessage::getAttachments (\[optional\] out PRUint32 aLength, \[array, size\_is(aLength), retval, optional\] out nsIEmailAttachment aAttachments)
 ------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Get email attachment.
+Get email attachment
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -520,7 +505,8 @@ Get email attachment.
 void nsIEmailMessage::buildData (in nsIEmailRecipientsList aRecipientsList)
 ---------------------------------------------------------------------------
 
-Build data from list of recipients.
+Build data from list of recipients
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -543,31 +529,36 @@ Public Attributes
 
 -   readonly attribute DOMString mimeType
 
-    *mime type*
-
 <!-- -->
 
 -   readonly attribute DOMString filePath
-
-    *file path*
 
 <!-- -->
 
 -   readonly attribute DOMString fileName
 
-    *file name*
-
 -   void init ( in AString fileUri)
-
-    *Initialize from an URI.*
 
 Member Data Documentation
 -------------------------
 
+### readonly attribute DOMString nsIEmailAttachment::mimeType
+
+mime type
+
+### readonly attribute DOMString nsIEmailAttachment::filePath
+
+file path
+
+### readonly attribute DOMString nsIEmailAttachment::fileName
+
+file name
+
 void nsIEmailAttachment::init (in AString fileUri)
 --------------------------------------------------
 
-Initialize from an URI.
+Initialize from an URI
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -585,37 +576,30 @@ Initialize from an URI.
 nsIInlineEmailAttachment interface Reference
 ============================================
 
-    #include <nsIEmailAttachment.idl>
-
 Public Attributes
 -----------------
 
 -   readonly attribute DOMString inlineID
 
-    *inline ID*
-
 -   void initInline ( in AString fileUri, in AString aId)
-
-    *Initialize inline.*
 
 Detailed Description
 --------------------
 
 The nsIInlineEmailAttachment interface allows to manage an inline email attachment
 
-Definition at line 39 of file nsIEmailAttachment.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIEmailAttachment.idl
-
 Member Data Documentation
 -------------------------
+
+### readonly attribute DOMString nsIInlineEmailAttachment::inlineID
+
+inline ID
 
 void nsIInlineEmailAttachment::initInline (in AString fileUri, in AString aId)
 ------------------------------------------------------------------------------
 
-Initialize inline.
+Initialize inline
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -637,87 +621,74 @@ Initialize inline.
 nsIEmailBodyType interface Reference
 ====================================
 
-    #include <nsIEmailBody.idl>
-
 Public Attributes
 -----------------
 
 -   const nsEmailBodyTypeValue PLAIN\_TEXT
 
-    *plain text*
-
 <!-- -->
 
 -   const nsEmailBodyTypeValue HTML
-
-    *html*
 
 Detailed Description
 --------------------
 
 The nsIEmailBodyType interface is an enumeration for email body type
 
-Definition at line 14 of file nsIEmailBody.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIEmailBody.idl
-
 Member Data Documentation
 -------------------------
 
+### const nsEmailBodyTypeValue nsIEmailBodyType::PLAIN\_TEXT
+
+plain text
+
+### const nsEmailBodyTypeValue nsIEmailBodyType::HTML
+
+html
+
 nsIEmailBody interface Reference
 ================================
-
-    #include <nsIEmailBody.idl>
 
 Public Attributes
 -----------------
 
 -   readonly attribute DOMString body
 
-    *body*
-
 <!-- -->
 
 -   readonly attribute PRUint32 bodyType
 
-    *type of body*
-
 -   void addInlineAttachment ( in DOMString aID, in DOMString aFileUri)
-
-    *Add an inline attachment.*
 
 <!-- -->
 
 -   void removeInlineAttachment ( in DOMString aID)
 
-    *Remove an inline attachment.*
-
 <!-- -->
 
 -   void getArrayOfInlineAttachments ( out PRUint32 aLength, out nsIInlineEmailAttachment aAttachments)
-
-    *Get array of inline attachments.*
 
 Detailed Description
 --------------------
 
 The nsIEmailBody interface allows to manage en email body
 
-Definition at line 33 of file nsIEmailBody.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIEmailBody.idl
-
 Member Data Documentation
 -------------------------
+
+### readonly attribute DOMString nsIEmailBody::body
+
+body
+
+### readonly attribute PRUint32 nsIEmailBody::bodyType
+
+type of body
 
 void nsIEmailBody::addInlineAttachment (in DOMString aID, in DOMString aFileUri)
 --------------------------------------------------------------------------------
 
-Add an inline attachment.
+Add an inline attachment
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -739,7 +710,8 @@ Add an inline attachment.
 void nsIEmailBody::removeInlineAttachment (in DOMString aID)
 ------------------------------------------------------------
 
-Remove an inline attachment.
+Remove an inline attachment
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -757,7 +729,8 @@ Remove an inline attachment.
 void nsIEmailBody::getArrayOfInlineAttachments (\[optional\] out PRUint32 aLength, \[array, size\_is(aLength), retval, optional\] out nsIInlineEmailAttachment aAttachments)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Get array of inline attachments.
+Get array of inline attachments
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -779,27 +752,18 @@ Get array of inline attachments.
 nsIEmailEventListener interface Reference
 =========================================
 
-    #include <nsIEmailRequest.idl>
-
 -   void handleEvent ( in PRUint32 aIntVal)
-
-    *Handle event.*
 
 Detailed Description
 --------------------
 
 The nsIEmailEventListener interface provide a listener for email event
 
-Definition at line 31 of file nsIEmailRequest.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIEmailRequest.idl
-
 void nsIEmailEventListener::handleEvent (in PRUint32 aIntVal)
 -------------------------------------------------------------
 
-Handle event.
+Handle event
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -822,22 +786,28 @@ Public Attributes
 
 -   const nsEmailEventTypeValue SUCCESS
 
-    *success*
-
 <!-- -->
 
 -   const nsEmailEventTypeValue ERROR
-
-    *error*
 
 <!-- -->
 
 -   const nsEmailEventTypeValue PROGRESS
 
-    *in progress*
-
 Member Data Documentation
 -------------------------
+
+### const nsEmailEventTypeValue nsIEmailEventType::SUCCESS
+
+success
+
+### const nsEmailEventTypeValue nsIEmailEventType::ERROR
+
+error
+
+### const nsEmailEventTypeValue nsIEmailEventType::PROGRESS
+
+in progress
 
 nsIEmailPriorityType interface Reference
 ========================================
@@ -847,65 +817,56 @@ Public Attributes
 
 -   const nsPriorityTypeValue NORMAL
 
-    *priority normal*
-
 <!-- -->
 
 -   const nsPriorityTypeValue HIGH
-
-    *priority high*
 
 <!-- -->
 
 -   const nsPriorityTypeValue LOW
 
-    *priority low*
-
 Member Data Documentation
 -------------------------
+
+### const nsPriorityTypeValue nsIEmailPriorityType::NORMAL
+
+priority normal
+
+### const nsPriorityTypeValue nsIEmailPriorityType::HIGH
+
+priority high
+
+### const nsPriorityTypeValue nsIEmailPriorityType::LOW
+
+priority low
 
 nsIEmailRecipientsList interface Reference
 ==========================================
 
-    #include <nsIEmailRecipientsList.idl>
-
 -   void addRecipient ( in nsRecipientsTypeValue aRecipientType, in DOMString aRecipient)
-
-    *Add a recipient.*
 
 <!-- -->
 
 -   void removeRecipient ( in nsRecipientsTypeValue aRecipientType, in DOMString aRecipient)
 
-    *Remove a recipient.*
-
 <!-- -->
 
 -   void getAllRecipients ( out PRUint32 aLength, out wstring aRecipients)
 
-    *Get all recipients.*
-
 <!-- -->
 
 -   void getRecipients ( in nsRecipientsTypeValue aRecipientType, out PRUint32 aLength, out wstring aRecipients)
-
-    *Get some recipients.*
 
 Detailed Description
 --------------------
 
 The nsIEmailRecipientsList interface allows to manage a list of recipients
 
-Definition at line 29 of file nsIEmailRecipientsList.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIEmailRecipientsList.idl
-
 void nsIEmailRecipientsList::addRecipient (in nsRecipientsTypeValue aRecipientType, in DOMString aRecipient)
 ------------------------------------------------------------------------------------------------------------
 
-Add a recipient.
+Add a recipient
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -927,7 +888,8 @@ Add a recipient.
 void nsIEmailRecipientsList::removeRecipient (in nsRecipientsTypeValue aRecipientType, in DOMString aRecipient)
 ---------------------------------------------------------------------------------------------------------------
 
-Remove a recipient.
+Remove a recipient
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -949,7 +911,8 @@ Remove a recipient.
 void nsIEmailRecipientsList::getAllRecipients (\[optional\] out PRUint32 aLength, \[array, size\_is(aLength), retval, optional\] out wstring aRecipients)
 ---------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Get all recipients.
+Get all recipients
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -971,7 +934,8 @@ Get all recipients.
 void nsIEmailRecipientsList::getRecipients (in nsRecipientsTypeValue aRecipientType, \[optional\] out PRUint32 aLength, \[array, size\_is(aLength), retval, optional\] out wstring aRecipients)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Get some recipients.
+Get some recipients
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -1002,75 +966,68 @@ Public Attributes
 
 -   const nsRecipientsTypeValue TO
 
-    *value TO*
-
 <!-- -->
 
 -   const nsRecipientsTypeValue CC
-
-    *value CC*
 
 <!-- -->
 
 -   const nsRecipientsTypeValue BCC
 
-    *value BCC*
-
 Member Data Documentation
 -------------------------
 
+### const nsRecipientsTypeValue nsIEmailRecipientsType::TO
+
+value TO
+
+### const nsRecipientsTypeValue nsIEmailRecipientsType::CC
+
+value CC
+
+### const nsRecipientsTypeValue nsIEmailRecipientsType::BCC
+
+value BCC
+
 nsIEmailRequest interface Reference
 ===================================
-
-    #include <nsIEmailRequest.idl>
 
 Public Attributes
 -----------------
 
 -   readonly attribute DOMString readyState
 
-    *readyState*
-
 -   void addEmailEventListener ( in nsEmailEventTypeValue aEventType, in nsIEmailEventListener aListener)
-
-    *Add email event listener.*
 
 <!-- -->
 
 -   void handleSuccess ( )
 
-    *Handle success.*
-
 <!-- -->
 
 -   void handleError ( )
 
-    *Handle error.*
-
 <!-- -->
 
 -   void handleProgress ( in PRUint32 aProgressPercentage)
-
-    *handle in progress*
 
 Detailed Description
 --------------------
 
 The nsIEmailRequest interface is a request for email event
 
-Definition at line 51 of file nsIEmailRequest.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIEmailRequest.idl
-
 Member Data Documentation
 -------------------------
+
+### readonly attribute DOMString nsIEmailRequest::readyState
+
+readyState
 
 void nsIEmailRequest::addEmailEventListener (in nsEmailEventTypeValue aEventType, in nsIEmailEventListener aListener)
 ---------------------------------------------------------------------------------------------------------------------
 
-Add email event listener.
+Add email event listener
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -1092,15 +1049,18 @@ Add email event listener.
 void nsIEmailRequest::handleSuccess ()
 --------------------------------------
 
-Handle success.
+Handle success
+
 void nsIEmailRequest::handleError ()
 ------------------------------------
 
-Handle error.
+Handle error
+
 void nsIEmailRequest::handleProgress (in PRUint32 aProgressPercentage)
 ----------------------------------------------------------------------
 
 handle in progress
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -1118,70 +1078,78 @@ handle in progress
 nsISmtpAccount interface Reference
 ==================================
 
-    #include <nsISmtpAccount.idl>
-
 Public Attributes
 -----------------
 
 -   readonly attribute DOMString serverUri
 
-    *server URI*
-
 <!-- -->
 
 -   readonly attribute DOMString username
-
-    *username*
 
 <!-- -->
 
 -   readonly attribute DOMString password
 
-    *password*
-
 <!-- -->
 
 -   readonly attribute boolean authorizeUncrytptedAuth
-
-    *authorizeUncrytptedAuth*
 
 <!-- -->
 
 -   readonly attribute DOMString sender
 
-    *sender*
-
 <!-- -->
 
 -   readonly attribute DOMString hostname
-
-    *hostname*
 
 <!-- -->
 
 -   readonly attribute boolean useSSL
 
-    *useSSL*
-
 <!-- -->
 
 -   readonly attribute PRUint32 port
-
-    *port*
 
 Detailed Description
 --------------------
 
 The nsISmtpAccount interface provide information about STMP account
 
-Definition at line 66 of file nsISmtpAccount.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISmtpAccount.idl
-
 Member Data Documentation
 -------------------------
+
+### readonly attribute DOMString nsISmtpAccount::serverUri
+
+server URI
+
+### readonly attribute DOMString nsISmtpAccount::username
+
+username
+
+### readonly attribute DOMString nsISmtpAccount::password
+
+password
+
+### readonly attribute boolean nsISmtpAccount::authorizeUncrytptedAuth
+
+authorizeUncrytptedAuth
+
+### readonly attribute DOMString nsISmtpAccount::sender
+
+sender
+
+### readonly attribute DOMString nsISmtpAccount::hostname
+
+hostname
+
+### readonly attribute boolean nsISmtpAccount::useSSL
+
+useSSL
+
+### readonly attribute PRUint32 nsISmtpAccount::port
+
+port
 
 nsMsgSocketType interface Reference
 ===================================
@@ -1191,120 +1159,80 @@ Public Attributes
 
 -   const nsMsgSocketTypeValue plain
 
-    *No SSL or STARTTLS.*
-
 <!-- -->
 
 -   const nsMsgSocketTypeValue trySTARTTLS
-
-    *Use TLS via STARTTLS, but only if server offers it.*
 
 <!-- -->
 
 -   const nsMsgSocketTypeValue alwaysSTARTTLS
 
-    *Insist on TLS via STARTTLS.*
-
 <!-- -->
 
 -   const nsMsgSocketTypeValue SSL
 
-    *Connect via SSL.*
-
 Member Data Documentation
 -------------------------
 
+### const nsMsgSocketTypeValue nsMsgSocketType::plain
+
+No SSL or STARTTLS
+
 ### const nsMsgSocketTypeValue nsMsgSocketType::trySTARTTLS
+
+Use TLS via STARTTLS, but only if server offers it.
 
 Deprecated
 
 This is vulnerable to MITM attacks
 
-Definition at line 17 of file nsISmtpAccount.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISmtpAccount.idl
-
 ### const nsMsgSocketTypeValue nsMsgSocketType::alwaysSTARTTLS
 
-Uses normal port.
-
-Definition at line 20 of file nsISmtpAccount.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISmtpAccount.idl
+Insist on TLS via STARTTLS. Uses normal port.
 
 ### const nsMsgSocketTypeValue nsMsgSocketType::SSL
 
-Needs special SSL port.
-
-Definition at line 23 of file nsISmtpAccount.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISmtpAccount.idl
+Connect via SSL. Needs special SSL port.
 
 nsMsgAuthMethod interface Reference
 ===================================
-
-    #include <nsISmtpAccount.idl>
 
 Public Attributes
 -----------------
 
 -   const nsMsgAuthMethodValue none
 
-    *No login needed.*
-
 <!-- -->
 
 -   const nsMsgAuthMethodValue old
-
-    *Do not use AUTH commands (e.g.*
 
 <!-- -->
 
 -   const nsMsgAuthMethodValue passwordCleartext
 
-    *password in the clear.*
-
 <!-- -->
 
 -   const nsMsgAuthMethodValue passwordEncrypted
-
-    *hashed password.*
 
 <!-- -->
 
 -   const nsMsgAuthMethodValue GSSAPI
 
-    *Kerberos / GSSAPI (Unix single-signon)*
-
 <!-- -->
 
 -   const nsMsgAuthMethodValue NTLM
-
-    *NTLM is a Windows single-singon scheme.*
 
 <!-- -->
 
 -   const nsMsgAuthMethodValue External
 
-    *Auth External is cert-based authentication.*
-
 <!-- -->
 
 -   const nsMsgAuthMethodValue secure
 
-    *Encrypted password or Kerberos / GSSAPI or NTLM.*
-
 <!-- -->
 
 -   const nsMsgAuthMethodValue anything
-
-    *Let us pick any of the auth types supported by the server.*
 
 Detailed Description
 --------------------
@@ -1317,85 +1245,45 @@ nsIMsgIncomingServer.authMethod and
 
 nsISmtpServer.authMethod
 
-Definition at line 33 of file nsISmtpAccount.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISmtpAccount.idl
-
 Member Data Documentation
 -------------------------
 
 ### const nsMsgAuthMethodValue nsMsgAuthMethod::none
 
-E.g. IP-address-based.
-
-Definition at line 36 of file nsISmtpAccount.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISmtpAccount.idl
+No login needed. E.g. IP-address-based.
 
 ### const nsMsgAuthMethodValue nsMsgAuthMethod::old
 
-AUTH=PLAIN), but the original login commands that the protocol specified (POP: "USER"/"PASS", IMAP: "login", not valid for SMTP)
-
-Definition at line 40 of file nsISmtpAccount.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISmtpAccount.idl
+Do not use AUTH commands (e.g. AUTH=PLAIN), but the original login commands that the protocol specified (POP: "USER"/"PASS", IMAP: "login", not valid for SMTP)
 
 ### const nsMsgAuthMethodValue nsMsgAuthMethod::passwordCleartext
 
-AUTH=PLAIN/LOGIN or old-style login.
-
-Definition at line 42 of file nsISmtpAccount.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISmtpAccount.idl
+password in the clear. AUTH=PLAIN/LOGIN or old-style login.
 
 ### const nsMsgAuthMethodValue nsMsgAuthMethod::passwordEncrypted
 
-CRAM-MD5, DIGEST-MD5
+hashed password. CRAM-MD5, DIGEST-MD5
 
-Definition at line 44 of file nsISmtpAccount.idl
+### const nsMsgAuthMethodValue nsMsgAuthMethod::GSSAPI
 
-The Documentation for this struct was generated from the following file:
-
--   nsISmtpAccount.idl
+Kerberos / GSSAPI (Unix single-signon)
 
 ### const nsMsgAuthMethodValue nsMsgAuthMethod::NTLM
 
-Includes MSN / Passport.net, which is the same with a different name.
+NTLM is a Windows single-singon scheme. Includes MSN / Passport.net, which is the same with a different name.
 
-Definition at line 49 of file nsISmtpAccount.idl
+### const nsMsgAuthMethodValue nsMsgAuthMethod::External
 
-The Documentation for this struct was generated from the following file:
-
--   nsISmtpAccount.idl
+Auth External is cert-based authentication
 
 ### const nsMsgAuthMethodValue nsMsgAuthMethod::secure
+
+Encrypted password or Kerberos / GSSAPI or NTLM.
 
 Deprecated
 
 -   for migration only.
 
-Definition at line 54 of file nsISmtpAccount.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISmtpAccount.idl
-
 ### const nsMsgAuthMethodValue nsMsgAuthMethod::anything
 
-Discouraged, because vulnerable to MITM attacks, even if server offers secure auth.
-
-Definition at line 57 of file nsISmtpAccount.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISmtpAccount.idl
-
-
+Let us pick any of the auth types supported by the server. Discouraged, because vulnerable to MITM attacks, even if server offers secure auth.

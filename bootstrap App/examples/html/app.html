@@ -1,0 +1,41 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:html="http://www.w3.org/1999/xhtml">
+	<head>
+		<style>
+		* { background-color: black }
+		</style>
+		<title>App Html</title>
+		<script type="text/javascript" language="JavaScript">
+			const NONE = 0;
+			const YELLOW = 1;
+			const EXAMPLE = 2;
+			var state = NONE;
+			function borderYellow(){
+				document.getElementById("id_yellow").border = "10";
+				document.getElementById("id_example").border = "0";
+				state = YELLOW;
+			}
+			function borderExample(){
+				document.getElementById("id_yellow").border = "0";
+				document.getElementById("id_example").border = "10";
+				state = EXAMPLE;
+			}
+			function play(){
+				if(state != YELLOW){
+					borderYellow();
+				}
+				else{
+					borderExample();
+				}
+				setTimeout(function(){ play() }, 1000);
+			}
+			function load(){
+				play();
+			}
+		</script>
+		<body onload="load()">
+			<img id="id_yellow" src="medias/yellow.jpg" width="50%" border="0" style = "border-color:red;">
+			<img id="id_example" src="medias/example.svg" width="50%" border="0" style = "border-color:green;">
+		</body>
+	</html>
+	

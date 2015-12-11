@@ -1,156 +1,104 @@
 nsILdapService interface Reference
 ==================================
 
-    #include <nsILdapService.idl>
-
 Public Attributes
 -----------------
 
 -   const PRUint16 CONFIG\_OK
 
-    *configuration ok*
-
 <!-- -->
 
 -   const PRUint16 CONFIG\_ERROR\_SERVER\_UNAVAILABLE
-
-    *ldap server is not reachable (url may be invalid)*
 
 <!-- -->
 
 -   const PRUint16 CONFIG\_ERROR\_SERVER\_AUTH\_FAILED
 
-    *authentication failed*
-
 <!-- -->
 
 -   const PRUint16 CONFIG\_ERROR\_SEARCH\_BASE\_DN
-
-    *search base DN invalid*
 
 <!-- -->
 
 -   const PRUint16 STATE\_NONE
 
-    *state none (operation is not started)*
-
 <!-- -->
 
 -   const PRUint16 STATE\_STARTED
-
-    *state for operation started*
 
 <!-- -->
 
 -   const PRUint16 STATE\_LDAP\_URL\_ERROR
 
-    *state for invalid LDAP url*
-
 <!-- -->
 
 -   const PRUint16 STATE\_LDAP\_INIT\_ERROR
-
-    *state for connection failure*
 
 <!-- -->
 
 -   const PRUint16 STATE\_LDAP\_INITIALIZED
 
-    *state for connection succesfully initialized*
-
 <!-- -->
 
 -   const PRUint16 STATE\_LDAP\_PASSWORD\_ERROR
-
-    *state for invalid password (bad encryption)*
 
 <!-- -->
 
 -   const PRUint16 STATE\_AUTHENTICATION\_FAILED
 
-    *state for wrong login or password*
-
 <!-- -->
 
 -   const PRUint16 STATE\_SERVER\_UNAVAILABLE
-
-    *state for LDAP server unreachable*
 
 <!-- -->
 
 -   const PRUint16 STATE\_AUTHENTICATION\_SUCCEEDED
 
-    *state for succeeded authentication*
-
 <!-- -->
 
 -   const PRUint16 STATE\_SEARCH\_FAILED
-
-    *state for searching failure*
 
 <!-- -->
 
 -   const PRUint16 STATE\_SUCCESS\_NO\_RESULTS
 
-    *state for succeeded request with empty result*
-
 <!-- -->
 
 -   const PRUint16 STATE\_SUCCESS
-
-    *state for succeded request with some results*
 
 <!-- -->
 
 -   const PRUint16 STATE\_INTERNAL\_ERROR
 
-    *state for internal error (not LDAP problem)*
-
 <!-- -->
 
 -   readonly attribute nsILdapContext context
 
-    *default ldap context*
-
 -   bool checkAuthentication ( in nsILdapContext aContext, in AUTF8String aUserDN, in AUTF8String aPassword)
-
-    *Check LDAP server authentication.*
 
 <!-- -->
 
 -   PRUint16 checkConfig ( in AUTF8String aURL, in AUTF8String baseDN, in bool searchIsAuth, in AUTF8String aSearchUserDN, in AUTF8String aPassword, in bool aPasswordEncrypted)
 
-    *Check if configuration is ok : this is a synchronous operation.*
+<!-- -->
+
+-   nsILdapCheckPollListener createCheckListener ( )
 
 <!-- -->
 
--   createCheckListener ( )
-
-    *Create an ldaplistener object for polling for checking.*
-
-<!-- -->
-
--   createSearchListener ( )
-
-    *Create an ldaplistener object for polling for searching.*
+-   nsILdapSearchPollListener createSearchListener ( )
 
 <!-- -->
 
 -   void asyncCheckConfig ( in AUTF8String aURL, in AUTF8String baseDN, in bool searchIsAuth, in AUTF8String aSearchUserDN, in AUTF8String aPassword, in bool aPasswordEncrypted, in nsILdapCheckListener aListener)
 
-    *Check if configuration is ok : this is a synchronous operation.*
-
 <!-- -->
 
 -   void search ( in nsILdapContext aContext, in AUTF8String aSearchUserBase, in AUTF8String aDnFilter, in PRUint32 aAttrsLength, in string aAttrs, in PRUint32 aOffsetIndex, in PRUint32 aCountLimit, out PRUint32 aTotalCount, out PRUint32 aResCount, out nsIPropertyBag2 aRes)
 
-    *Search users in ldap base.*
-
 <!-- -->
 
--   void asyncSearch ( in nsILdapSearchListener aListener)
-
-    *Search users in ldap base.*
+-   void asyncSearch ( in nsILdapContext aContext, in AUTF8String aSearchUserBase, in AUTF8String aDnFilter, in PRUint32 aAttrsLength, in string aAttrs, in PRUint32 aOffsetIndex, in PRUint32 aCountLimit, in nsILdapSearchListener aListener)
 
 Detailed Description
 --------------------
@@ -279,19 +227,86 @@ For using the nsILdapService interface, we call properties of Javascript ldapSer
     </body>
     </html>
 
-Definition at line 73 of file nsILdapService.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsILdapService.idl
-
 Member Data Documentation
 -------------------------
+
+### const PRUint16 nsILdapService::CONFIG\_OK
+
+configuration ok
+
+### const PRUint16 nsILdapService::CONFIG\_ERROR\_SERVER\_UNAVAILABLE
+
+ldap server is not reachable (url may be invalid)
+
+### const PRUint16 nsILdapService::CONFIG\_ERROR\_SERVER\_AUTH\_FAILED
+
+authentication failed
+
+### const PRUint16 nsILdapService::CONFIG\_ERROR\_SEARCH\_BASE\_DN
+
+search base DN invalid
+
+### const PRUint16 nsILdapService::STATE\_NONE
+
+state none (operation is not started)
+
+### const PRUint16 nsILdapService::STATE\_STARTED
+
+state for operation started
+
+### const PRUint16 nsILdapService::STATE\_LDAP\_URL\_ERROR
+
+state for invalid LDAP url
+
+### const PRUint16 nsILdapService::STATE\_LDAP\_INIT\_ERROR
+
+state for connection failure
+
+### const PRUint16 nsILdapService::STATE\_LDAP\_INITIALIZED
+
+state for connection succesfully initialized
+
+### const PRUint16 nsILdapService::STATE\_LDAP\_PASSWORD\_ERROR
+
+state for invalid password (bad encryption)
+
+### const PRUint16 nsILdapService::STATE\_AUTHENTICATION\_FAILED
+
+state for wrong login or password
+
+### const PRUint16 nsILdapService::STATE\_SERVER\_UNAVAILABLE
+
+state for LDAP server unreachable
+
+### const PRUint16 nsILdapService::STATE\_AUTHENTICATION\_SUCCEEDED
+
+state for succeeded authentication
+
+### const PRUint16 nsILdapService::STATE\_SEARCH\_FAILED
+
+state for searching failure
+
+### const PRUint16 nsILdapService::STATE\_SUCCESS\_NO\_RESULTS
+
+state for succeeded request with empty result
+
+### const PRUint16 nsILdapService::STATE\_SUCCESS
+
+state for succeded request with some results
+
+### const PRUint16 nsILdapService::STATE\_INTERNAL\_ERROR
+
+state for internal error (not LDAP problem)
+
+### readonly attribute nsILdapContext nsILdapService::context
+
+default ldap context
 
 bool nsILdapService::checkAuthentication (in nsILdapContext aContext, in AUTF8String aUserDN, in AUTF8String aPassword)
 -----------------------------------------------------------------------------------------------------------------------
 
-Check LDAP server authentication.
+Check LDAP server authentication
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -321,7 +336,8 @@ true is authentication is ok
 PRUint16 nsILdapService::checkConfig (in AUTF8String aURL, in AUTF8String baseDN, in bool searchIsAuth, in AUTF8String aSearchUserDN, in AUTF8String aPassword, in bool aPasswordEncrypted)
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Check if configuration is ok : this is a synchronous operation.
+Check if configuration is ok : this is a synchronous operation
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -364,6 +380,7 @@ nsILdapCheckPollListener nsILdapService::createCheckListener ()
 ---------------------------------------------------------------
 
 Create an ldaplistener object for polling for checking.
+
 **Returns:.**
 
 a nsILdapCheckPollListener object
@@ -372,6 +389,7 @@ nsILdapSearchPollListener nsILdapService::createSearchListener ()
 -----------------------------------------------------------------
 
 Create an ldaplistener object for polling for searching.
+
 **Returns:.**
 
 a nsILdapSearchPollListener object
@@ -379,7 +397,8 @@ a nsILdapSearchPollListener object
 void nsILdapService::asyncCheckConfig (in AUTF8String aURL, in AUTF8String baseDN, in bool searchIsAuth, in AUTF8String aSearchUserDN, in AUTF8String aPassword, in bool aPasswordEncrypted, in nsILdapCheckListener aListener)
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Check if configuration is ok : this is a synchronous operation.
+Check if configuration is ok : this is a synchronous operation
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -421,7 +440,8 @@ Check if configuration is ok : this is a synchronous operation.
 void nsILdapService::search (in nsILdapContext aContext, in AUTF8String aSearchUserBase, in AUTF8String aDnFilter, in PRUint32 aAttrsLength, \[array, size\_is(aAttrsLength)\] in string aAttrs, in PRUint32 aOffsetIndex, in PRUint32 aCountLimit, out PRUint32 aTotalCount, out PRUint32 aResCount, \[array, size\_is(aResCount), retval\] out nsIPropertyBag2 aRes)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Search users in ldap base.
+Search users in ldap base
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -475,7 +495,8 @@ Search users in ldap base.
 void nsILdapService::asyncSearch (in nsILdapContext aContext, in AUTF8String aSearchUserBase, in AUTF8String aDnFilter, in PRUint32 aAttrsLength, \[array, size\_is(aAttrsLength)\] in string aAttrs, in PRUint32 aOffsetIndex, in PRUint32 aCountLimit, in nsILdapSearchListener aListener)
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Search users in ldap base.
+Search users in ldap base
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -521,27 +542,18 @@ Search users in ldap base.
 nsILdapCheckListener interface Reference
 ========================================
 
-    #include <nsILdapService.idl>
-
 -   void onStateChanged ( in PRUint16 aResult)
-
-    *Callback which occurs for each change of status for asyncCheckConfig operation.*
 
 Detailed Description
 --------------------
 
 The nsILdapCheckListener interface provides a callback for asyncCheckConfig operation.
 
-Definition at line 18 of file nsILdapService.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsILdapService.idl
-
 void nsILdapCheckListener::onStateChanged (in PRUint16 aResult)
 ---------------------------------------------------------------
 
-Callback which occurs for each change of status for asyncCheckConfig operation.
+Callback which occurs for each change of status for asyncCheckConfig operation
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -559,53 +571,38 @@ Callback which occurs for each change of status for asyncCheckConfig operation.
 nsILdapCheckPollListener interface Reference
 ============================================
 
-    #include <nsILdapService.idl>
-
 Public Attributes
 -----------------
 
 -   readonly attribute PRUint16 state
-
-    *polling for asyncCheckConfig operation*
 
 Detailed Description
 --------------------
 
 The nsILdapCheckPollListener interface provides an attribute for polling when calling asyncCheckConfig
 
-Definition at line 46 of file nsILdapService.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsILdapService.idl
-
 Member Data Documentation
 -------------------------
+
+### readonly attribute PRUint16 nsILdapCheckPollListener::state
+
+polling for asyncCheckConfig operation
 
 nsILdapSearchListener interface Reference
 =========================================
 
-    #include <nsILdapService.idl>
-
 -   void onSearchResult ( in PRUint16 aResult, in PRUint32 aResCount, in nsIPropertyBag2 aRes)
-
-    *Callback which occurs for each change of status for asyncSearch operation.*
 
 Detailed Description
 --------------------
 
 The nsILdapSearchListener interface provides a callback for asyncSearch operation
 
-Definition at line 31 of file nsILdapService.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsILdapService.idl
-
 void nsILdapSearchListener::onSearchResult (in PRUint16 aResult, in PRUint32 aResCount, \[array, size\_is(aResCount)\] in nsIPropertyBag2 aRes)
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
-Callback which occurs for each change of status for asyncSearch operation.
+Callback which occurs for each change of status for asyncSearch operation
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -631,27 +628,18 @@ Callback which occurs for each change of status for asyncSearch operation.
 nsILdapSearchPollListener interface Reference
 =============================================
 
-    #include <nsILdapService.idl>
-
 -   void getResults ( out PRUint16 aStatus, out PRUint32 aResCount, out nsIPropertyBag2 aRes)
-
-    *polling for asyncSearch operation*
 
 Detailed Description
 --------------------
 
 The nsILdapSearchPollListener interface provides for polling for asyncSearch operation
 
-Definition at line 57 of file nsILdapService.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsILdapService.idl
-
 void nsILdapSearchPollListener::getResults (out PRUint16 aStatus, out PRUint32 aResCount, \[array, size\_is(aResCount), retval\] out nsIPropertyBag2 aRes)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------
 
 polling for asyncSearch operation
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -677,57 +665,61 @@ polling for asyncSearch operation
 nsILdapContext interface Reference
 ==================================
 
-    #include <nsILdapContext.idl>
-
 Public Attributes
 -----------------
 
 -   attribute AUTF8String serverUrl
 
-    *the Ldap server url*
-
 <!-- -->
 
 -   attribute AUTF8String baseDN
-
-    *the root of searchs*
 
 <!-- -->
 
 -   attribute bool searchIsAuth
 
-    *do we use login/password authentication, or is it anonymous ?*
-
 <!-- -->
 
 -   attribute AUTF8String searchUserDN
-
-    *user dn if searchIsAuth is true*
 
 <!-- -->
 
 -   attribute AUTF8String password
 
-    *password dn if searchIsAuth is true*
-
 <!-- -->
 
 -   attribute bool passwordEncrypted
 
-    *is the password encrypted ?*
-
-Interface XPCOM nsILdapContext.
+This interface allows to instanciate a JS context object for ldapService methods.
 
 Detailed Description
 --------------------
 
-This interface allows to instanciate a JS context object for ldapService methods.
-
-Definition at line 17 of file nsILdapContext.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsILdapContext.idl
+Interface XPCOM nsILdapContext
 
 Member Data Documentation
 -------------------------
+
+### attribute AUTF8String nsILdapContext::serverUrl
+
+the Ldap server url
+
+### attribute AUTF8String nsILdapContext::baseDN
+
+the root of searchs
+
+### attribute bool nsILdapContext::searchIsAuth
+
+do we use login/password authentication, or is it anonymous ?
+
+### attribute AUTF8String nsILdapContext::searchUserDN
+
+user dn if searchIsAuth is true
+
+### attribute AUTF8String nsILdapContext::password
+
+password dn if searchIsAuth is true
+
+### attribute bool nsILdapContext::passwordEncrypted
+
+is the password encrypted ?

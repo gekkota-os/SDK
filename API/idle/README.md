@@ -1,66 +1,57 @@
 nsIIdleObserver interface Reference
 ===================================
 
-    #include <nsIIdleObserver.idl>
-
 Public Attributes
 -----------------
 
 -   readonly attribute unsigned long time
 
-    *Time is in seconds and is read only when idle observers are added and removed.*
-
 -   void onidle ( )
-
-    *Callback is called when the device is in idle mode after duration defined with attribute time.*
 
 <!-- -->
 
 -   void onactive ( )
 
-    *Callback is called as soon as the device receives some keyboard/mouse event.*
+Detailed Description
+--------------------
 
 This interface defines the observer to add or remove from Idle service.
 
 Member Data Documentation
 -------------------------
 
+### readonly attribute unsigned long nsIIdleObserver::time
+
+Time is in seconds and is read only when idle observers are added and removed.
+
 void nsIIdleObserver::onidle ()
 -------------------------------
 
 Callback is called when the device is in idle mode after duration defined with attribute time.
+
 void nsIIdleObserver::onactive ()
 ---------------------------------
 
 Callback is called as soon as the device receives some keyboard/mouse event.
+
 nsIIdleService interface Reference
 ==================================
-
-    #include <nsIIdleService.idl>
 
 Public Attributes
 -----------------
 
 -   readonly attribute unsigned long idleTime
 
-    *The amount of time in milliseconds that has passed since the last user activity.*
-
 -   void addIdleObserver ( in nsIObserver observer, in unsigned long time)
-
-    *Add an observer to be notified when the user idles for some period of time, and when they get back from that.*
 
 <!-- -->
 
 -   void removeIdleObserver ( in nsIObserver observer, in unsigned long time)
 
-    *Remove an observer registered with addIdleObserver.*
-
-This interface lets you monitor how long the user has been 'idle', i.e.
-
 Detailed Description
 --------------------
 
-not used their mouse or keyboard. You can get the idle time directly, but in most cases you will want to register an observer for a predefined interval. The observer will get an 'idle' notification when the user is idle for that interval (or longer), and receive a 'back' notification when the user starts using their computer again.
+This interface lets you monitor how long the user has been 'idle', i.e. not used their mouse or keyboard. You can get the idle time directly, but in most cases you will want to register an observer for a predefined interval. The observer will get an 'idle' notification when the user is idle for that interval (or longer), and receive a 'back' notification when the user starts using their computer again.
 
 Here is an example that uses this API :
 
@@ -108,30 +99,19 @@ Here is an example that uses this API :
     </body>
     </html>
 
-Definition at line 55 of file nsIIdleService.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIIdleService.idl
-
 Member Data Documentation
 -------------------------
 
 ### readonly attribute unsigned long nsIIdleService::idleTime
 
+The amount of time in milliseconds that has passed since the last user activity.
+
 If we do not have a valid idle time to report, 0 is returned (this can happen if the user never interacted with the browser at all, and if we are also unable to poll for idle time manually).
-
-Definition at line 64 of file nsIIdleService.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIIdleService.idl
 
 void nsIIdleService::addIdleObserver (in nsIObserver observer, in unsigned long time)
 -------------------------------------------------------------------------------------
 
 Add an observer to be notified when the user idles for some period of time, and when they get back from that.
-**.**
 
 <table>
 <caption>Parameters</caption>
@@ -163,7 +143,6 @@ void nsIIdleService::removeIdleObserver (in nsIObserver observer, in unsigned lo
 ----------------------------------------------------------------------------------------
 
 Remove an observer registered with addIdleObserver.
-**.**
 
 <table>
 <caption>Parameters</caption>

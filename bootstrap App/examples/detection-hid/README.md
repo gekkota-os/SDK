@@ -1,107 +1,77 @@
-# Détection HID
+# HID detection App
 
-## Présentation 
+This App displays two images "yellow.jpg" and "example.svg" : 
 
-Dans le cadre de la détection HID, on considère que le player peut être soit dans l'état *Actif* soit dans l'état *Inactif*.
-Le passage d'un état à un autre se base sur les évènements clavier/souris/écran (événements HID avec focus sur le player) et sur un délai fixe (valeur par défaut de 5 secondes ou spécifiée par l'utilisateur).
+- "example.svg" when an HID event occurs (keyboard, mouse, screen);
+- "yellow.jpg" after a delay of inactivity; 
 
-Dès qu'un évènement HID arrive, le player passe ou reste en mode *Actif*. A son démarrage, le player est dans l'état *Actif*.  
-S'il ne se passe aucun évènement HID entre le moment du dernier évènement HID et la fin du délai, le player passe en mode *Inactif*.
+At startup of app, the two images are displayed.  
 
-## Fonction d'initialisation
-- Initialisation : cette fonction prend en paramètre un entier (*unsigned long*) minimal de 1. Il s'agit du délai en secondes avant que le player ne soit considéré en mode *Inactif*.  
-On peut placer cette fonction n'importe quand. Si la détection est déjà en route, la fonction aura seulement pour effet de mettre à jour le délai.  
-Si cette fonction n'est jamais appelée, la détection est initialisée par défaut avec un délai de 5 secondes.
+The script which manage the HID event callbacks is *xpfDetectionHid.js*. It is based on *Idle API*.
 
-Exemple -> placer *Initialisation(30)* dans le calendrier au moment du *Début* de la journée. Dans ce cas, à partir du début de la journée, le player passera en état *Inactif* uniquement quand il n'aura pas reçu d'évènement HID pendant 30 secondes.
+To XPF know what to do or to play when an HID event occurs, or when XPF enters Inactivity state, we have to implement the following
+callbacks :  
 
+- *XpfDetectionHid.onStateidleBegin*;
+- *XpfDetectionHid.onStateidleEnd*;
+- *XpfDetectionHid.onStateactiveBegin*;
+- *XpfDetectionHid.onStateactiveEnd*.
 
-## Variables
+## init
 
-### Variable *Actif* 
+This function can be called explicitely in order to define the delay (in seconds) before the XPF enters Inactive state.
+If it is not called, then the default delay is 5 seconds.
 
-- début : *exemple -> jouer un message de bienvenue*
-- pendant : *exemple -> jouer une séquence de médias*
-- fin
+```
+XpfDetectionHid.init(1);
+```
 
-Si l'on place une séquence sur *Pendant* , elle sera forcément jouée lors de l'état *Actif*, même s'il y a une séquence configurée dans le calendrier.  
-Si l'on ne place rien sur *Pendant*, c'est la séquence configurée sur le calendrier qui sera jouée lors de l'état *Actif*.
+*This code sets the delay to 1 second.*
 
-### Variable *Inactif* 
+## onStateidleBegin
 
-- début : *exemple -> baisser l'éclairage de l'écran*
-- pendant : 
-- fin : *exemple -> augmenter l'éclairage de l'écran* 
+This callback occurs at the time when the XPF enters Inactive state.
 
-Si l'on place une séquence sur *Pendant* , elle sera forcément jouée lors de l'état *Inactif*, même s'il y a une séquence configurée dans le calendrier.  
-Si l'on ne place rien sur *Pendant*, c'est la séquence configurée sur le calendrier qui sera jouée lors de l'état *Inactif*.
+```
+XpfDetectionHid.onStateidleBegin = function onStateidleBegin() {
+	document.getElementById("id_yellow").beginElement();
+}
+```
 
-## Exemple de code Gekkota utilisant xpfDetectionHid
+*This code plays the image "yellow.jpg" when the XPF enters Inactive state.*
 
-	/** @brief example of js code generated for Gekkota */
+## onStateidleEnd
 
-	/** Start a media at the beginning of the Active state*/
-	XpfDetectionHid.onStateactiveBegin = function onStateactiveBegin() {
-		try {
-			xpfLogger.debug("XpfDetectionHid.onStateactiveBegin()");
-			XpfTimingManager.addOverrideElement(document.getElementById("UIDde574046_1824_4dc6_9403_ce895f59f42e"), false, true);
-		} catch(e){
-			xpfLogger.errorEx(e);
-		}
-	}
+This callback occurs at the time when the XPF leaves Inactive state.
 
-	/** Close a media at the end of the Active state*/
-	XpfDetectionHid.onStateactiveEnd = function onStateactiveEnd() {
-		try {
-			xpfLogger.debug("XpfDetectionHid.onStateactiveEnd()");
-			XpfTimingManager.removeOverrideElement(document.getElementById("UIDde574046_1824_4dc6_9403_ce895f59f42e"));
-		} catch(e){
-			xpfLogger.errorEx(e);
-		}
-	}
+```
+XpfDetectionHid.onStateidleEnd = function onStateidleEnd() {
+	document.getElementById("id_yellow").endElement();
+}
+```
 
-	/** Decrease the brightness at the beginning of the Inactive state*/
-	XpfDetectionHid.onStateidleBegin = function onStateidleBegin() {
-		try {
-			xpfLogger.debug("XpfDetectionHid.onStateidleBegin()");
-			try {
-				xpfLogger.debug("calling XpfDisplay.brightness(40);");
-				XpfDisplay.brightness(40);
-			} catch(e){
-				xpfLogger.errorEx(e);
-			}
-			XpfTimingManager.addOverrideElement(document.getElementById("UID88ee92db_e02c_4a30_8b4d_c579b5b02e35"), false, true);
-		} catch(e){
-			xpfLogger.errorEx(e);
-		}
-	}
+*This code stops playing the image "yellow.jpg" when the XPF leaves Inactive state.*
 
-	/** Increase the brightness at the end of the Inactive state*/
-	XpfDetectionHid.onStateidleEnd = function onStateidleEnd() {
-		try {
-			xpfLogger.debug("XpfDetectionHid.onStateidleEnd()");
-			try {
-				xpfLogger.debug("calling XpfDisplay.brightness(100);");
-				XpfDisplay.brightness(100);
-			} catch(e){
-				xpfLogger.errorEx(e);
-			}
-			XpfTimingManager.removeOverrideElement(document.getElementById("UID88ee92db_e02c_4a30_8b4d_c579b5b02e35"));
-		} catch(e){
-			xpfLogger.errorEx(e);
-		}
-	}
-	/** Set the time to inactivity to 7 seconds */
-	function onUID4899b153_a0ae_4430_9b5c_4e49f7464923Begin() {
-		try {
-			xpfLogger.debug("Begin of event 06/11/15 07:36 - 18:18");
-			try {
-				xpfLogger.debug("calling XpfDetectionHid.init(07);");
-				XpfDetectionHid.init(07);
-			} catch(e){
-				xpfLogger.errorEx(e);
-			}
-		} catch(e){
-			xpfLogger.errorEx(e);
-		}
-	}
+## onStateactiveBegin
+
+This callback occurs at the time when the XPF enters Active state.
+
+```
+XpfDetectionHid.onStateactiveBegin = function onStateactiveBegin() {
+	document.getElementById("id_example").beginElement();
+}
+```
+
+*This code plays the image "example.svg" when the XPF enters Active state.*
+
+## onStateactiveEnd
+
+This callback occurs at the time when the XPF leaves Active state.
+
+```
+XpfDetectionHid.onStateactiveEnd = function onStateactiveEnd() {
+	document.getElementById("id_example").endElement();
+}
+```
+
+*This code stops playing the image "example.svg" when the XPF leaves Active state.*

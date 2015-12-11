@@ -1,38 +1,26 @@
 nsISystemAdapterAppColorLed interface Reference
 ===============================================
 
-    #include <nsISystemAdapterAppColorLed.idl>
-
 Public Attributes
 -----------------
 
 -   const PRUint16 LEFT\_COLOR\_LED
 
-    *placement left*
-
 <!-- -->
 
 -   const PRUint16 RIGHT\_COLOR\_LED
-
-    *placement right*
 
 <!-- -->
 
 -   attribute boolean enabled
 
-    *enable or disable the color led*
-
 <!-- -->
 
 -   attribute PRUint32 color
 
-    *color RGB (XXRRGGBB) of the color led*
-
 <!-- -->
 
 -   readonly attribute PRUint16 placement
-
-    *placement of the color led (LEFT\_COLOR\_LED or RIGHT\_COLOR\_LED)*
 
 Detailed Description
 --------------------
@@ -186,11 +174,25 @@ The nsISystemAdapterAppColorLed interface allows to manage color led. Here is an
 
     </body>
 
-Definition at line 11 of file nsISystemAdapterAppColorLed.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAdapterAppColorLed.idl
-
 Member Data Documentation
 -------------------------
+
+### const PRUint16 nsISystemAdapterAppColorLed::LEFT\_COLOR\_LED
+
+placement left
+
+### const PRUint16 nsISystemAdapterAppColorLed::RIGHT\_COLOR\_LED
+
+placement right
+
+### attribute boolean nsISystemAdapterAppColorLed::enabled
+
+enable or disable the color led
+
+### attribute PRUint32 nsISystemAdapterAppColorLed::color
+
+color RGB (XXRRGGBB) of the color led
+
+### readonly attribute PRUint16 nsISystemAdapterAppColorLed::placement
+
+placement of the color led (LEFT\_COLOR\_LED or RIGHT\_COLOR\_LED)

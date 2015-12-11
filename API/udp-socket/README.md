@@ -1,108 +1,72 @@
 nsIGktUDPSocket interface Reference
 ===================================
 
-    #include <nsIGktUDPSocket.idl>
-
 Public Attributes
 -----------------
 
 -   readonly attribute AUTF8String localAddress
 
-    *The IPv4/6 address of the interface, e.g.*
-
 <!-- -->
 
 -   readonly attribute long localPort
-
-    *The local port that the UDPSocket object is bound to.*
 
 <!-- -->
 
 -   readonly attribute AUTF8String remoteAddress
 
-    *The default remote IPv4/6 address that is used for subsequent send() calls.*
-
 <!-- -->
 
 -   readonly attribute long remotePort
-
-    *The default remote port that is used for subsequent send() calls.*
 
 <!-- -->
 
 -   readonly attribute boolean loopback
 
-    *Only applicable for multicast.*
-
 <!-- -->
 
 -   readonly attribute unsigned long bufferedAmount
-
-    *This attribute contains the number of bytes which have previously been buffered by calls to the send methods of this socket.*
 
 <!-- -->
 
 -   readonly attribute AUTF8String readyState
 
-    *The state of the UDP Socket object.*
-
 <!-- -->
 
 -   attribute nsIUDPEventHandler onerror
-
-    *The onerror event handler will be called when there is an error.*
 
 <!-- -->
 
 -   attribute nsIUDPEventHandler onmessage
 
-    *Event handler for received UDP data.*
-
 -   void init ( in long aPort, in boolean aLoopbackOnly)
-
-    *This method initializes an UDP socket.*
 
 <!-- -->
 
 -   void joinMulticast ( in AUTF8String aMulticastAddress, in AUTF8String aIface)
 
-    *Join the multicast group specified by the given adress.*
-
 <!-- -->
 
 -   void leaveMulticast ( in AUTF8String aMulticastAddress, in AUTF8String aIface)
-
-    *Leave the multicast group specified by the given adress.*
 
 <!-- -->
 
 -   void close ( )
 
-    *Closes the UDP socket.*
-
 <!-- -->
 
 -   void suspend ( )
-
-    *Pause reading incoming UDP data and invocations of the onmessage handler until resume is called.*
 
 <!-- -->
 
 -   void resume ( )
 
-    *Pause reading incoming UDP data and invocations of the onmessage handler until resume is called.*
-
 <!-- -->
 
 -   boolean sendArray ( in octet data, in unsigned long dataLength, in AUTF8String remoteAddress, in long remotePort)
 
-    *Sends data on the given UDP socket to the given address and port.*
-
 <!-- -->
 
 -   boolean send ( in jsval data, in AUTF8String remoteAddress, in long remotePort)
-
-    *Sends data on the given UDP socket to the given address and port.*
 
 Detailed Description
 --------------------
@@ -927,107 +891,50 @@ and an example of using UDP multicast
     </head>
     </html>
 
-Definition at line 42 of file nsIGktUDPSocket.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIGktUDPSocket.idl
-
 Member Data Documentation
 -------------------------
 
 ### readonly attribute AUTF8String nsIGktUDPSocket::localAddress
 
-wifi or 3G, that the UDPSocket object is bound to. Can be set by the options argument in the constructor. If not set the user agent binds the socket to the IPv4/6 address of the default local interface.
-
-Definition at line 58 of file nsIGktUDPSocket.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIGktUDPSocket.idl
+The IPv4/6 address of the interface, e.g. wifi or 3G, that the UDPSocket object is bound to. Can be set by the options argument in the constructor. If not set the user agent binds the socket to the IPv4/6 address of the default local interface.
 
 ### readonly attribute long nsIGktUDPSocket::localPort
 
-Can be set by the options argument in the constructor. If not set the user agent binds the socket to a random local port number.
-
-Definition at line 60 of file nsIGktUDPSocket.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIGktUDPSocket.idl
+The local port that the UDPSocket object is bound to. Can be set by the options argument in the constructor. If not set the user agent binds the socket to a random local port number.
 
 ### readonly attribute AUTF8String nsIGktUDPSocket::remoteAddress
 
-Null if not stated by the options argument of the constructor.
-
-Definition at line 62 of file nsIGktUDPSocket.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIGktUDPSocket.idl
+The default remote IPv4/6 address that is used for subsequent send() calls. Null if not stated by the options argument of the constructor.
 
 ### readonly attribute long nsIGktUDPSocket::remotePort
 
-Null if not stated by the options argument of the constructor
-
-Definition at line 64 of file nsIGktUDPSocket.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIGktUDPSocket.idl
+The default remote port that is used for subsequent send() calls. Null if not stated by the options argument of the constructor
 
 ### readonly attribute boolean nsIGktUDPSocket::loopback
 
-true means that sent multicast data is looped back to the sender. Can be set by the options argument in the constructor. Default is false.
-
-Definition at line 66 of file nsIGktUDPSocket.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIGktUDPSocket.idl
+Only applicable for multicast. true means that sent multicast data is looped back to the sender. Can be set by the options argument in the constructor. Default is false.
 
 ### readonly attribute unsigned long nsIGktUDPSocket::bufferedAmount
 
-Definition at line 68 of file nsIGktUDPSocket.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIGktUDPSocket.idl
+This attribute contains the number of bytes which have previously been buffered by calls to the send methods of this socket.
 
 ### readonly attribute AUTF8String nsIGktUDPSocket::readyState
 
-A UDP Socket object can be in "open" or "closed" states.
-
-Definition at line 71 of file nsIGktUDPSocket.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIGktUDPSocket.idl
+The state of the UDP Socket object. A UDP Socket object can be in "open" or "closed" states.
 
 ### attribute nsIUDPEventHandler nsIGktUDPSocket::onerror
 
-The data attribute of the event passed to the onerror handler will have a description of the kind of error.
-
-Definition at line 100 of file nsIGktUDPSocket.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIGktUDPSocket.idl
+The onerror event handler will be called when there is an error. The data attribute of the event passed to the onerror handler will have a description of the kind of error.
 
 ### attribute nsIUDPEventHandler nsIGktUDPSocket::onmessage
 
-The onmessage handler will be called repeatedly and asynchronously after the UDPSocket object has been created, every time a UDP datagram has been received and was read. At any time, the client may choose to pause reading and receiving onmessage callbacks, by calling the socket's suspend() method. Further invocations of onmessage will be paused until resume() is called.
-
-Definition at line 107 of file nsIGktUDPSocket.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIGktUDPSocket.idl
+Event handler for received UDP data. The onmessage handler will be called repeatedly and asynchronously after the UDPSocket object has been created, every time a UDP datagram has been received and was read. At any time, the client may choose to pause reading and receiving onmessage callbacks, by calling the socket's suspend() method. Further invocations of onmessage will be paused until resume() is called.
 
 void nsIGktUDPSocket::init (in long aPort, in boolean aLoopbackOnly)
 --------------------------------------------------------------------
 
 This method initializes an UDP socket.
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -1049,8 +956,7 @@ This method initializes an UDP socket.
 void nsIGktUDPSocket::joinMulticast (in AUTF8String aMulticastAddress, \[optional\] in AUTF8String aIface)
 ----------------------------------------------------------------------------------------------------------
 
-Join the multicast group specified by the given adress.
-You are then able to receive future datagrams addressed to the group. To join a multicast group, the local adress of the socket must be setted to a anycast address ("0.0.0.0" on IpV4, "::" on Ipv6), otherwise an error will be returned.
+Join the multicast group specified by the given adress. You are then able to receive future datagrams addressed to the group. To join a multicast group, the local adress of the socket must be setted to a anycast address ("0.0.0.0" on IpV4, "::" on Ipv6), otherwise an error will be returned.
 
 <table>
 <caption>Parameters</caption>
@@ -1073,8 +979,7 @@ You are then able to receive future datagrams addressed to the group. To join a 
 void nsIGktUDPSocket::leaveMulticast (in AUTF8String aMulticastAddress, \[optional\] in AUTF8String aIface)
 -----------------------------------------------------------------------------------------------------------
 
-Leave the multicast group specified by the given adress.
-You will no longer receive future datagrams addressed to the group.
+Leave the multicast group specified by the given adress. You will no longer receive future datagrams addressed to the group.
 
 <table>
 <caption>Parameters</caption>
@@ -1097,21 +1002,23 @@ You will no longer receive future datagrams addressed to the group.
 void nsIGktUDPSocket::close ()
 ------------------------------
 
-Closes the UDP socket.
-A closed UDP socket can not be used any more.
+Closes the UDP socket. A closed UDP socket can not be used any more.
 
 void nsIGktUDPSocket::suspend ()
 --------------------------------
 
 Pause reading incoming UDP data and invocations of the onmessage handler until resume is called.
+
 void nsIGktUDPSocket::resume ()
 -------------------------------
 
 Pause reading incoming UDP data and invocations of the onmessage handler until resume is called.
+
 boolean nsIGktUDPSocket::sendArray (\[const, array, size\_is(dataLength)\]in octet data, in unsigned long dataLength, \[optional\] in AUTF8String remoteAddress, \[optional\] in long remotePort)
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Sends data on the given UDP socket to the given address and port.
+
 If remoteAddress and remotePort arguments are not given or null the destination is the default address and port given by the UDPSocket constructor's options argument's remoteAddress and remotePort fields.
 
 <table>
@@ -1140,6 +1047,7 @@ boolean nsIGktUDPSocket::send (in jsval data, \[optional\] in AUTF8String remote
 -------------------------------------------------------------------------------------------------------------------------
 
 Sends data on the given UDP socket to the given address and port.
+
 If remoteAddress and remotePort arguments are not given or null the destination is the default address and port given by the UDPSocket constructor's options argument's remoteAddress and remotePort fields.
 
 <table>
@@ -1163,71 +1071,61 @@ true if the data the request has been completed, false otherwise.
 nsIUDPErrorEvent interface Reference
 ====================================
 
-    #include <nsIGktUDPSocket.idl>
-
 Public Attributes
 -----------------
 
 -   readonly attribute AUTF8String name
 
-    *The error name.*
-
 <!-- -->
 
 -   readonly attribute AUTF8String message
-
-    *The error message.*
 
 Detailed Description
 --------------------
 
 The nsIUDPMessageEvent interface represents events related to a error.
 
-Definition at line 169 of file nsIGktUDPSocket.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIGktUDPSocket.idl
-
 Member Data Documentation
 -------------------------
 
+### readonly attribute AUTF8String nsIUDPErrorEvent::name
+
+The error name
+
+### readonly attribute AUTF8String nsIUDPErrorEvent::message
+
+The error message
+
 nsIUDPEvent interface Reference
 ===============================
-
-    #include <nsIGktUDPSocket.idl>
 
 Public Attributes
 -----------------
 
 -   readonly attribute AUTF8String type
 
-    *Type of event.*
-
 <!-- -->
 
 -   readonly attribute nsIGktUDPSocket target
-
-    *The target of event (the UDP socket)*
 
 Detailed Description
 --------------------
 
 The nsIUDPEvent interface is the base interface for all received events.
 
-Definition at line 157 of file nsIGktUDPSocket.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIGktUDPSocket.idl
-
 Member Data Documentation
 -------------------------
 
+### readonly attribute AUTF8String nsIUDPEvent::type
+
+Type of event
+
+### readonly attribute nsIGktUDPSocket nsIUDPEvent::target
+
+The target of event (the UDP socket)
+
 nsIUDPEventHandler interface Reference
 ======================================
-
-    #include <nsIGktUDPSocket.idl>
 
 -   void handleEvent ( in nsIUDPEvent aEvent)
 
@@ -1236,55 +1134,49 @@ Detailed Description
 
 The nsIUDPEventHandler interface allows to manage UDP events
 
-Definition at line 148 of file nsIGktUDPSocket.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIGktUDPSocket.idl
-
 void nsIUDPEventHandler::handleEvent (in nsIUDPEvent aEvent)
 ------------------------------------------------------------
 
 nsIUDPMessageEvent interface Reference
 ======================================
 
-    #include <nsIGktUDPSocket.idl>
-
 Public Attributes
 -----------------
 
 -   readonly attribute AUTF8String remoteAddress
 
-    *The address of the remote machine.*
-
 <!-- -->
 
 -   readonly attribute unsigned short remotePort
-
-    *The port of the remote machine.*
 
 <!-- -->
 
 -   readonly attribute ACString dataString
 
-    *Custom data associated with this event.*
-
 <!-- -->
 
 -   readonly attribute jsval data
-
-    *Jsval data.*
 
 Detailed Description
 --------------------
 
 The nsIUDPMessageEvent interface represents events related to received UDP data
 
-Definition at line 182 of file nsIGktUDPSocket.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsIGktUDPSocket.idl
-
 Member Data Documentation
 -------------------------
+
+### readonly attribute AUTF8String nsIUDPMessageEvent::remoteAddress
+
+The address of the remote machine
+
+### readonly attribute unsigned short nsIUDPMessageEvent::remotePort
+
+The port of the remote machine
+
+### readonly attribute ACString nsIUDPMessageEvent::dataString
+
+Custom data associated with this event.
+
+### readonly attribute jsval nsIUDPMessageEvent::data
+
+Jsval data

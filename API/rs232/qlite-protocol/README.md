@@ -1,8 +1,6 @@
 nsISystemAdapterSerial interface Reference
 ==========================================
 
-    #include <nsISystemAdapterSerial.idl>
-
 -   const unsigned long SERIAL\_CAP\_DIR\_IN
 
 <!-- -->
@@ -42,8 +40,6 @@ nsISystemAdapterSerial interface Reference
     *Serial port can be writing.*
 
 -   \*const unsigned long BAUD50
-
-    *values of baudrate*
 
 <!-- -->
 
@@ -143,8 +139,6 @@ nsISystemAdapterSerial interface Reference
 
 -   const unsigned long PARITY\_NONE
 
-    *values for parity scheme*
-
 <!-- -->
 
 -   const unsigned long PARITY\_ODD
@@ -163,8 +157,6 @@ nsISystemAdapterSerial interface Reference
 
 -   const unsigned long STOPBIT\_1
 
-    *values for stop bits 1 stopbit*
-
 <!-- -->
 
 -   const unsigned long STOPBIT\_1\_5
@@ -178,8 +170,6 @@ nsISystemAdapterSerial interface Reference
     *2 stopbit*
 
 -   const unsigned long FLOWCONTROL\_OFF
-
-    *values for flow\_control No handshaking*
 
 <!-- -->
 
@@ -255,8 +245,6 @@ nsISystemAdapterSerial interface Reference
 
 -   void sendBreak ( in unsigned long aPeriod)
 
-    *Send a break signal for a period of time in millisecond.*
-
 <!-- -->
 
 -   void drainTQ ( )
@@ -279,13 +267,9 @@ nsISystemAdapterSerial interface Reference
 
 -   void addListener ( in nsISystemSerialListener aListener)
 
-    *Add a listener called when a state of one signal change or when data become available.*
-
 <!-- -->
 
 -   void removeListener ( in nsISystemSerialListener aListener)
-
-    *Remove a listener called when a state of one signal change or when data become available.*
 
 -   const unsigned long RECIEVE\_MODE\_SYNC
 
@@ -293,44 +277,30 @@ nsISystemAdapterSerial interface Reference
 
 -   const unsigned long RECIEVE\_MODE\_ASYNC
 
-    *Aynchronous reception of characters In this mode, it is possible to:*
-
 <!-- -->
 
 -   attribute long recieveMode
-
-    *Reception mode for characters received by the serial port This attribute must be specified before the call of the open method in order to be taken in count.*
 
 Public Attributes
 -----------------
 
 -   readonly attribute unsigned long capabilities
 
-    *Capabilities flags.*
-
 <!-- -->
 
 -   attribute boolean recieveIsBlocking
-
-    *Tell if reception of characters on the serial port is in blocking mode or not.*
 
 <!-- -->
 
 -   attribute long recieveThreshold
 
-    *When the reading is in blocking mode (attribute recieveIsBlocking), this attribute provide the minimal amount of characters to read before returning.*
-
 <!-- -->
 
 -   attribute long recieveTimeout
 
-    *If the reading is in blocking mode (attribute recieveIsBlocking), this attribute defines the limit value of waiting time (in milliseconds) before the reading returns.*
-
 <!-- -->
 
 -   readonly attribute nsIInputStream inputStream
-
-    *Object for read the characters received by the serial port.*
 
 <!-- -->
 
@@ -340,13 +310,9 @@ Public Attributes
 
 -   void setConfig ( in unsigned long aDirection, in unsigned long aBaudrate, in unsigned long aCharSize, in unsigned long aParity, in unsigned long aNbStopBits, in unsigned long aFlowControl)
 
-    *Set configuration of serial port.*
-
 <!-- -->
 
 -   void getConfig ( out unsigned long aDirection, out unsigned long aBaudrate, out unsigned long aCharSize, out unsigned long aParity, out unsigned long aNbStopBits, out unsigned long aFlowControl)
-
-    *Get configuration of serial port.*
 
 <!-- -->
 
@@ -1371,58 +1337,33 @@ The nsISystemAdapterSerial Interface allows to manage serial port. This long in 
     </body>
     </html>
 
-Definition at line 58 of file nsISystemAdapterSerial.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAdapterSerial.idl
-
 Member Data Documentation
 -------------------------
 
 ### readonly attribute unsigned long nsISystemAdapterSerial::capabilities
 
-Can be an union of the different flags
-
-Definition at line 71 of file nsISystemAdapterSerial.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAdapterSerial.idl
+Capabilities flags. Can be an union of the different flags
 
 ### attribute boolean nsISystemAdapterSerial::recieveIsBlocking
 
-When the reading is in blocking mode, nsIInputStream::read do return only if the number of characters to read is reached (attribute recieveIsThreshold) or if the limit of time is exceeded. Otherwise it does immediatly return.
-
-Definition at line 203 of file nsISystemAdapterSerial.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAdapterSerial.idl
+Tell if reception of characters on the serial port is in blocking mode or not. When the reading is in blocking mode, nsIInputStream::read do return only if the number of characters to read is reached (attribute recieveIsThreshold) or if the limit of time is exceeded. Otherwise it does immediatly return.
 
 ### attribute long nsISystemAdapterSerial::recieveThreshold
 
-Definition at line 206 of file nsISystemAdapterSerial.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAdapterSerial.idl
+When the reading is in blocking mode (attribute recieveIsBlocking), this attribute provide the minimal amount of characters to read before returning.
 
 ### attribute long nsISystemAdapterSerial::recieveTimeout
 
-The default value is zero which matchs to infinite waiting.
+If the reading is in blocking mode (attribute recieveIsBlocking), this attribute defines the limit value of waiting time (in milliseconds) before the reading returns. The default value is zero which matchs to infinite waiting.
 
-Definition at line 210 of file nsISystemAdapterSerial.idl
+### readonly attribute nsIInputStream nsISystemAdapterSerial::inputStream
 
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAdapterSerial.idl
+Object for read the characters received by the serial port
 
 void nsISystemAdapterSerial::setConfig (in unsigned long aDirection, in unsigned long aBaudrate, in unsigned long aCharSize, in unsigned long aParity, in unsigned long aNbStopBits, in unsigned long aFlowControl)
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-Set configuration of serial port.
-This method must be called before open method.
+Set configuration of serial port. This method must be called before open method.
 
 <table>
 <caption>Parameters</caption>
@@ -1462,6 +1403,7 @@ void nsISystemAdapterSerial::getConfig (out unsigned long aDirection, out unsign
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 Get configuration of serial port.
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -1507,51 +1449,34 @@ Close serial port.
 nsISystemSerialListener interface Reference
 ===========================================
 
-    #include <nsISystemAdapterSerial.idl>
-
 -   void onCTSChanged ( in boolean aNewValue)
-
-    *Method called when CTS signal change.*
 
 <!-- -->
 
 -   void onDSRChanged ( in boolean aNewValue)
 
-    *Method called when DSR signal change.*
-
 <!-- -->
 
 -   void onRINGChanged ( in boolean aNewValue)
-
-    *Method called when RING signal change.*
 
 <!-- -->
 
 -   void onDCDChanged ( in boolean aNewValue)
 
-    *Method called when DCD signal change.*
-
 <!-- -->
 
 -   void onDataAvailable ( in nsIInputStream aInputStream)
-
-    *Method called when data available on serial port.*
 
 Detailed Description
 --------------------
 
 The nsISystemSerialListener interface is a listener for system adapter serial
 
-Definition at line 30 of file nsISystemAdapterSerial.idl
-
-The Documentation for this struct was generated from the following file:
-
--   nsISystemAdapterSerial.idl
-
 void nsISystemSerialListener::onCTSChanged (in boolean aNewValue)
 -----------------------------------------------------------------
 
-Method called when CTS signal change.
+Method called when CTS signal change
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -1569,7 +1494,8 @@ Method called when CTS signal change.
 void nsISystemSerialListener::onDSRChanged (in boolean aNewValue)
 -----------------------------------------------------------------
 
-Method called when DSR signal change.
+Method called when DSR signal change
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -1587,7 +1513,8 @@ Method called when DSR signal change.
 void nsISystemSerialListener::onRINGChanged (in boolean aNewValue)
 ------------------------------------------------------------------
 
-Method called when RING signal change.
+Method called when RING signal change
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -1605,7 +1532,8 @@ Method called when RING signal change.
 void nsISystemSerialListener::onDCDChanged (in boolean aNewValue)
 -----------------------------------------------------------------
 
-Method called when DCD signal change.
+Method called when DCD signal change
+
 <table>
 <caption>Parameters</caption>
 <colgroup>
@@ -1623,8 +1551,7 @@ Method called when DCD signal change.
 void nsISystemSerialListener::onDataAvailable (in nsIInputStream aInputStream)
 ------------------------------------------------------------------------------
 
-Method called when data available on serial port.
-Use nsIInputStream::available to get number of carateres available Use nsIInputStream::read to read carateres.
+Method called when data available on serial port. Use nsIInputStream::available to get number of carateres available Use nsIInputStream::read to read carateres.
 
 <table>
 <caption>Parameters</caption>
