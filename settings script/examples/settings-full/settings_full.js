@@ -1,5 +1,5 @@
 /**
- * File : autoconf.js
+ * File : settings_full.js
  * Description :
  *   Example for a JavaScript platform auto-configuration.
  *

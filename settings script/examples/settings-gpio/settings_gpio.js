@@ -1,5 +1,5 @@
 /**
- * File : autoconf.js
+ * File : settings_gpio.js
  * Description :
  *   Example for a JavaScript platform auto-configuration.
  *

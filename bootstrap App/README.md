@@ -6,5 +6,6 @@ To be played on Gekkota, a bootstrap App includes the following files :
 - a manifest file (see description on *manifest.md page*);
 - resources needed by the App (eg. *medias* directory);
 
-For more information, see the different use case  in the *examples* directory.  
+The *manifest.md* page describes the different sections *metadata*, *launcher* and *cache* of the manifest file.  
+For more information about bootstrap App, see the different use case  in the *examples* directory.  
 

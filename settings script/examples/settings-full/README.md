@@ -1,8 +1,8 @@
-# Full auto-configuration
+# Full settings
 
 This file provides many Javascript functions already implemented.  
-Each function is independent and can be used as an autoconfiguration operation.  
-To the file be valid, it must be renamed in *<MAC\>.js* or *00000000000.js*.  
+Each function is independent and can be used as a configuration operation.  
+To the file be valid, it must be renamed in <*MAC*>.js or 00000000000.js.  
 
 - *setPlugnCastG2* : configure the heartbeat of a Plugncast G2 server;
 - *disablePlugnCastG2* : disable a Plugncast G2 server;

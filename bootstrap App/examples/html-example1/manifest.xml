@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:pzpm="ns.innes.gekkota.manifest" xmlns:xpf="ns.innes.xpf.3">
+    <Description about="ns.innes.gekkota.manifest#launcher">
+        <pzpm:bootstrap src="app.html"/>
+    </Description>
+    <Description about="urn:innes:manifest:cache">
+        <Bag>
+            <li>medias/example.svg</li>
+            <li>medias/yellow.jpg</li>
+            <li>manifest.xml</li>
+            <li>app.html</li>
+        </Bag>
+    </Description>
+</RDF>

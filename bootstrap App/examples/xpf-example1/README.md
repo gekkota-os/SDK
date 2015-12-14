@@ -1,4 +1,4 @@
-# App example 1
+# App  xpf-example1
 
 This App displays an image "yellow.jpg" during 3 seconds then an image "example.svg" indefinitly.
 
@@ -10,18 +10,18 @@ XPF version 3  is a XML-based format. The XML header  appears at the top of the 
 
 
 
-## Element XPF
+## Element <*XPF*>
 This root element defines the XML and XPF namespaces.  
 
 `xmlns="ns.innes.xpf.3"`
 `xmlns:xpf="ns.innes.xpf.3"`
 
-It is the parent of  HEAD and BODY elements.
+It is the parent of  <*HEAD*> and <*BODY*> elements.
 
-###  Element HEAD
-This element is the parent of the STYLE element.
+###  Element <*HEAD*>
+This element is the parent of the <*STYLE*> element.
 
-#### Element STYLE
+#### Element <*STYLE*>
 This element defines the style for : 
  
 * general xpf: 
@@ -53,11 +53,11 @@ body {
 
 
 
-### Element BODY
+### Element <*BODY*>
 This element contains the PAR element.
 
-#### Element PAR 
-The PAR element plays child elements as a group.
+#### Element <*PAR*> 
+The <*PAR*> element plays child elements as a group.
 
 ``` 
 <par dur="indefinite">
@@ -67,8 +67,7 @@ The PAR element plays child elements as a group.
 This attribute defines the duration for playing the group of childs.  
 "indefinite" means there is no time limit.
 If the duration was "3s", then the group would stop after 3 seconds.  
-##### Element SEQ
-
+##### Element <*SEQ*>
 This element defines the medias to play and when to play them.
 
 ```

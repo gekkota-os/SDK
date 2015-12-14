@@ -36,7 +36,7 @@ graph TD
 
 ## Example    
     <?xml version="1.0" encoding="UTF-8"?>
-    <device-status version="1.0" xmlns="ns.innes.playzilla">
+    <device-status version="1.0" xmlns="ns.innes.gekkota">
     <device>
         <!— identificator used in status file name. Can be MAC,HOSTNAME,UUID -->
         <id-type>MAC</id-type>
@@ -179,13 +179,198 @@ graph TD
 
 ## Element <*device*>
 
-This element contains the device configuration information. This includes the IP addresses, the MAC address used as identifier (the same as in filename) in lowercase with hyphens and the label.
+This element contains the device configuration information : 
+
+- <id-type\>;
+- <mac\>;
+- <hostname\>;
+- <uuid\>;
+- <modelName\>;
+- <modelNumber\>;
+- <serialNumber\>;
+- <field[1-5]\>;
+- <ip-adresses\>;
+- <addons\>.
+
+### Element <*id-type*>
+
+This element is required.
+It defines the type of identifier which can have the following values:
+
+* "MAC" : mac address of the first network interface;
+* "Hostname" : device name;
+* "uuid" : Uuid identifier of the device ;
+
+### Element <*mac*>
+
+This element is required.  
+It defines the mac address of the device.  
+We can retrieve it through *nsISystemGeneralSettings::mac* attribute.
+
+### Element <*hostname*>
+
+This element is required.  
+It defines the device name.  
+We can retrieve it through *nsISystemGeneralSettings::hostname* attribute.
+
+### Element <*uuid*>
+
+This element is required.  
+It defines the device identifier (UPNP).  
+We can retrieve it through *nsISystemGeneralSettings::uuid* attribute.
+
+### Element <*modelName*>
+
+This element is required.  
+It defines the model name of the platform.  
+We can retrieve it through *nsISystemGeneralSettings::platform* attribute.
+
+### Element <*modelNumber*>
+
+This element is required.  
+It defines the model number of the platform.  
+We can retrieve it through *nsISystemGeneralSettings::version* attribute.
+
+### Element <*serialNumber*>
+
+This element is required.  
+It defines the serial number of the platform.  
+We can retrieve it through *nsISystemGeneralSettings::psn* attribute.
+
+### Element <*field[1..5]*>
+
+We can retrieve the values of the fields through *nsISystemGeneralSettings::field[1..5]* attributes.  
+These attributes are defined in the user preferences *innes.player.device-info.field[1..5]*.  
+The fields can be empty.
+
+### Element <*ip-addresses*>
+
+This element is required.  
+It contains the list of the IP addresses of the device.  
+
+### Element <*ip-address*>
+
+This element is required by the <*ip-addresses*> element.  
+It defines an IP address of the device.  
+It must contain the following elements:
+
+* <*if-type*>;  
+* <*origin*>;  
+* <*value*>.
+
+#### Element <*if-type*>
+
+This element is required by <*ip-address*>.  
+It defines the type of the network interface :
+
+- "LAN" for LAN network interface;
+-  "WLAN" for WLAN network interface.
+
+#### Element <*origin*>
+
+This element is required by <*ip-address*>.
+It defines the origin of the IP address : 
+
+- "auto" for an automatic IPv6 address ;
+- "dhcp" for an IP address assigned by DHCP;
+- "static" for a static IP address.
+
+#### Element <*value*>
+
+This element is required by <*ip-address*>.
+It defines the value of the IP address.
+
+### Element <*addons*>
+
+This element is required.
+It contains the list of installed extensions on the device.  
+This list excludes all the extensions such as the "configuration" and "installer" extensions that are described by the <*configuration*> element and the <*installer*> element present in the <*setup*> element of the <*status*> element.  
+It may contain some <*addon*> elements.
+
+### Element <*addon*>
+It describes the installation of an extension on the platform.  
+It must contain the following elements :  
+
+* <*id*> ;
+* <*name*> ;
+* <*version*> ;
+
+#### Element <*id*>
+This element is required by the <*addon*> element.
+It defines the identifier of the installed extension.
+
+#### Element <*name*>
+This element is required by the <*addon*> element.
+It defines the name of the installed extension.
+
 
 ## Element <*status*>
-This element contains the device status.
+This element is required.
+It contains the following elements :
+
+- <*date*>;
+- <*storage*>;
+- <*launcher*>;
+- <*setup*>.
+
+It may contain the <*downloader*> element.
 
 ### Element <*date*>
-Contain the ISO-8601 date (with device timezone) when the status was generated.
+This element is required.  
+It defines the current UTC date expressed in ISO-8601 format followed by the time difference of the local area (eg.  "2015-11-17T09:32:27.402+01:00"). 
+
+### Element <*storage*>
+This element is required.  
+It describes the data storage space of the platform.  
+It must contain the following elements :
+
+- <*total-size*>;
+- <*used-size*>;
+
+#### Element <*total-size*>
+This element is required.  
+It defines the total size of the data storage space of the platform.  
+It must contain the *@unit* attribute set to *"byte"*.  
+
+#### Element <*used-size*>
+This element is required.   
+It defines the size used on the data storage space of the platform.  
+It must contain the *@unit* attribute set to *"byte"*.  
+
+### Element <*setup*>
+This element is required.
+It describes the list of configuration and installation extensions installed on the platform.  
+It may contain the following elements :
+
+- <*configuration*>;
+- <*installer*>.
+
+#### Element <*configuration*>
+This element is required.
+It describes a configuration extension installed on the platform.  
+It must contain the following elements :
+
+- <*version*>;
+- <*metadatas*>.
+
+#### Element <*installer*>
+This element is required.  
+it describes a software installation extension installed on the platform.  
+It must contain the following elements :  
+
+- <*version*>;
+- <*metadatas*>;
+
+#### Element <*version*>
+
+This element is required by the <*addon*>, <*configuration*> and <*installer*> elements.  
+It defines the installed extension version.  
+If the extension is an installation or configuration extension, the version is the date of installation on the platform in the current time zone in ISO-8601 format.  
+
+#### Element <*metadatas*>
+
+This element is required by the <*configuration*> and <*installer*> elements.  
+It defines the list of the configuration or installation extension.
 
 ### Element <*launcher*>
 

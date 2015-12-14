@@ -3,7 +3,7 @@
 Here are some examples of bootstrap App.
 ## detection-hid   
 This App is an example of using HID Detection.  
-## example1
+## xpf-example1
 This is a simple example of App under the XPF format.  
-## html
+## html-example1
 This is a simple example of App under the HTML format.  
