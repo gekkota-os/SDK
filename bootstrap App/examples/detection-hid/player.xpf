@@ -32,16 +32,12 @@
 		<script type="application/javascript;version=1.8">/*<![CDATA[*/
 
 		XpfDetectionHid.onStateactiveBegin = function onStateactiveBegin() {
+			document.getElementById("id_yellow").endElement();
 			document.getElementById("id_example").beginElement();
 		}
 		XpfDetectionHid.onStateactiveEnd = function onStateactiveEnd() {
 			document.getElementById("id_example").endElement();
-		}
-		XpfDetectionHid.onStateidleBegin = function onStateidleBegin() {
 			document.getElementById("id_yellow").beginElement();
-		}
-		XpfDetectionHid.onStateidleEnd = function onStateidleEnd() {
-			document.getElementById("id_yellow").endElement();
 		}
 		function load(){
 			XpfDetectionHid.init(1);

@@ -181,16 +181,16 @@ graph TD
 
 This element contains the device configuration information : 
 
-- <id-type\>;
-- <mac\>;
-- <hostname\>;
-- <uuid\>;
-- <modelName\>;
-- <modelNumber\>;
-- <serialNumber\>;
-- <field[1-5]\>;
-- <ip-adresses\>;
-- <addons\>.
+- <*id-type*>;
+- <*mac*>;
+- <*hostname*>;
+- <*uuid*>;
+- <*modelName*>;
+- <*modelNumber*>;
+- <*serialNumber*>;
+- <*field[1-5]*>;
+- <*ip-adresses*>;
+- <*addons*>.
 
 ### Element <*id-type*>
 
