@@ -1,0 +1,126 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title> WebQSL example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+
+		/************************************************************************/
+		/*************** Here is the Test Suite you should modify ***************/
+		/************************************************************************/
+		(function () {
+			window.onload = function () {
+
+				var configMySQL = {
+					host: "192.168.1.226",
+					typeDatabase: "MySQLProv",
+					port: 3306,
+					database: "grrDBTest",
+					user: "root",
+					password: "yourPassword",
+					request: "select * from grr_utilisateurs"
+				};
+
+				var testRunner = new window.MySQLTestRunner("example.websql", configMySQL);
+				testRunner.executeSyncQuery();
+				testRunner.executeAsyncQuery();
+			};
+		})();
+		/************************************************************************/
+		/*************** From here you should not modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function MySQLTestRunner(aName, aConfig) {
+				try {
+					this._logger = new window.Logger(aName);
+					this._logger.log("MySQLTestRunner");
+					this._request = aConfig.request;
+					this._connectionMySQL = new GktSqlConnectionODBC();;
+					this._connectionMySQL.init(aConfig.typeDatabase, aConfig.host, aConfig.port, aConfig.database, aConfig.user, aConfig.password);
+					this._logger.log("SQL connection init done");
+				} catch (e) {
+					this._logger.error("An error here probably comes from bad information in the SQL config. For more information activate the logger 'websql' as explained in the logger documentation.");
+					this._logger.errorEx(e);
+				}
+			}
+			MySQLTestRunner.prototype = {
+				executeAsyncQuery: function () {
+					try {
+						this._logger.log("executeAsyncQuery");
+						// connect to database
+						this._logger.log("SQL connection init done");
+						// We pass "this" as observer to asyncExecuteQuery. This is possible because this test runner implements
+						// both observer methods : "OnStartRequest" and "OnStopRequest" so it is an Observer moreover its other function
+						this._connectionMySQL.asyncExecuteQuery(this._request, null, this);
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				executeSyncQuery: function () {
+					try {
+						this._logger.log("executeSyncQuery");
+						var resultMySQL = this._connectionMySQL.executeQuery(this._request);
+						var enumMySQL = resultMySQL.enumerate();
+						enumMySQL.beforeFirst();
+						var resNext = true;
+						while (resNext) {
+							resNext = enumMySQL.next();
+							for (var i = 0; i < resultMySQL.columnCount; i++) {
+								if (resultMySQL.getColumnType(i) == Components.interfaces.nsIGktSqlResult.TYPE_STRING) {
+									this._logger.log("Data found : " + enumMySQL.getString(i));
+								}
+							}
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				onStartRequest: function (requestMySQL, context) {
+					this._logger.log("onStartRequest");
+				},
+				onStopRequest: function (requestMySQL, context) {
+					try {
+						this._logger.log("onStopRequest : " + requestMySQL.status);
+						var resultMySQL = requestMySQL.result;
+						var enumMySQL = resultMySQL.enumerate();
+						// go before first element
+						enumMySQL.beforeFirst();
+						// for each row, display only string data
+						var resNext = true;
+						while (resNext) {
+							resNext = enumMySQL.next();
+							for (var i = 0; i < resultMySQL.columnCount; i++) {
+								if (resultMySQL.getColumnType(i) == Components.interfaces.nsIGktSqlResult.TYPE_STRING
+									&& enumMySQL.isNull(i) == false) {
+									this._logger.log("data found : " + enumMySQL.getString(i));
+								}
+								if ((resultMySQL.getColumnType(i) == Components.interfaces.nsIGktSqlResult.TYPE_DATETIME ||
+									resultMySQL.getColumnType(i) == Components.interfaces.nsIGktSqlResult.TYPE_DATE ||
+									resultMySQL.getColumnType(i) == Components.interfaces.nsIGktSqlResult.TYPE_TIME)
+									&& enumMySQL.isNull(i) == false) {
+									this._logger.log(resultMySQL.getColumnName(i) + " : " + new Date(enumMySQL.getDate(i) / 1000).toString());
+								}
+							}
+						}
+					} catch (e) {
+						this._logger.error("Exception  " + e + " line = " + e.lineNumber);
+					}
+				}
+			};
+
+			window.MySQLTestRunner = MySQLTestRunner;
+		})();
+
+	</script>
+</head>
+
+<body>
+	<h1>WebQSL example</h1>
+	<div class="container"></div>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>

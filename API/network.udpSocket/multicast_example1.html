@@ -1,0 +1,370 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>Network UDP socket multicast example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+		/************************************************************************/
+		/*************** Here is the Test Suite you should modify ***************/
+		/************************************************************************/
+		(function () {
+			window.onload = function () {
+				var localPort = 30001;
+				var multicastGroup = "239.255.0.1";
+				var multicastGroup2 = "239.255.0.2";
+				var multicastGroupIpv6 = "ff02::2";
+
+				var testRunner = new window.MulticastTestRunner("example.network.udpSocket.multicast");
+				testRunner.getLocalAddress();
+				testRunner.testMulticastIpv4Local(localPort, multicastGroup);
+				// testRunner.testMulticastIpv6Local(localPort, multicastGroupIpv6);
+				// testRunner.testMulticastIpv6AnyIpv4(localPort, multicastGroupIpv6);
+				// testRunner.testMulticastIpv4Any(localPort, multicastGroup);
+				// testRunner.testMulticastIpv6Any(localPort, multicastGroupIpv6);
+				// testRunner.testMulticastMultipleIpv4Any(localPort, multicastGroup, multicastGroup2);
+				// testRunner.testMulticastLoopbackIpv4Any(localPort, multicastGroup);
+				localPort = 1900;
+				multicastGroup = "239.255.255.250";
+				// testRunner.testMulticastUpnpIpv4Any(localPort, multicastGroup);
+				multicastGroupIpv6 = "ff02::c";
+				// testRunner.testMulticastUpnpIpv6Any(localPort, multicastGroupIpv6);
+			};
+		})();
+		/************************************************************************/
+		/*************** From here don't need to modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function MulticastTestRunner(name) {
+				this._logger = new window.Logger(name);
+				this._socket = null;
+				this._socketReceived = false;
+				this._socketLoopBack = false;
+				this._tabLocalAddress = [];
+				this._tabLocalAddressIpv6 = [];
+				this._localAddress = undefined;
+				this._localAddressIpv6 = undefined;
+				this._logger.log("MulticastTestRunner");
+			}
+			MulticastTestRunner.prototype = {
+				getLocalAddress: function () {
+					const logger = this._logger;
+					try {
+						const Ci = window.Components.interfaces;
+						var ipAdapters = window.systemManager.getAdaptersByIId(Ci.nsISystemAdapterIP);
+						var hasIPv4 = false;
+						var hasIPv6 = false;
+						for (var i = 0; i < ipAdapters.length; ++i) {
+							var ip = ipAdapters.queryElementAt(i, Ci.nsISystemAdapterIP);
+							if (ip.status !== Ci.nsISystemAdapterIP.STATUS_UP) {
+								continue;
+							}
+							var addresses = ip.unicastAddresses;
+							for (var j = 0; j < addresses.length; ++j) {
+								var addr = addresses.queryElementAt(j, Ci.nsISystemIPAddress);
+								var struct = addr.address;
+								var addrStr = struct.stringAddress;
+								var ipType = "IPv4";
+								if (addrStr.indexOf("fe80") === 0) {
+									continue;
+								}
+								ipType = "IPv6";
+								if (ipType === "IPv4") {
+									logger.log("getLocalAddress: add Ipv4 '" + addrStr + "'");
+									this._tabLocalAddress[this._tabLocalAddress.length] = addrStr;
+									if (this._localAddress === undefined) {
+										this._localAddress = addrStr;
+									}
+								}
+								if (!hasIPv6 && ipType === "IPv6") {
+									logger.log("getLocalAddress: add Ipv6 '" + addrStr + "'");
+									this._tabLocalAddressIpv6[this._tabLocalAddressIpv6.length] = addrStr;
+									if (this._localAddressIpv6 === undefined) {
+										this._localAddressIpv6 = addrStr;
+									}
+								}
+							}
+						}
+						logger.log("localAddress: " + this._localAddress + ", localAddressIpv6: " + this._localAddressIpv6);
+					} catch (error) {
+						logger.errorEx(error);
+					}
+				},
+				testMulticastIpv4Local: function (localPort, multicastGroup) {
+					try {
+						this._logger.log("*************** testMulticastIpv4Local ***************");
+						const jsonConfig = {
+							localPort: localPort,
+							localAddress: this._localAddress,
+						};
+						if (typeof UDPSocket === "function") {
+							this._socket = new UDPSocket(jsonConfig);
+						} else {
+							this._socket = new GktUDPSocket(jsonConfig);
+						}
+						try {
+							this._socket.joinMulticast(multicastGroup);
+						} catch (error) {
+							this._logger.log("Join Multicast not authorized with local address: OK");
+						}
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				testMulticastIpv6Local: function (localPort, multicastGroupIpv6) {
+					try {
+						this._logger.log("*************** testMulticastIpv6Local ***************");
+						const jsonConfig = {
+							localPort: localPort,
+							localAddress: this._localAddressIpv6
+						};
+						if (typeof UDPSocket === "function") {
+							this._socket = new UDPSocket(jsonConfig);
+						} else {
+							this._socket = new GktUDPSocket(jsonConfig);
+						}
+						try {
+							socket.joinMulticast(multicastGroupIpv6);
+						} catch (error) {
+							this._logger.log("Join Multicast not authorized with local address: OK");
+						}
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				testMulticastIpv6AnyIpv4: function (localPort, multicastGroupIpv6) {
+					try {
+						this._logger.log("*************** testMulticastIpv6AnyIpv4 ***************");
+						const jsonConfig = {
+							localPort: localPort,
+						};
+						if (typeof UDPSocket === "function") {
+							this._socket = new UDPSocket(jsonConfig);
+						} else {
+							this._socket = new GktUDPSocket(jsonConfig);
+						}
+						try {
+							socket.joinMulticast(multicastGroupIpv6);
+						} catch (error) {
+							this._logger.log("Join not authorized with a different ip family: OK");
+						}
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				testMulticastIpv4Any: function (localPort, multicastGroup) {
+					try {
+						this._logger.log("*************** testMulticastIpv4Any ***************");
+						this._logger.log("On a remote host, you can send UPD message with command:");
+						this._logger.log("echo \"test\" | netcat  -v -u  -p " + localPort + " " + multicastGroup + " " + localPort);
+						const jsonConfig = {
+							localPort: localPort,
+						};
+						if (typeof UDPSocket === "function") {
+							this._socket = new UDPSocket(jsonConfig);
+						} else {
+							this._socket = new GktUDPSocket(jsonConfig);
+						}
+						try {
+							this._joinMulticast(multicastGroup, this._tabLocalAddress);
+							this._socketReceived = false;
+							this._socket.onmessage = this._onSocketMessageHandler(localPort, multicastGroup);
+							this._socket.onerror = this._onSocketErrorHandler();
+							window.setTimeout(this._onEndMulticastHandler(multicastGroup, this._tabLocalAddress), 30000);
+						} catch (error) {
+							this._logger.errorEx(error);
+						}
+					}
+					catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				testMulticastIpv6Any: function (localPort, multicastGroupIpv6) {
+					try {
+						this._logger.log("*************** testMulticastIpv6Any ***************");
+						this._logger.log("On a remote host, you can send UPD message with command:");
+						this._logger.log("echo \"test\" | netcat  -v -u  -p " + localPort + " " + multicastGroupIpv6 + " " + localPort);
+
+						const jsonConfig = {
+							localPort: localPort,
+							localAddress: "::",
+						};
+						if (typeof UDPSocket === "function") {
+							this._socket = new UDPSocket(jsonConfig);
+						} else {
+							this._socket = new GktUDPSocket(jsonConfig);
+						}
+						try {
+							this._joinMulticast(multicastGroupIpv6, this._tabLocalAddressIpv6);
+							this._socketReceived = false;
+							this._socket.onmessage = this._onSocketMessageHandler(localPort, multicastGroupIpv6);
+							this._socket.onerror = this._onSocketErrorHandler();
+							window.setTimeout(this._onEndMulticastHandler(multicastGroupIpv6, this._tabLocalAddressIpv6), 30000);
+						} catch (error) {
+							this._logger.errorEx(error);
+						}
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				testMulticastMultipleIpv4Any: function (localPort, multicastGroup1, multicastGroup2) {
+					try {
+						this._logger.log("*************** testMulticastMultipleIpv4Any ***************");
+						this._logger.log("On a remote host, you must send UPD message with command:");
+						this._logger.log("echo \"test\" | netcat  -v -u  -p " + localPort + " " + multicastGroup1 + " " + localPort);
+						this._logger.log("On another remote host, you must send UPD message with command:");
+						this._logger.log("echo \"test\" | netcat  -v -u  -p " + localPort + " " + multicastGroup2 + " " + localPort);
+
+						const jsonConfig = {
+							localPort: localPort,
+						};
+						if (typeof UDPSocket === "function") {
+							this._socket = new UDPSocket(jsonConfig);
+						} else {
+							this._socket = new GktUDPSocket(jsonConfig);
+						}
+						this._joinMulticast(multicastGroup1, this._tabLocalAddress);
+						this._joinMulticast(multicastGroup2, this._tabLocalAddress);
+						this._socketReceived = false;
+						this._socket.onmessage = this._onSocketMessageHandler(localPort);
+						this._socket.onerror = this._onSocketErrorHandler();
+						window.setTimeout(this._onEndMulticastHandler(multicastGroup1, this._tabLocalAddress), 30000);
+						window.setTimeout(this._onEndMulticastHandler(multicastGroup2, this._tabLocalAddress), 30000);
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				testMulticastLoopbackIpv4Any: function (localPort, multicastGroup) {
+					try {
+						this._logger.log("*************** testMulticastLoopbackIpv4Any ***************");
+						this._logger.log("On a remote host, you can send UPD message with command:");
+						this._logger.log("echo \"test\" | netcat  -v -u  -p " + localPort + " " + multicastGroup + " " + localPort);
+
+						if (typeof UDPSocket === "function") {
+							this._socket = new UDPSocket({
+								localPort: localPort,
+								remoteAddress: multicastGroup,
+								localAddress: this._localAddress
+							});
+						}
+						else {
+							this._socket = new GktUDPSocket({
+								localPort: localPort,
+								loopback: true
+							});
+						}
+						this._joinMulticast(multicastGroup, this._localAddress);
+						this._socketReceived = false;
+						this._socketLoopBack = false;
+						var expectedTestLoopBackMessage = "test loopback";
+						this._socket.onmessage = this._onSocketMessageHandler(localPort, multicastGroup, expectedTestLoopBackMessage);
+						this._socket.onerror = this._onSocketErrorHandler();
+						this._socket.send(expectedTestLoopBackMessage, multicastGroup, localPort);
+						window.setTimeout(this._onEndMulticastHandler(multicastGroup, this._tabLocalAddress), 30000);
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				testMulticastUpnpIpv4Any: function (localPort, multicastGroup) {
+					try {
+						this._logger.log("*************** testMulticastUpnpIpv4Any ***************");
+						const jsonConfig = {
+							localPort: localPort,
+						};
+						if (typeof UDPSocket === "function") {
+							this._socket = new UDPSocket(jsonConfig);
+						} else {
+							this._socket = new GktUDPSocket(jsonConfig);
+						}
+						this._joinMulticast(multicastGroup, this._tabLocalAddress);
+						this._socketReceived = false;
+						this._socket.onmessage = this._onSocketMessageHandler(localPort, multicastGroup);
+						this._socket.onerror = this._onSocketErrorHandler();
+						window.setTimeout(this._onEndMulticastHandler(multicastGroup, this._tabLocalAddress), 30000);
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				testMulticastUpnpIpv6Any: function (localPort, multicastGroupIpv6) {
+					try {
+						this._logger.log("*************** testMulticastUpnpIpv6Any ***************");
+						const jsonConfig = {
+							localPort: localPort,
+							localAddress: "::",
+						};
+						if (typeof UDPSocket === "function") {
+							this._socket = new UDPSocket(jsonConfig);
+						} else {
+							this._socket = new GktUDPSocket(jsonConfig);
+						}
+						this._joinMulticast(multicastGroup, this._tabLocalAddressIpv6);
+						this._socketReceived = false;
+						this._socket.onmessage = this._onSocketMessageHandler(localPort, multicastGroupIpv6);
+						this._socket.onerror = this._onSocketErrorHandler();
+						window.setTimeout(this._onEndMulticastHandler(multicastGroupIpv6, this._tabLocalAddressIpv6), 30000);
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				_onSocketMessageHandler: function (localPort, multicastGroup, expectedTestLoopBackMessage) {
+					var self = this;
+					return function (UDPMessageEvent) {
+						var data = "";
+						for (var i = 0; i < UDPMessageEvent.data.length; i++) {
+							data += String.fromCharCode(UDPMessageEvent.data[i]);
+						}
+						self._logger.log("UDPMessageEvent remote address: " + UDPMessageEvent.remoteAddress +
+							", remote port: " + UDPMessageEvent.remotePort +
+							", received data: " + data);
+						self._socketReceived = true;
+						if (
+							expectedTestLoopBackMessage &&
+							data.indexOf(expectedTestLoopBackMessage) !== -1 &&
+							UDPMessageEvent.remoteAddress === self._localAddress
+						) {
+							self._socketLoopBack = true;
+							self._logger.log("Loopback OK");
+						}
+						self._socket.send("receive '" + data + "'", multicastGroup, localPort);
+					};
+				},
+				_onSocketErrorHandler: function () {
+					var self = this;
+					return function (UDPErrorEvent) {
+						self._logger.error("UDPErrorEvent name: " + UDPErrorEvent.name + ", message: " + UDPErrorEvent.message);
+					};
+				},
+				_onEndMulticastHandler: function (multicastGroup, tabAddresses) {
+					var self = this;
+					return function () {
+						if (self._socketReceived) {
+							self._logger.log("onEndMulticast: OK");
+						} else {
+							self._logger.log("onEndMulticast: Nothing received");
+						}
+						for (var i = 0; i < tabAddresses.length; i++) {
+							this._socket.leaveMulticast(multicastGroup, tabAddresses[i]);
+						}
+					};
+				},
+				_joinMulticast: function (multicastGroup, tabAddresses) {
+					for (var i = 0; i < tabAddresses.length; i++) {
+						this._socket.joinMulticast(multicastGroup, tabAddresses[i]);
+					}
+				},
+			};
+			window.MulticastTestRunner = MulticastTestRunner;
+		})();
+
+	</script>
+</head>
+
+<body>
+	<h1>Network UDP socket multicast example</h1>
+	<div class="container"></div>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>

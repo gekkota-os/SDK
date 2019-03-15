@@ -1,0 +1,271 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title> Network UDP socket unicast example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+
+		/**
+		 * How to :
+		 * 	Uncomment one of the function call in window.onload callback.
+		 * 	You need to setup local and remote adresses and ports according to your test.
+		 *
+		 *  You can use the following commands on Ubuntu to complete the example :
+		 * 	Ubuntu: listen (receive) on UDP port 1800
+		 * 		nc -ul 1800
+		 *  Ubuntu send UDP message on a player + port
+		 * 		echo -n "hello" | nc  -u  -w 5 192.168.1.107 1800
+		 *
+		 * Here is a setup example to send a command with this example and receive it on Ubuntu :
+		 * 	Ubuntu with address ipv4 "192.168.1.33" listens on port 1800 with command :
+		 * 	 	nc -ul 1800
+		 *  Network UDP socket unicast example configuration on player with address ipv4 192.168.1.94 :
+		 * 		- Uncomment function "testSend()"
+		 *		-	Set example variables accordingly :
+		 *				var localAddress = "192.168.1.94";
+		 *				var remoteAddress = "192.168.1.33";
+		 *				var remotePort = 1800;
+		 *
+		 *	Launch example, Unbuntu output : test toto
+		 *
+		 *  The configuration of this example is the one set in this file, change it accordingly to fit your setup.
+		 *
+		 * */
+
+		/************************************************************************/
+		/*************** Here is the Test Suite you should modify ***************/
+		/************************************************************************/
+		(function () {
+			window.onload = function () {
+				var socket = null;
+				var remoteAddress = "192.168.1.33";
+				var localAddress = "192.168.1.94";
+				// Port used in the case of a send test
+				var remotePort = 1800;
+				// Port used in the case of a receive test
+				var localPort = 1810;
+
+				var testRunner = new window.UnicastTestRunner("example.network.udpSocket.unicast");
+				//testRunner.testNoDefault(localPort, remotePort);
+				//testRunner.testSameLocal(localPort, remotePort, remoteAddress);
+				//testRunner.testSendAfterClose(localPort, remotePort, remoteAddress);
+				//testRunner.testReceive(localPort, remotePort, remoteAddress, localAddress);
+				testRunner.testSend(localPort, remotePort, remoteAddress, localAddress);
+				//testRunner.testReceiveSuspend(localPort, remotePort, remoteAddress, localAddress);
+			};
+		})();
+		/************************************************************************/
+		/*************** From here don't need to modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function UnicastTestRunner(name) {
+				this._logger = new window.Logger(name);
+				this._socket = null;
+				this._socketReceived = false;
+				this._logger.log("UnicastTestRunner");
+			}
+			UnicastTestRunner.prototype = {
+				testNoDefault: function (localPort, remotePort) {
+					try {
+						this._logger.log("*************** testNoDefault ***************");
+						var socket;
+						var jsonConfig = {
+							localPort: localPort,
+							remotePort: remotePort
+						};
+						if (typeof UDPSocket === "function") {
+							socket = new UDPSocket(jsonConfig);
+						} else {
+							socket = new GktUDPSocket(jsonConfig);
+						}
+						socket.send("test send");
+					} catch (error) {
+						if (error.message.indexOf("DOMException InvalidAccessError: no default remote address defined") !== -1) {
+							this._logger.log("test succeeded");
+						} else {
+							this._logger.errorEx(error);
+						}
+					}
+				},
+				testSameLocal(localPort, remotePort, remoteAddress) {
+					try {
+						this._logger.log("*************** testSameLocal ***************");
+						var socket;
+						var jsonConfig = {
+							localPort: localPort,
+							remotePort: remotePort,
+							remoteAddress: remoteAddress
+						};
+						if (typeof UDPSocket === "function") {
+							socket = new UDPSocket(jsonConfig);
+						} else {
+							socket = new GktUDPSocket(jsonConfig);
+						}
+						socket.send("test send");
+						this._logger.log("test succeeded");
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				testSendAfterClose(localPort, remotePort, remoteAddress) {
+					try {
+						this._logger.log("*************** testSendAfterClose ***************");
+						var socket;
+						var jsonConfig = {
+							localPort: localPort,
+							remotePort: remotePort,
+							remoteAddress: remoteAddress
+						};
+						if (typeof UDPSocket === "function") {
+							socket = new UDPSocket(jsonConfig);
+						} else {
+							socket = new GktUDPSocket(jsonConfig);
+						}
+						socket.close();
+						socket.send("test send");
+					} catch (error) {
+						if (error.message.indexOf("DOMException InvalidStateError : socket not open") !== -1) {
+							this._logger.log("test succeeded");
+						} else {
+							this._logger.errorEx(error);
+						}
+					}
+				},
+				testSend(localPort, remotePort, remoteAddress, localAddress) {
+					try {
+						this._logger.log("*************** testSend ***************");
+						this._logger.log("On the remote host, you can show the sended UPD message with command:");
+						this._logger.log("nc -ul " + remotePort);
+						var socket;
+						var jsonConfig = {
+							localPort: localPort,
+							localAddress: localAddress,
+							remotePort: remotePort,
+							remoteAddress: remoteAddress
+						};
+						if (typeof UDPSocket === "function") {
+							socket = new UDPSocket(jsonConfig);
+						} else {
+							socket = new GktUDPSocket(jsonConfig);
+						}
+						socket.send("test send");
+						var tab = [65, 51, 52, 53, 0xA, 0];
+						socket.send(tab, "192.168.0.4", 0);
+						var uint8 = this._createUint8Array();
+						socket.send(uint8);
+						socket.close();
+						this._logger.log("test succeeded");
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				testReceive(localPort, remotePort, remoteAddress, localAddress) {
+					try {
+						this._logger.log("*************** testReceive ***************");
+						this._logger.log("On the remote host, you can send UPD message with command:");
+						this._logger.log("echo -n 'myUdpMessage' | nc  -u  -w 5 192.168.1.29" + remotePort);
+						var socket;
+						var jsonConfig = {
+							localPort: localPort,
+							localAddress: localAddress,
+							remotePort: remotePort,
+							remoteAddress: remoteAddress
+						};
+						if (typeof UDPSocket === "function") {
+							socket = new UDPSocket(jsonConfig);
+						} else {
+							socket = new GktUDPSocket(jsonConfig);
+						}
+						this._socket = socket;
+						this._socketReceived = false;
+						this._socket.onmessage = this._onSocketMessageHandler();
+						this._socket.onerror = this._onSocketErrorHandler();
+						window.setTimeout(this._onEndUnicastHandler(), 30000);
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				testReceiveSuspend: function (localPort, remotePort, remoteAddress, localAddress) {
+					try {
+						this._logger.log("*************** testReceiveSuspend ***************");
+						this._logger.log("On the remote host, you can send UPD message with command:");
+						this._logger.log("echo -n 'myUdpMessage' | nc  -u  -w 5 192.168.1.29" + remotePort);
+						var socket;
+						var jsonConfig = {
+							localPort: localPort,
+							localAddress: localAddress,
+							remotePort: remotePort,
+							remoteAddress: remoteAddress
+						};
+						if (typeof UDPSocket === "function") {
+							socket = new UDPSocket(jsonConfig);
+						} else {
+							socket = new GktUDPSocket(jsonConfig);
+						}
+						this._socket = socket;
+						this._socketReceived = false;
+						this._socket.onmessage = this._onSocketMessageHandler();
+						this._socket.onerror = this._onSocketErrorHandler();
+						socket.suspend();
+						var endHandler = this._onEndUnicastHandler();
+						function resume() {
+							socket.resume();
+							window.setTimeout(endHandler(), 1000);
+						}
+						window.setTimeout(function () { resume() }, 20000);
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				_createUint8Array() {
+					var data = [];
+					var strCommand = "new Uint8Array\n";
+					for (i = 0; i < strCommand.length; i++) {
+						data[i] = strCommand.charCodeAt(i);
+					}
+					return new Uint8Array(data);
+				},
+				_onSocketMessageHandler: function () {
+					var self = this;
+					return function (UDPMessageEvent) {
+						var data = "";
+						for (var i = 0; i < UDPMessageEvent.data.length; i++) {
+							data += String.fromCharCode(UDPMessageEvent.data[i]);
+						}
+						socket.send("receive '" + data + "'", UDPMessageEvent.remoteAddress, UDPMessageEvent.remotePort);
+					};
+				},
+				_onSocketErrorHandler: function () {
+					var self = this;
+					return function (UDPErrorEvent) {
+						self._logger.error("UDPErrorEvent name: " + UDPErrorEvent.name + ", message: " + UDPErrorEvent.message);
+					};
+				},
+				_onEndUnicastHandler: function () {
+					var self = this;
+					return function () {
+						if (self._socketReceived) {
+							self._logger.log("onEndUnicast: OK");
+						} else {
+							self._logger.log("onEndUnicast: Nothing received");
+						}
+					};
+				},
+			};
+
+			window.UnicastTestRunner = UnicastTestRunner;
+		})();
+
+	</script>
+</head>
+
+<body>
+	<h1>Network UDP socket unicast example</h1>
+	<div class="container"></div>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>

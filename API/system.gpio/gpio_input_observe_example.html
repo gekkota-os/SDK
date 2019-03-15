@@ -1,0 +1,73 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>System GPIO observe example</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="logger.js"></script>
+  <script type="text/javascript">
+    /************************************************************************/
+    /*************** Here is the Test Suite you should modify ***************/
+    /************************************************************************/
+    (function () {
+      window.onload = function () {
+        var testRunner = new window.GpioReadTestRunner("example.system.gpio");
+        testRunner.testObserveGPIO();
+      };
+    })();
+    /************************************************************************/
+    /*************** From here don't need to modify anything ****************/
+    /************************************************************************/
+
+    (function () {
+      function GpioReadTestRunner(name) {
+        this._logger = new window.Logger(name);
+        this._logger.log("GpioReadTestRunner");
+      }
+
+      GpioReadTestRunner.prototype = {
+        testObserveGPIO() {
+          try {
+            this._logger.log("*************** testObserveGPIO ***************");
+            const ifaceName = "gpio-input";
+            const iface = Components.interfaces.nsISystemAPBGpioInput;
+            const profiles = systemManager.getApplicationProfileBindingsByProfileUri(ifaceName);
+            const observer = new window.GpioObserver(this._logger);
+            if (profiles !== null) {
+              for (var i = 0; i < profiles.length; ++i) {
+                const profile = profiles.queryElementAt(i, iface);
+                profile.addObserver(observer);
+              }
+            }
+            this._logger.log("testObserveGPIO succeeded, send a signal with your input source and the observer will react.");
+          } catch (error) {
+            this._logger.errorEx(error);
+          }
+        },
+      };
+      window.GpioReadTestRunner = GpioReadTestRunner;
+    })();
+
+    (function () {
+      function GpioObserver(logger) {
+        this._logger = logger;
+        logger.log("GpioObserver");
+      }
+      GpioObserver.prototype = {
+        onChange(aAPBGpioInput, aOldValue, aNewValue) {
+          this._logger.log("GpioObserver:onChange aAPBGpioInput aOldValue " + aOldValue + " aNewValue " + aNewValue);
+        }
+      };
+      window.GpioObserver = GpioObserver;
+    })();
+
+  </script>
+</head>
+
+<body>
+  <h1>System GPIO observe example</h1>
+  <div class="container"></div>
+  <textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>

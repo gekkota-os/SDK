@@ -1,0 +1,181 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>System general settings example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+		(function () {
+			/************************************************************************/
+			/*************** Here is the Test Suite you should modify ***************/
+			/************************************************************************/
+			window.onload = function () {
+				var testRunner = new window.GeneralSettingsTestRunner("example.system.generalSettings");
+				testRunner.logMac();
+				testRunner.logPsn();
+				testRunner.logUuid();
+				testRunner.logVersion();
+				testRunner.logPlatform();
+				testRunner.logHdcpInfo();
+				testRunner.logField1();
+				testRunner.logField2();
+				testRunner.logField3();
+				testRunner.logField4();
+				testRunner.logField5();
+			};
+		})();
+		/************************************************************************/
+		/*************** From here don't need to modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function GeneralSettingsTestRunner(name) {
+				try {
+					this._logger = new window.Logger(name);
+					this._logger.log("GeneralSettingsTestRunner");
+				} catch (e) {
+					this._logger.errorEx(e);
+				}
+			}
+			GeneralSettingsTestRunner.prototype = {
+				logMac: function () {
+					try {
+						if ("systemGeneralSettings" in window) {
+							this._logger.log("logMac : " + systemGeneralSettings.mac.stringAddress);
+						} else {
+							this._logger.log("No systemGeneralSettings in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				logPsn: function () {
+					try {
+						if ("systemGeneralSettings" in window) {
+							this._logger.log("logPsn : " + systemGeneralSettings.psn);
+						} else {
+							this._logger.log("No systemGeneralSettings in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				logUuid: function () {
+					try {
+						if ("systemGeneralSettings" in window) {
+							this._logger.log("logUuid : " + systemGeneralSettings.uuid);
+						} else {
+							this._logger.log("No systemGeneralSettings in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				logVersion: function () {
+					try {
+						if ("systemGeneralSettings" in window) {
+							this._logger.log("logVersion : " + systemGeneralSettings.version);
+						} else {
+							this._logger.log("No systemGeneralSettings in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				logPlatform: function () {
+					try {
+						if ("systemGeneralSettings" in window) {
+							this._logger.log("logPlatform : " + systemGeneralSettings.platform);
+						} else {
+							this._logger.log("No systemGeneralSettings in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				logHdcpInfo: function () {
+					try {
+						if ("systemGeneralSettings" in window) {
+							var hdcpInfo = systemGeneralSettings.hdcp;
+							this._logger.log("logHdcpInfo supported : " + hdcpInfo.supported);
+							this._logger.log("Version : " + hdcpInfo.version);
+							this._logger.log("KeyStatus : " + hdcpInfo.keyStatus);
+						} else {
+							this._logger.log("No systemGeneralSettings in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				logField1: function () {
+					try {
+						if ("systemGeneralSettings" in window) {
+							this._logger.log("logPlatform : " + systemGeneralSettings.field1);
+						} else {
+							this._logger.log("No systemGeneralSettings in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				logField2: function () {
+					try {
+						if ("systemGeneralSettings" in window) {
+							this._logger.log("logField2 value : " + systemGeneralSettings.field2);
+						} else {
+							this._logger.log("No systemGeneralSettings in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				logField3: function () {
+					try {
+						if ("systemGeneralSettings" in window) {
+							this._logger.log("logField3 value : " + systemGeneralSettings.field3);
+						} else {
+							this._logger.log("No systemGeneralSettings in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				logField4: function () {
+					try {
+						if ("systemGeneralSettings" in window) {
+							this._logger.log("logField4 value : " + systemGeneralSettings.field4);
+						} else {
+							this._logger.log("No systemGeneralSettings in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				logField5: function () {
+					try {
+						if ("systemGeneralSettings" in window) {
+							this._logger.log("logField5 value : " + systemGeneralSettings.field5);
+						} else {
+							this._logger.log("No systemGeneralSettings in window");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				}
+			};
+
+			window.GeneralSettingsTestRunner = GeneralSettingsTestRunner;
+		})();
+
+	</script>
+</head>
+
+<body>
+	<h1>System general settings example</h1>
+	<div class="container"></div>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+
+</html>

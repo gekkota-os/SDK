@@ -1,0 +1,209 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title> Subtitle example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+
+		/************************************************************************/
+		/*************** Here is the Test Suite you should modify ***************/
+		/************************************************************************/
+		(function () {
+			window.onload = function () {
+
+				/**
+				* Supported subtitles tracks are srt and vtt tracks.
+				* Put your video and track names in the fields below.
+				* Only activate one of the testRunner test at a time.
+				**/
+
+				media = {
+					video: "video.mov",
+					track: "track.srt" // track.vtt
+				}
+				var testRunner = new window.SubtitleTestRunner("example.subtitle", media);
+
+				/**
+				 * In hidden mode, the text track is active but the cues aren't being displayed by gekkota.
+				 * This tests app retrieves the cues with the oncuechange event and displays their text content
+				 * in a div under the video.
+				 **/
+				//testRunner.testShowingMode();
+
+				/**
+				 * In hidden mode, the text track is active but the cues aren't being displayed by gekkota.
+				 * This tests app retrieves the cues with the oncuechange event and displays their text content
+				 * in a div under the video.
+				 **/
+				testRunner.testHiddenMode();
+			};
+		})();
+		/************************************************************************/
+		/*************** From here you should not modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function SubtitleTestRunner(aName, aMedia) {
+				try {
+					this._logger = new window.Logger(aName);
+					this._logger.log("SubtitleTestRunner");
+					this._media = aMedia;
+					this._textTrackMode = "";
+					this._textTrackInit = false;
+					this._videoElt = document.getElementById("VideoContainer");
+					this._subtitleOverlay = document.getElementById("subtitleOverlay");
+					this._track;
+				} catch (e) {
+					this._logger.errorEx(e);
+				}
+			}
+			SubtitleTestRunner.prototype = {
+				testHiddenMode: function () {
+					try {
+						this._logger.log("testHiddenMode");
+						this._textTrackMode = "hidden";
+						this._init();
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				testShowingMode: function () {
+					try {
+						this._logger.log("testShowingMode");
+						this._textTrackMode = "showing";
+						this._init();
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				_init: function () {
+					try {
+						this._videoElt.addEventListener("ended", this._onEnded.bind(this));
+						this._videoElt.addEventListener("error", this._onError.bind(this));
+						this._videoElt.addEventListener("loadedmetadata", this._onLoadedMetadata.bind(this));
+						this._videoElt.addEventListener("canplay", this._onCanPlay.bind(this));
+						this._logger.log("Set video src attribute " + this._media.video);
+						this._videoElt.setAttribute("src", this._media.video);
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				_onCueChange: function () {
+					try {
+						this._logger.log("_onCueChange");
+						if (this._subtitleOverlay.style.display != "none") {
+							var myCues = this._track.activeCues;
+							if (myCues.length == 0) {
+								this._subtitleOverlay.innerHTML = "";
+							}
+							if (myCues.length > 0) {
+								this._subtitleOverlay.innerHTML = myCues[0].text.replace(/\n/gi, "<br>");
+							}
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				_onCanPlay: function () {
+					try {
+						this._logger.log("onCanPlay");
+						if (!this._textTrackInit && this._media.track) {
+							this._logger.log("Has subtitles : " + this._media.track);
+							this._track = this._videoElt.textTracks[0];
+							if (this._track) {
+								this._track.mode = this._textTrackMode;
+								if (this._textTrackMode === "hidden") {
+									this._logger.log("Add cue change event for hidden track display");
+									this._track.addEventListener("cuechange", this._onCueChange.bind(this));
+								} else {
+									this._logger.log("Do not add cue change event listener : track mode is not hidden");
+								}
+							}
+							this._textTrackInit = true;
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				_onLoadedMetadata: function () {
+					try {
+						this._logger.log("loadedmetadata event");
+						var track;
+						if (this._media.track) {
+							this._logger.log("has subtitles creating track");
+							track = document.createElement("track");
+							track.kind = "subtitles";
+							track.label = "Undefined";
+							track.srclang = "und";
+							track.src = this._media.track;
+							this._videoElt.appendChild(track);
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				_onEnded: function () {
+					try {
+						this._logger.log("Video element end event event");
+						this._videoElt.currentTime = 0;
+						this._videoElt.play();
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				_onError: function (aEvent) {
+					try {
+						var errMsg;
+						if (aEvent) {
+							switch (aEvent.target.error.code) {
+								case aEvent.target.error.MEDIA_ERR_ABORTED:
+									errMsg = 'You aborted the video playback.';
+									break;
+								case aEvent.target.error.MEDIA_ERR_NETWORK:
+									errMsg = 'A network error caused the video download to fail part-way.';
+									break;
+								case aEvent.target.error.MEDIA_ERR_DECODE:
+									errMsg = 'The video playback was aborted due to a corruption problem or because the video used features your browser did not support.';
+									break;
+								case aEvent.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+									errMsg = 'The video could not be loaded, either because the server or network failed, the format is not supported or the name is wrong.';
+									break;
+								default:
+									errMsg = 'An unknown error occurred.';
+									break;
+							}
+						}
+						if (errMsg && this._videoElt.src) {
+							this._logger.error("Video error event : " + errMsg + " src : " + this._videoElt.src);
+						} else {
+							this._logger.error("Video error event");
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				}
+			};
+
+			window.SubtitleTestRunner = SubtitleTestRunner;
+		})();
+
+	</script>
+</head>
+
+<body>
+	<h1>Subtitle example</h1>
+	<div class="container">
+		<div style="margin-right: auto; margin-left: auto;text-align: center; position: relative;">
+			<video id="VideoContainer" autoplay="" width="75%">
+			</video>
+			<div id="wrapper">
+				<div id="subtitleOverlay"></div>
+			</div>
+		</div>
+	</div>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>

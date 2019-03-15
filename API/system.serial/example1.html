@@ -1,0 +1,212 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>System serial example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+		/************************************************************************/
+		/*************** Here is the Test Suite you should modify ***************/
+		/************************************************************************/
+		(function () {
+			var testRunner;
+			window.onload = function () {
+				// Serial interface of the device
+				const SERIAL_SYS_PATH = "/dev/ttyUSB0";
+				// Test command to send to your device
+				const SERIAL_CMD = "V\n";
+				testRunner = new SystemSerialTestRunner("example.system.serial")
+				testRunner.attach(SERIAL_SYS_PATH);
+				testRunner.testSendCmd(SERIAL_CMD);
+			};
+			window.onunload = function () {
+				if (testRunner) {
+					testRunner.detach();
+				}
+			};
+		})();
+		/************************************************************************/
+		/*************** From here don't need to modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function SystemSerialTestRunner(name) {
+				this._logger = new Logger(name);
+				this._serialAdapter = null;
+				this._logger.log("SystemSerialTestRunner");
+			}
+
+			SystemSerialTestRunner.prototype = {
+				attach(serialSystemPath) {
+					try {
+						this._logger.log("*************** attach ***************");
+						this._serialAdapter = new SerialAdapterManager(serialSystemPath, this._logger);
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				testSendCmd(command) {
+					try {
+						this._logger.log("*************** testSendCmd ***************");
+						this._serialAdapter.sendCmd(command);
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				detach() {
+					try {
+						this._logger.log("*************** detach ***************");
+						if (this._serialAdapter) {
+							this._serialAdapter.deinitSerial();
+						}
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+			};
+			window.SystemSerialTestRunner = SystemSerialTestRunner;
+		})();
+
+		(function () {
+			function SerialAdapterManager(aSysPath, logger) {
+				try {
+					this._logger = logger;
+					this._serial = null;
+					this._inited = false;
+					this._inputStream = null;
+					this._outputStream = null;
+					this._listener;
+					this._logger.log("SerialAdapterManager ");
+					this._reinit(aSysPath)
+				} catch (error) {
+					this._logger.errorEx(error);
+				}
+			}
+			SerialAdapterManager.prototype = {
+				sendCmd: function (aCmd) {
+					if (this._inited) {
+						var count = 0;
+						this._logger.log("sendCmd command " + aCmd);
+						this._outputStream.write(aCmd, aCmd.length, count);
+					} else {
+						throw new Error("Protocol not inited");
+					}
+				},
+				deinitSerial: function () {
+					this._logger.log("deinitSerial");
+					this._outputStream = null;
+					this._inputStream = null;
+					if (this._listener) {
+						this._logger.log("Removing serial listener");
+						this._serial.removeListener(this._listener);
+						this._listener = null;
+					}
+					if (this._serial != null) {
+						this._serial.close();
+						this._serial = null;
+					}
+					this._inited = false;
+				},
+				_getSerial: function (aSysPath) {
+					const Ci = Components.interfaces;
+					const nsISystemAdapterSerial = Ci.nsISystemAdapterSerial;
+					var system = systemManager;
+					var serial = null;
+					var serials = system.getAdaptersByIId(nsISystemAdapterSerial);
+					this._logger.log("serials.length = " + serials.length);
+					for (var i = 0; i < serials.length; i++) {
+						serial = serials.queryElementAt(i, nsISystemAdapterSerial);
+						this._logger.log("serial.sysPath = " + serial.sysPath);
+						if (aSysPath === "*") {
+							break;
+						}
+						if (serial.sysPath === aSysPath) {
+							break;
+						}
+					}
+					return serial;
+				},
+				_initSerial: function (aSysPath) {
+					this._logger.log("_initSerial");
+					if (!this._serial) {
+						this._serial = this._getSerial(aSysPath);
+					}
+					const Ci = Components.interfaces;
+					const nsISystemAdapterSerial = Ci.nsISystemAdapterSerial;
+					this._serial.recieveMode = nsISystemAdapterSerial.RECIEVE_MODE_ASYNC;
+					this._serial.setConfig(nsISystemAdapterSerial.DIRECTION_IN | nsISystemAdapterSerial.DIRECTION_OUT,
+						nsISystemAdapterSerial.BAUD115200, 8,
+						nsISystemAdapterSerial.PARITY_NONE,
+						nsISystemAdapterSerial.STOPBIT_1,
+						nsISystemAdapterSerial.FLOWCONTROL_HARDWARE);
+					if (!this._listener) {
+						this._logger.log("Creating serial listener");
+						this._listener = new SerialListener(this._logger);
+					}
+					this._serial.addListener(this._listener);
+					this._serial.open();
+					this._outputStream = this._serial.outputStream;
+					this._inputStream = this._serial.inputStream;
+					this._inited = true;
+				},
+				_reinit: function (aSysPath) {
+					this._logger.log("_reinit serial");
+					this.deinitSerial();
+					this._initSerial(aSysPath);
+					this._logger.log("_reinit OK\n");
+				},
+			}
+			window.SerialAdapterManager = SerialAdapterManager;
+		})();
+
+		(function () {
+			function SerialListener(logger) {
+				this._logger = logger;
+				this._serialResponse = "";
+				this._logger.log("SerialListener");
+			}
+			SerialListener.prototype = {
+				onCTSChanged: function (newValue) {
+					this._logger.log("onCTSChanged value " + newValue);
+				},
+				onDSRChanged: function (newValue) {
+					this._logger.log("onDSRChanged value " + newValue);
+				},
+				onRINGChanged: function (newValue) {
+					this._logger.log("onRINGChanged value " + newValue);
+				},
+				onDCDChanged: function (newValue) {
+					this._logger.log("onDCDChanged value " + newValue);
+				},
+				onDataAvailable: function (inputStream) {
+					try {
+						this._logger.log("onDataAvailable");
+						var bytesAvailable = 0;
+						bytesAvailable = inputStream.available(bytesAvailable);
+						while (bytesAvailable > 0) {
+							this._serialResponse += String.fromCharCode(inputStream.read8());
+							--bytesAvailable;
+							if (this._serialResponse.search(("\n")) != -1) {
+								this._logger.log("Found carriage return response is : " + this._serialResponse);
+								this._serialResponse = "";
+							}
+						}
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				}
+			};
+			window.SerialListener = SerialListener;
+		})();
+
+	</script>
+</head>
+
+<body>
+	<h1>System serial example</h1>
+	<div class="container"></div>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>

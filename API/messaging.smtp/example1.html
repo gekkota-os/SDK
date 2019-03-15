@@ -1,0 +1,246 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title> Messaging SMTP example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+
+		/************************************************************************/
+		/*************** Here is the Test Suite you should modify ***************/
+		/************************************************************************/
+		(function () {
+			window.onload = function () {
+				// Your account configuration
+				var smtpAccount = {
+					serverUri: "smtps://ssl0.ovh.net:465",
+					username: "yourUsername",
+					password: "yourPassword",
+					authorizeUncrytptedAuth: false,
+					sender: "sender.email@any.fr"
+				};
+
+				// Recipients list
+				var recipients = {
+					TO: {
+						michel: "michel.bonjour@test.fr",
+						alois: "alois.kyrou@hotmail.fr"
+					},
+					CC: {
+						thomas: "thomas.toto@test.fr"
+					},
+					BCC: {
+						andrew: "andy@yahoo.fr"
+					}
+				};
+				// Core texte of the Email
+				var emailSubject = "[test nsIEmailMessage] Any subject for test Email";
+				var plainTextBodyContent =
+					"Hello,\r\nA Multipurpose Internet Mail Extensions (MIME) type is a standard that indicates the nature and format of a document.\r\n\r\nBye!\r\n";
+
+				var emailBodyType = window.EmailBodyType ? EmailBodyType.PLAIN_TEXT : 0; // Could also be EmailBodyType.HTML as type with HTML content as texte.
+				// Attachements to the Email
+				var attachementPath = "file:///C:/Users/test/Downloads/picture.jpg";
+				var inlineAttachement = {
+					inlineId: "cid:test@01",
+					path: "file:///C:/Users/test/Downloads/picture.jpg"
+				};
+
+				var testRunner = new window.SmtpMessagingTestRunner("example.messaging.smtp", smtpAccount);
+				testRunner.createEmailRecepients(recipients);
+				testRunner.createEmailAttachment(attachementPath);
+				testRunner.createEmailBody(plainTextBodyContent, emailBodyType, inlineAttachement);
+				testRunner.createEmailMessage(emailSubject); //Uses created attachements & body
+				testRunner.sendEmailManager(); // Sends the previously created Email
+				testRunner.showSmtpAccounts();
+			};
+		})();
+		/************************************************************************/
+		/*************** From here you should not modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function SmtpMessagingTestRunner(aName, aSmtpAccount) {
+				try {
+					this._logger = new window.Logger(aName);
+					this._smtpAccount = new SmtpAccount(aSmtpAccount.serverUri, aSmtpAccount.username, aSmtpAccount.password, aSmtpAccount.authorizeUncrytptedAuth, aSmtpAccount.sender);
+					this._receipients;
+					this._attachement = [];
+					this._emailMessage;
+					this._logger.log("SmtpMessagingTestRunner");
+				} catch (e) {
+					this._logger.errorEx(e);
+				}
+			}
+			SmtpMessagingTestRunner.prototype = {
+				createEmailRecepients: function (aRecipients) {
+					try {
+						this._logger.log("createEmailRecepients");
+						this._receipients = new EmailRecipientsList();
+
+						for (var recipientType in aRecipients) {
+							if (recipientType === "TO") {
+								var recipientsTo = aRecipients[recipientType];
+								for (var recipientName in recipientsTo) {
+									var recipientAddr = recipientsTo[recipientName];
+									this._logger.log("Add recipient to TO list " + recipientAddr);
+									this._receipients.addRecipient(EmailRecipientsType.TO, recipientAddr);
+								}
+							}
+							else if (recipientType === "CC") {
+								var recipientsCc = aRecipients[recipientType];
+								for (var recipientName in recipientsCc) {
+									var recipientAddr = recipientsCc[recipientName];
+									this._logger.log("Add recipient to CC list " + recipientAddr);
+									this._receipients.addRecipient(EmailRecipientsType.CC, recipientAddr);
+								}
+							}
+							else if (recipientType === "BCC") {
+								var recipientsBcc = aRecipients[recipientType];
+								for (var recipientName in recipientsBcc) {
+									var recipientAddr = recipientsBcc[recipientName];
+									this._logger.log("Add recipient to BCC list " + recipientAddr);
+									this._receipients.addRecipient(EmailRecipientsType.BCC, recipientAddr);
+								}
+							}
+						}
+
+						var recipients_to = this._receipients.getRecipients(EmailRecipientsType.TO);
+						var recipients_cc = this._receipients.getRecipients(EmailRecipientsType.CC);
+						var recipients_bcc = this._receipients.getRecipients(EmailRecipientsType.BCC);
+
+						this._logger.log("TO = " + recipients_to);
+						this._logger.log("CC = " + recipients_cc);
+						this._logger.log("BCC = " + recipients_bcc);
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				createEmailAttachment: function (aPath) {
+					try {
+						this._logger.log("createEmailAttachment");
+						var att = new EmailAttachment(aPath);
+						var fp = att.filePath;
+						var mime = att.mimeType;
+						this._attachement.push(att);
+						this._logger.log("fp = " + fp);
+						this._logger.log("mime = " + mime);
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				createEmailBody: function (aTexte, aType, aInlineAttachement) {
+					try {
+						this._logger.log("createEmailBody");
+						this._body = new EmailBody(aTexte, aType);
+						if (aInlineAttachement) {
+							this._body.addInlineAttachment(aInlineAttachement.inlineId, aInlineAttachement.path);
+						}
+						this._browseObject(this._body);
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				createEmailMessage: function (aSubject) {
+					try {
+						this._logger.log("createEmailMessage");
+						var priority = EmailPriorityType.HIGH;
+						var hasMDN = false;
+						this._subject = aSubject;
+						if (!this._attachement) {
+							this._logger.debug("Attachement not init.");
+						}
+						if (!this._smtpAccount || !this._body) {
+							this._logger.error("Account or body not init.");
+							throw "exit on error"
+						}
+						this._emailMessage = new EmailMessage(this._subject, priority, this._smtpAccount, this._body, this._attachement, hasMDN);
+						var att = this._emailMessage.getAttachments();
+						this._logger.log("Number of attchements in the message : " + att.length);
+						for (var i in att) {
+							this._browseObject(att[i]);
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				sendEmailManager: function () {
+					try {
+						this._logger.log("sendEmailManager");
+						var emailRequest = new EmailRequest();
+						var mySuccessListener = new SuccessListener(this._subject, this._logger);
+						var myProgressListener = new ProgressListener(this._subject, this._logger);
+						var myErrorListener = new ProgressListener(this._subject, this._logger);
+						this._logger.log("Start sending email with subject: " + this._subject);
+						emailRequest = navigator.messaging.email.send(this._receipients, this._emailMessage);
+						emailRequest.addEmailEventListener(EmailEventType.SUCCESS, mySuccessListener);
+						emailRequest.addEmailEventListener(EmailEventType.PROGRESS, myProgressListener);
+						emailRequest.addEmailEventListener(EmailEventType.ERROR, myErrorListener);
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				showSmtpAccounts: function () {
+					try {
+						this._logger.log("showSmtpAccounts");
+						this._logger.log("email.accounts.length = " + navigator.messaging.email.accounts.length);
+						for (var i in navigator.messaging.email.accounts) {
+							this._browseObject(navigator.messaging.email.accounts[i]);
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				_browseObject(aObject) {
+					var strObj = String(aObject);
+					this._logger.log("aObject (" + strObj + ") =>");
+					for (var i in aObject) {
+						this._logger.log("aObject " + i + " = " + aObject[i]);
+					}
+				}
+			};
+
+			function SuccessListener(aSubject, aLogger) {
+				this._subject = aSubject;
+				this._logger = aLogger;
+			}
+			SuccessListener.prototype = {
+				handleEvent: function (aIntVal) {
+					this._logger.log("The email with subject: " + this._subject + " is successfully sent !");
+				},
+			}
+
+			function ProgressListener(aSubject, aLogger) {
+				this._subject = aSubject;
+				this._logger = aLogger;
+			}
+			ProgressListener.prototype = {
+				handleEvent: function (aIntVal) {
+					this._logger.log("Email subject: " + this._subject + "  => sending progress =  " + aIntVal + " %");
+				},
+			}
+
+			function ErrorListener(aSubject, aLogger) {
+				this._subject = aSubject;
+				this._logger = aLogger;
+			}
+			ErrorListener.prototype = {
+				handleEvent: function (aIntVal) {
+					this._logger.log("Email subject: " + this._subject + "  => sending progress =  " + aIntVal + " %");
+				},
+			}
+
+			window.SmtpMessagingTestRunner = SmtpMessagingTestRunner;
+		})();
+
+	</script>
+</head>
+
+<body>
+	<h1>Messaging SMTP example</h1>
+	<div class="container"></div>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>

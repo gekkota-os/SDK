@@ -1,0 +1,184 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>LDAP example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+
+		/************************************************************************/
+		/*************** Here is the Test Suite you should modify ***************/
+		/************************************************************************/
+		(function () {
+			window.onload = function () {
+				var configLdap = {
+					url: "ldap://192.168.1.35",
+					baseDN: "cn=Users,dc=exchange2007,dc=innes,dc=pro",
+					searchUserDN: "cn=Administrator,cn=Users,dc=exchange2007,dc=innes,dc=pro",
+					searchIsAuth: true,
+					passwordEncrypted: false,
+					password: "123456",
+					passwordEnc: "",
+					properties: ["mail", "sAMAccountName"],
+					limitSearchCount: 20,
+				};
+				var searchFilter = "(&(objectClass=user)(mail=*))";
+				var limitSearchCount = 20;
+
+				var testRunner = new window.LdapTestRunner("example.ldap", configLdap);
+				testRunner.createLdapContext();
+
+				testRunner.checkConfig();
+				testRunner.search(searchFilter, limitSearchCount);
+
+				testRunner.asyncCheckConfig();
+				testRunner.asyncSearch(searchFilter, limitSearchCount);
+			};
+		})();
+		/************************************************************************/
+		/*************** From here you should not modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function LdapTestRunner(name, configLdap) {
+				this._logger = new window.Logger(name);
+				this._url = configLdap.url || "";
+				this._baseDN = configLdap.baseDN || "";
+				this._searchIsAuth = configLdap.searchIsAuth === true;
+				this._searchUserDN = configLdap.searchUserDN || "";
+				this._password = configLdap.password || "";
+				this._passwordEncrypted = configLdap.passwordEncrypted === true;
+				this._properties = configLdap.properties || [];
+				this._context = null;
+				this._logger.log("LdapTestRunner");
+			}
+			LdapTestRunner.prototype = {
+				createLdapContext: function () {
+					try {
+						this._context = new window.LdapContext(
+							this._url,
+							this._baseDN,
+							this._searchIsAuth,
+							this._searchUserDN,
+							this._password,
+							this._passwordEncrypted
+						);
+						this._logger.log("LDAP context successfully created");
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				checkConfig: function () {
+					try {
+						var result = window.ldapService.checkConfig(
+							this._url,
+							this._baseDN,
+							true,
+							this._searchUserDN,
+							this._password,
+							false);
+						this._logger.log("checkConfig succeeded, result: " + result);
+					} catch (error) {
+						this._logger.errorEx(error)
+					}
+				},
+				asyncCheckConfig: function () {
+					try {
+						var self = this;
+						var onStateChanged = function (result) {
+							self._logger("onStateChanged, result : " + result);
+						};
+						var result = window.ldapService.asyncCheckConfig(
+							this._url,
+							this._baseDN,
+							true,
+							this._searchUserDN,
+							this._password,
+							false,
+							onStateChanged);
+						this._logger.log("asyncCheckConfig succeeded, result: " + result);
+					} catch (error) {
+						this._logger.errorEx(error)
+					}
+				},
+				search: function (searchFilter, limitSearchCount) {
+					try {
+						var totalCount = {};
+						var resCount = {};
+						var aSearchResults = window.ldapService.search(
+							this._context,
+							"",
+							searchFilter,
+							this._properties.length,
+							this._properties,
+							0,
+							limitSearchCount,
+							totalCount,
+							resCount
+						);
+						this._logger.log("Search results start:");
+						var self = this;
+						aSearchResults.forEach(function (oSearchResult) {
+							self._logSearchResult(oSearchResult);
+						});
+						this._logger.log("Search results end");
+					} catch (error) {
+						this._logger.error("An error here probably comes from bad information in the LDAP config. For more information activate the logger 'ldap' as explained in the logger documentation.");
+						this._logger.errorEx(error);
+					}
+				},
+				asyncSearch: function (searchFilter, limitSearchCount) {
+					try {
+						var onSearchResults = this._logAsyncSearchResults();
+						window.ldapService.asyncSearch(
+							null,
+							"",
+							searchFilter,
+							this._properties.length,
+							this._properties,
+							0,
+							limitSearchCount,
+							onSearchResults
+						);
+						this._logger.log("Search results end");
+					} catch (error) {
+						this._logger.error("An error here probably comes from bad information in the LDAP config. For more information activate the logger 'ldap' as explained in the logger documentation.");
+						this._logger.errorEx(error);
+					}
+				},
+				_logAsyncSearchResults: function () {
+					var self = this;
+					return function (status, resCount, aSearchResults) {
+						self._logger.log("_logAsyncSearchResults: status = " + status);
+						for (var i = 0; i < resCount; i++) {
+							self._logSearchResult(aSearchResults[i]);
+						}
+					};
+				},
+				_logSearchResult: function (oSearchResult) {
+					try {
+						var j, sPropertyKey;
+						for (var j = 0; j < this._properties.length; j++) {
+							sPropertyKey = this._properties[j];
+							this._logger.log("key: " + sPropertyKey + ", value: " + oSearchResult[sPropertyKey]);
+						}
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+			};
+
+			window.LdapTestRunner = LdapTestRunner;
+		})();
+
+	</script>
+</head>
+
+<body>
+	<h1>LDAP example</h1>
+	<div class="container"></div>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>

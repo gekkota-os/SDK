@@ -1,0 +1,288 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>System NFC example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+		(function () {
+      /**
+       * STANDALONE Example as based on user interaction:
+       *  - Click on the start Polling
+       *  - Badge on the player => Check if the badge target has been found.
+			 *  - You may select the Nfc types to look for eficiency
+       */
+			window.onload = function () {
+				var testRunner = new window.NfcAdapterTestRunner("example.system.nfc");
+				document.getElementById("startPollButton").onclick = function () {
+					testRunner.startPoll();
+				};
+				document.getElementById("stopPollButton").onclick = function () {
+					testRunner.stopPoll();
+				};
+				document.getElementById("clearButton").onclick = function () {
+					testRunner.clearConsole();
+				};
+			};
+		})();
+
+		(function () {
+			function NfcAdapterTestRunner(name) {
+				this._logger = new window.Logger(name);
+				this._nfcAdapter = null;
+				this._observerIds = [];
+				this._observers = [];
+				this._logger.log("NfcAdapterTestRunner");
+			}
+			NfcAdapterTestRunner.prototype = {
+				startPoll: function () {
+					try {
+						if (this._observerIds.length > 0) {
+							this._logger.log("wait for the end of all observers...");
+							return;
+						}
+						const nsISystemAdapterNfc = Components.interfaces.nsISystemAdapterNfc;
+						// get all NFC adapters of the current device (only one NFC adapter on SMT210)
+						var adaptersList = window.systemManager.getAdaptersByIId(nsISystemAdapterNfc);
+						var i, id;
+						for (i = 0; i < adaptersList.length; i++) {
+							this._nfcAdapter = adaptersList.queryElementAt(i, nsISystemAdapterNfc);
+
+							// for configurePolling
+							var modulationTypes = [];
+							var modulationBaudRate = [];
+							// for configureMultipleModulations
+							var modulations = [];
+							var custom = 0;
+							this._addNfcObserver();
+							if (window.document.getElementById("2_observers").checked) {
+								this._addNfcObserver();
+							} else if (window.document.getElementById("3_observers").checked) {
+								this._addNfcObserver();
+								this._addNfcObserver();
+							}
+							if (window.document.getElementById("ISO14443A").checked) {
+								custom++;
+								this._addToModulations(modulations, nsISystemAdapterNfc.MODULATION_ISO14443A, [nsISystemAdapterNfc.BAUD_106]);
+								modulationTypes.push(nsISystemAdapterNfc.MODULATION_ISO14443A);
+								if (modulationBaudRate.indexOf(nsISystemAdapterNfc.BAUD_106) == -1) {
+									modulationBaudRate.push(nsISystemAdapterNfc.BAUD_106);
+								}
+							}
+							if (window.document.getElementById("ISO14443B").checked) {
+								custom++;
+								this._addToModulations(modulations, nsISystemAdapterNfc.MODULATION_ISO14443B, [nsISystemAdapterNfc.BAUD_106]);
+								modulationTypes.push(nsISystemAdapterNfc.MODULATION_ISO14443B);
+								if (modulationBaudRate.indexOf(nsISystemAdapterNfc.BAUD_106) == -1) {
+									modulationBaudRate.push(nsISystemAdapterNfc.BAUD_106);
+								}
+							}
+							if (window.document.getElementById("JEWEL").checked) {
+								custom++
+								this._addToModulations(modulations, nsISystemAdapterNfc.MODULATION_JEWEL, [nsISystemAdapterNfc.BAUD_106]);
+								modulationTypes.push(nsISystemAdapterNfc.MODULATION_JEWEL);
+								if (modulationBaudRate.indexOf(nsISystemAdapterNfc.BAUD_106) == -1) {
+									modulationBaudRate.push(nsISystemAdapterNfc.BAUD_106);
+								}
+							}
+							if (window.document.getElementById("FELICA").checked) {
+								custom++;
+								var baudRatesArray = [];
+								modulationTypes.push(nsISystemAdapterNfc.MODULATION_FELICA);
+								var felicaBaudrate = 0;
+								if (window.document.getElementById("FELICA_212").checked) {
+									baudRatesArray.push(nsISystemAdapterNfc.BAUD_212);
+									modulationBaudRate.push(nsISystemAdapterNfc.BAUD_212);
+									felicaBaudrate++;
+								}
+								if (window.document.getElementById("FELICA_424").checked) {
+									baudRatesArray.push(nsISystemAdapterNfc.BAUD_424);
+									modulationBaudRate.push(nsISystemAdapterNfc.BAUD_424);
+									felicaBaudrate++;
+								}
+								if (felicaBaudrate == 0) {
+									this._logger.log("Choose a value for baud rate of FELICA modulation!");
+									return;
+								}
+								this._addToModulations(modulations, nsISystemAdapterNfc.MODULATION_FELICA, baudRatesArray);
+							}
+
+							if (custom) {
+								this._logger.log("Start with configured modulation.");
+								if (
+									window.document.getElementById("useConfigurePolling").checked == false &&
+									this._nfcAdapter.configureMultipleModulations != undefined
+								) {
+									this._logger.log("using configureMultipleModulations");
+									this._nfcAdapter.configureMultipleModulations(modulations, modulations.length);
+								} else {
+									this._logger.log("using configurePolling");
+									this._nfcAdapter.configurePolling(modulationTypes.length, modulationTypes, modulationBaudRate.length, modulationBaudRate);
+								}
+							} else {
+								this._logger.log("Start with all supported modulations.");
+							}
+							for (i = 0; i < this._observers.length; i++) {
+								id = this._nfcAdapter.startPoll(this._observers[i]);
+								this._logger.log("startPoll id : " + id);
+								this._observerIds.push(id);
+							}
+							break;
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				stopPoll: function () {
+					try {
+						if (this._observerIds.length == 0) {
+							this._logger.log("no more observers. Please click startPoll.");
+							return;
+						}
+						// stop polling on all observers
+						var i, id;
+						for (i = 0; i < this._observerIds.length; i++) {
+							id = this._observerIds[i];
+							this._logger.log("stopPoll id: " + id);
+							this._nfcAdapter.stopPoll(id);
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				clearConsole: function () {
+					this._logger.clearConsole();
+				},
+				_addNfcObserver: function () {
+					var self = this;
+					var logger = this._logger;
+					this._observers.push({
+						onTargetFound: function (aTarget) {
+							logger.log("onTargetFound");
+							try {
+								logger.log("id = " + aTarget.targetId +
+									" - type : " + self._modulationString(aTarget.targetModulation) +
+									" - baud rate : " + self._baudrateString(aTarget.targetBaudRate));
+							} catch (e) {
+								logger.errorEx(e);
+							}
+						},
+						onTargetLost: function (aTarget) {
+							logger.log("onTargetLost");
+							try {
+								logger.log("id = " + aTarget.targetId);
+							} catch (e) {
+								logger.errorEx(e);
+							}
+						},
+						onPollStart: function () {
+							logger.log("onPollStart");
+						},
+						onPollStop: function () {
+							logger.log("onPollStop");
+							var o = self._observers.indexOf(this);
+							//remove current observer
+							self._observers.splice(o, 1);
+							if (self._observers.length == 0) {
+								self._observerIds = [];
+							}
+						}
+					});
+				},
+				_addToModulations: function (aModulations, sModulationType, aBaudRates) {
+					aModulations.push({
+						modulationType: sModulationType,
+						baudRates: aBaudRates
+					});
+				},
+				_modulationString(aMod) {
+					var str = "";
+					const nsISystemAdapterNfc = Components.interfaces.nsISystemAdapterNfc;
+					switch (aMod) {
+						case nsISystemAdapterNfc.MODULATION_ISO14443A:
+							str = "ISO14443A";
+							break;
+						case nsISystemAdapterNfc.MODULATION_JEWEL:
+							str = "JEWEL";
+							break;
+						case nsISystemAdapterNfc.MODULATION_ISO14443B:
+							str = "ISO14443B";
+							break;
+						case nsISystemAdapterNfc.MODULATION_ISO14443BI:
+							str = "ISO14443BI";
+							break;
+						case nsISystemAdapterNfc.MODULATION_ISO14443B2SR:
+							str = "ISO14443B2SR";
+							break;
+						case nsISystemAdapterNfc.MODULATION_ISO14443B2CT:
+							str = "ISO14443B2CT";
+							break;
+						case nsISystemAdapterNfc.MODULATION_FELICA:
+							str = "FELICA";
+							break;
+						case nsISystemAdapterNfc.MODULATION_DEP:
+							str = "DEP";
+							break;
+						default: break;
+					}
+					return str;
+				},
+				_baudrateString(aBr) {
+					var str = "";
+					const nsISystemAdapterNfc = Components.interfaces.nsISystemAdapterNfc;
+					switch (aBr) {
+						case nsISystemAdapterNfc.BAUD_106:
+							str = "106";
+							break;
+						case nsISystemAdapterNfc.BAUD_212:
+							str = "212";
+							break;
+						case nsISystemAdapterNfc.BAUD_424:
+							str = "424";
+							break;
+						case nsISystemAdapterNfc.BAUD_847:
+							str = "847";
+							break;
+						default: break;
+					}
+					return str;
+				}
+			};
+
+			window.NfcAdapterTestRunner = NfcAdapterTestRunner;
+		})();
+
+	</script>
+</head>
+
+<style type="text/css">
+	.container {
+		flex-direction: column;
+	}
+</style>
+
+<body>
+	<h1>System NFC example</h1>
+	<div class="container">
+		<div>
+			<input type="checkbox" id="useConfigurePolling" value="0"> <i> use deprecated configurePolling </i>
+			<input type="checkbox" id="2_observers" value="0"> <i> use 2 observers </i>
+			<input type="checkbox" id="3_observers" value="0"> <i> use 3 observers </i><br>
+			<input type="checkbox" id="ISO14443A" value="0"> ISO14443A (106 kbit/s)
+			<input type="checkbox" id="ISO14443B" value="0"> ISO14443B (106 kbit/s)
+			<input type="checkbox" id="JEWEL" value="0"> JEWEL (106 kbit/s)
+			<input type="checkbox" id="FELICA" value="0"> FELICA
+			<input type="checkbox" id="FELICA_212" value="0"> 212 kbit/s
+			<input type="checkbox" id="FELICA_424" value="0"> 424 kbit/s
+		</div>
+		<div>
+			<input type="button" id="startPollButton" value="Start poll">
+			<input type="button" id="stopPollButton" value="Stop poll">
+			<input type="button" id="clearButton" value="Clear">
+		</div>
+	</div>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>

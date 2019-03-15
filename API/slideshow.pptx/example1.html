@@ -1,0 +1,194 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>PPTX viewer example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script src="resource://app/res/pptx-viewer.js"></script>
+	<script type="text/javascript">
+
+		/************************************************************************/
+		/*************** Here is the Test Suite you should modify ***************/
+		/************************************************************************/
+		(function () {
+			window.onload = function () {
+
+				/**
+				*	Here are the functions available:
+				* testRunner.startViewer();
+				* testRunner.closeViewer();
+				* testRunner.goToPage(pageNumber);
+				* testRunner.getpageDuration();
+				* testRunner.setAutoPageProgress(value); // can be true or false
+				* testRunner.nextPage();
+				* testRunner.previousPage();
+				* testRunner.getNbPages();
+				*
+				**/
+
+				// These variables are configuration variables
+				const autoPageProgress = false;
+				const pptxFile = "example.pptx";
+
+				var testRunner = new window.PptxViewerTestRunner("example.pptxviewer");
+				testRunner.createViewer(pptxFile);
+				testRunner.startViewer();
+				// If autoPageProgress = true and the slides in the pptx have a duration, the slides will automatically progress
+				testRunner.setAutoPageProgress(autoPageProgress);
+
+
+				/**
+				* In this example we go through the pdf pages one at a time every 5 seconds until the last one,
+				* then we go in reverse to the first page and we start again.
+				**/
+
+				// These variables are only used as part of the example
+				const firstPageNumber = 1;
+				const switchPageFrequencyMS = 5000;
+				var readInReverse = false;
+
+				setInterval(function () {
+					if (readInReverse) {
+						testRunner.previousPage();
+						if (testRunner.getCurrentPageNumber() === firstPageNumber) {
+							readInReverse = false;
+						}
+					} else {
+						testRunner.nextPage();
+						if (testRunner.getCurrentPageNumber() === testRunner.getNbPages()) {
+							readInReverse = true;
+						}
+					}
+				}, switchPageFrequencyMS);
+
+			};
+		})();
+		/************************************************************************/
+		/*************** From here don't need to modify anything ****************/
+		/************************************************************************/
+
+		(function () {
+			function PptxViewerTestRunner(name) {
+				try {
+					this._logger = new window.Logger(name);
+					this._logger.log("PptxViewerTestRunner");
+					this._pptxDiv = document.getElementById("pptxDiv");
+					this._pptxViewer;
+				} catch (error) {
+					this._logger.errorEx(error);
+				}
+			}
+			PptxViewerTestRunner.prototype = {
+				createViewer: function (pptxFile) {
+					try {
+						this._logger.log("init");
+						var self = this;
+						this._pptxViewer = new PptxViewer(
+							function ended() {
+								self._logger.log("preview ended");
+							},
+							function error(e) {
+								self._logger.error(e);
+							},
+							function pageChanged() {
+								self._logger.log("page changed " + self._pptxViewer.pageNumber);
+							}
+						);
+						this._pptxViewer.init(this._pptxDiv, pptxFile);
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				startViewer: function () {
+					try {
+						this._logger.log("startViewer");
+						this._pptxViewer.start();
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				closeViewer: function () {
+					try {
+						this._logger.log("closeViewer");
+						this._pptxViewer.close();
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				nextPage: function () {
+					try {
+						//this._logger.log("nextPage");
+						this._pptxViewer.nextPage();
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				previousPage: function () {
+					try {
+						//this._logger.log("previousPage");
+						this._pptxViewer.previousPage();
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				getNbPages: function () {
+					try {
+						var nbPages = this._pptxViewer.numPages;
+						this._logger.log("getNbPages " + nbPages);
+						return nbPages;
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				getPageDuration: function () {
+					try {
+						var pageDuration = this._pptxViewer.pageDuration;
+						this._logger.log("getPageDuration " + pageDuration);
+						return pageDuration;
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				getCurrentPageNumber: function () {
+					try {
+						var pageNumber = this._pptxViewer.pageNumber;
+						this._logger.log("getCurrentPageNumber " + pageNumber);
+						return pageNumber;
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				goToPage: function (pageNumber) {
+					try {
+						this._logger.log("goToPage " + pageNumber);
+						this._pptxViewer.pageNumber = pageNumber;
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				setAutoPageProgress: function (value) {
+					try {
+						this._logger.log("setAutoPageProgress ");
+						this._pptxViewer.autoPageProgress = value;
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				}
+			};
+			window.PptxViewerTestRunner = PptxViewerTestRunner;
+		})();
+
+	</script>
+</head>
+
+
+<body>
+	<h1>PPTX viewer example</h1>
+	<div class="container">
+		<div id="pptxDiv"></div>
+	</div>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>

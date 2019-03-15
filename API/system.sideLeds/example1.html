@@ -1,0 +1,165 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title>System side leds example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script type="text/javascript">
+		(function () {
+      /**
+       * STANDALONE Example as based on user interaction:
+       *  - Click on one of the button and the leds will change to the button's color
+       */
+			window.onload = function () {
+				var testRunner = new window.SideLedsTestRunner("example.system.sideLeds");
+				document.getElementById("button1").onclick = function () {
+					testRunner.setColorRed();
+				};
+				document.getElementById("button2").onclick = function () {
+					testRunner.setColorGreen();
+				};
+				document.getElementById("button3").onclick = function () {
+					testRunner.setColorBlue();
+				};
+				document.getElementById("button4").onclick = function () {
+					testRunner.setColorOrange();
+				};
+				document.getElementById("button5").onclick = function () {
+					testRunner.setColorCian();
+				};
+			};
+		})();
+
+		(function () {
+			function SideLedsTestRunner(aName) {
+				try {
+					this._logger = new window.Logger(aName);
+					this._logger.log("SideLedsTestRunner");
+					this._systemAdapterAppColorLed = Components.interfaces.nsISystemAdapterAppColorLed;
+					this._adaptersList = systemManager.getAdaptersByIId(this._systemAdapterAppColorLed);
+					this._ledColor = 0x77FF00; // RGB hex
+				} catch (e) {
+					this._logger.errorEx(e);
+				}
+			}
+			SideLedsTestRunner.prototype = {
+				_setColor: function () {
+					try {
+						// Set Color
+						if (this._adaptersList.length > 0) {
+							var appColorLed = this._adaptersList.queryElementAt(this._systemAdapterAppColorLed.LEFT_COLOR_LED, this._systemAdapterAppColorLed);
+							appColorLed.enabled = true;
+							appColorLed.color = this._ledColor;
+							appColorLed = this._adaptersList.queryElementAt(this._systemAdapterAppColorLed.RIGHT_COLOR_LED, this._systemAdapterAppColorLed);
+							appColorLed.enabled = true;
+							appColorLed.color = this._ledColor;
+						}
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				setColorRed: function () {
+					try {
+						this._logger.log("setColorRed");
+						this._ledColor = 0XFF0000;
+						this._setColor();
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				setColorGreen: function () {
+					try {
+						this._logger.log("setColorGreen");
+						this._ledColor = 0X00FF00;
+						this._setColor();
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				setColorBlue: function () {
+					try {
+						this._logger.log("setColorBlue");
+						this._ledColor = 0X0000FF;
+						this._setColor();
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				setColorOrange: function () {
+					try {
+						this._logger.log("setColorOrange");
+						this._ledColor = 0XE54F04;
+						this._setColor();
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				},
+				setColorCian: function () {
+					try {
+						this._logger.log("setColorCian");
+						this._ledColor = 0X09E5DE;
+						this._setColor();
+					} catch (e) {
+						this._logger.errorEx(e);
+					}
+				}
+			};
+
+			window.SideLedsTestRunner = SideLedsTestRunner;
+		})();
+
+	</script>
+</head>
+
+<style type="text/css">
+	#button1 {
+		width: 100px;
+		height: 100px;
+		background-color: red;
+		color: black;
+	}
+
+	#button2 {
+		width: 100px;
+		height: 100px;
+		background-color: green;
+		color: black;
+	}
+
+	#button3 {
+		width: 100px;
+		height: 100px;
+		background-color: blue;
+		color: black;
+	}
+
+	#button4 {
+		width: 100px;
+		height: 100px;
+		background-color: #E54F04;
+		color: black;
+	}
+
+	#button5 {
+		width: 100px;
+		height: 100px;
+		background-color: #09E5DE;
+		color: black;
+	}
+</style>
+
+<body>
+	<h1>System side leds example</h1>
+	<div class="container">
+		<input id="button1" type="button"></input>
+		<input id="button2" type="button"></input>
+		<input id="button3" type="button"></input>
+		<input id="button4" type="button"></input>
+		<input id="button5" type="button"></input>
+		<br><br><br>
+	</div>
+	<textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>

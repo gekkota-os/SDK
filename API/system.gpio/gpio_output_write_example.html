@@ -1,0 +1,84 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>System GPIO write example</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="logger.js"></script>
+  <script type="text/javascript">
+    /**
+     * This script repeatidly writes values 1 and 0 every 5 seconds to the specified GPIO.
+     *
+     */
+    /************************************************************************/
+    /*************** Here is the Test Suite you should modify ***************/
+    /************************************************************************/
+    (function () {
+      window.onload = function () {
+        var testRunner = new window.GpioWriteTestRunner("example.system.gpio");
+        // Index of the GPIO to write values (for example JACK gpio is index 1)
+        const gpioIndex = 1;
+        var value = 1;
+        setInterval(function () {
+          if (value === 1) {
+            testRunner.testWriteGPIO(gpioIndex, value);
+            value = 0;
+          } else {
+            testRunner.testWriteGPIO(gpioIndex, value);
+            value = 1;
+          }
+        }, 5000);
+      };
+    })();
+    /************************************************************************/
+    /*************** From here don't need to modify anything ****************/
+    /************************************************************************/
+    (function () {
+      function GpioWriteTestRunner(name) {
+        this._logger = new window.Logger(name);
+        this._logger.log("GpioWriteTestRunner");
+        this._logger.log("The output value of the GPIO will switch every 5 seconds");
+      }
+
+      GpioWriteTestRunner.prototype = {
+        testWriteGPIO: function (index, value) {
+          try {
+            this._logger.log("writeGPIO index " + index + " value " + value);
+            const ifaceName = "gpio-output";
+            const iface = window.Components.interfaces.nsISystemAPBGpioOutput;
+            const profiles = window.systemManager.getApplicationProfileBindingsByProfileUri(ifaceName);
+            var mask = 1 << (index - 1);
+            if (profiles !== null) {
+              for (var i = 0; i < profiles.length; ++i) {
+                var profile = profiles.queryElementAt(i, iface);
+                var connector = this._getFirstConnector(profile);
+                if (connector.mask == mask) {
+                  profile.writeValue = value;
+                  this._logger.log("Wrote value to GPIO");
+                  break;
+                }
+              }
+            }
+          } catch (error) {
+            this._logger.error(error);
+          }
+        },
+        _getFirstConnector(profile) {
+          const iface = Components.interfaces.nsISystemConnector;
+          var connectors = profile.adapter.connectors;
+          var connector = connectors.queryElementAt(0, iface);
+          return connector;
+        }
+      };
+      window.GpioWriteTestRunner = GpioWriteTestRunner;
+    })();
+  </script>
+</head>
+
+<body>
+  <h1>System GPIO write example</h1>
+  <div class="container"></div>
+  <textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>
