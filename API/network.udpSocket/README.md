@@ -92,6 +92,8 @@ Find an HTML example on how to use UDP Socket [here.](unicast_example1.html)
 
 Find an HTML example on how to use UDP multicast [here.](multicast_example1.html)
 
+**Build note**: You need to execute the **build.cmd** file to generate the boostrap app. Otherwise there will be a mismatch between the html file name and the one the manifest tries to launch. Find more information in *SDK-G4/bootstrap App/* documentation.
+
 Member Data Documentation
 -------------------------
 

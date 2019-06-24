@@ -39,3 +39,5 @@ Here is the PPTX viewer API to interract with your document:
 * numPages: an integer attribute of the viewer that gives the number of pages of the document.
 
 You can find an HTML example using this API [here.](example1.html)
+
+**Build note**: You need to execute the **build.cmd** file to generate the boostrap app. Otherwise there will be a mismatch between the html file name and the one the manifest tries to launch. Find more information in *SDK-G4/bootstrap App/* documentation.

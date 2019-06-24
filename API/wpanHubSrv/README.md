@@ -8,6 +8,10 @@ Public Attributes
 
 -   void getFileInfo ( in unsigned long aBaseUri, in ACString aFilePath, out boolean aIsFileSync, out ACString aLastUpdateTime)
 
+<!-- -->
+
+-   void setButtonConfiguration ( in nsIPropertyBag aJsonArgs)
+
 Detailed Description
 --------------------
 
@@ -65,4 +69,51 @@ Here is an example of how to use this function in Javascript :
        " filePath: " + sFilePath +
        " isFileInSync: " + JSON.stringify(isFileInSync) +
        " lastUpdateTime: " + JSON.stringify(lastUpdateTime));
+    }
+
+void nsIWpanHubSrv::setButtonConfiguration (in nsIPropertyBag aJsonArgs)
+------------------------------------------------------------------------
+
+This a function to be used by the application to setup runtime button bar configuration for a specific device.
+
+<table>
+<caption>Parameters</caption>
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<tbody>
+<tr class="odd">
+<td align="left">aJsonArgs</td>
+<td align="left"><p>The JSON arguments used to set the configuration of the given device. It may be different for each type of device depending of the number of buttons.</p></td>
+</tr>
+<tr class="even">
+<td align="left">location</td>
+<td align="left"><p>The signature of the device, it specifies both the device type and index. The id of the Slate is specified using the LSB.</p></td>
+</tr>
+<tr class="odd">
+<td align="left">buttonConfigurationN</td>
+<td align="left"><p>The JSON contains N keys, one for each button, and each button has 1 key for now:</p></td>
+</tr>
+<tr class="even">
+<td align="left">enable</td>
+<td align="left"><p>Boolean value specifying if the button is enabled or disabled</p></td>
+</tr>
+</tbody>
+</table>
+
+The button keys are names buttonConfigurationN where N is the button number starting at one. For Slate106, there are 3 buttons: the first one is the left one, the second one is the middle one, and the third on is the right one. For example, an input from a Slate Key service type from Slate with ID 5 has the location: 0x80000005. See HID documentation for more info. Here is an example for a 3 buttons device:
+
+    {
+      location: 2147483653,
+      boutonConfigurations: [{
+        id: 1,
+        enable: true
+      }, {
+        id: 2,
+         enable: false
+      }, {
+        id: 3,
+        enable: true
+      }]
     }

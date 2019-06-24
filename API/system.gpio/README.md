@@ -17,6 +17,8 @@ Detailed Description
 
 The nsISystemAPBGpioOutput interface allows to write value to GPIO. For SMA300 and DMB400, the jack35 GPIO is used as example: set the configuration of your platform following the instruction in the gpio\_output\_write\_configuration.js file. Once it is done, you can find an example [here.](gpio_output_write_example.html)
 
+**Build note**: You need to execute the **build.cmd** file to generate the boostrap app. Otherwise there will be a mismatch between the html file name and the one the manifest tries to launch. Find more information in *SDK-G4/bootstrap App/* documentation.
+
 Member Data Documentation
 -------------------------
 
@@ -80,6 +82,8 @@ Detailed Description
 --------------------
 
 The nsISystemAPBGpioInput interface allows to read the GPIO. For SMA300 and DMB400, the jack35 GPIO is used as example: set the configuration of your platform following the instruction in the gpio\_input\_observe\_configuration.js file. Once it is done, you can find an example [here.](gpio_input_observe_example.html)
+
+**Build note**: You need to execute the **build.cmd** file to generate the boostrap app. Otherwise there will be a mismatch between the html file name and the one the manifest tries to launch. Find more information in *SDK-G4/bootstrap App/* documentation.
 
 Member Data Documentation
 -------------------------
