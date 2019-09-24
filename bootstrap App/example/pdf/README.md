@@ -1,6 +1,3 @@
-# Example of bootstrap App
-
-Here are some examples of bootstrap App.
 ## PDF example
 This is an example to play a PDF document. The HTML file uses different files:
   * example.pdf: the PDF file that will be play,

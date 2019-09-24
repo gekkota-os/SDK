@@ -1,0 +1,86 @@
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<title> SMH300 CSV Example</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="logger.js"></script>
+	<script src="wpanKeyListener.js"></script>
+	<script src="wpanFileInfo.js"></script>
+	<script src="fileMonitor.js"></script>
+	<script type="text/javascript">
+
+		(function () {
+			window.onload = function () {
+				var udpMulticastConfig = {
+					localPort: 30001,
+					multicastGroup: "239.255.0.1"
+				};
+				var testRunner = new window.AppTestRunner("app.smh300-csv", udpMulticastConfig);
+			};
+		})();
+
+		(function () {
+
+			const DATA_FILE = "data.csv"; // Name of the csv file pushed to the app playout
+			window.SLATE_PICTURE_NAME = "hub.ppk"; // Default picture file name for Slate
+
+			function AppTestRunner(name, udpMulticastConfig) {
+				this._logger = new window.Logger(name);
+				this._logger.log("AppTestRunner");
+				if (!window.systemGeneralSettings || window.systemGeneralSettings.platform.toLowerCase() != 'smh300') {
+					this._logger.error("Platform should be smh300. can't run the example.");
+				}
+				else {
+					var monitorAddedFile = true;
+					var monitorFileModification = true;
+					// Listener for specific keyboardEvents that match either Slate or wpanPushButton.
+					// It sends UDP events when receiving an input.
+					// See "hidInput" and "network.udpSocket" documentation on Github for more info.
+					this._wpanKeyListener = new window.WpanKeyListener(this._logger, udpMulticastConfig);
+					// Generates Slate pictures from the DATA_FILE. It uses XHR request to read the content of the file.
+					// Manages data.csv file input/modification to know when to update the Slate pictures.
+					// Manages the didsplay of the csv file in window before capture.
+					// See "screenshot" and "fileSystemWatcher" documentation on Github for more info.
+					this._fileMonitor = new window.FileMonitor(this._logger, DATA_FILE, monitorAddedFile, monitorFileModification);
+					// Repeatedly calls a function to check if the current Slate picture of name SLATE_PICTURE_NAME is synchronozed with the one on the File System.
+					// Be aware that before the first wake up of a Slate after a reboot of the player, the getFileInfo sync will always return false.
+					this._wpanFileInfo = new window.WpanFileInfo(this._logger);
+					this._init();
+				}
+			}
+			AppTestRunner.prototype = {
+				_init: function () {
+					try {
+						this._logger.log("AppTestRunner init");
+						this._wpanKeyListener.init();
+						this._initFileMonitor();
+						this._wpanFileInfo.init();
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				},
+				_initFileMonitor: function () {
+					try {
+						this._logger.log("AppTestRunner _initFileMonitor");
+						var documentDirPath = document.location.href.match(/(.*)[\/\\]/)[1] || '';
+						this._logger.log("_initFileMonitor href document directory: " + documentDirPath);
+						this._fileMonitor.load(documentDirPath);
+						this._fileMonitor.tryLoadFileAndGeneratePicture(DATA_FILE);
+					} catch (error) {
+						this._logger.errorEx(error);
+					}
+				}
+			};
+
+			window.AppTestRunner = AppTestRunner;
+		})();
+
+	</script>
+</head>
+
+<body>
+	<div id="container"></div>
+</body>
+
+</html>
