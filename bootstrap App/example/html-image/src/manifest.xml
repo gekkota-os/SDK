@@ -9,9 +9,7 @@
     <Description about="ns.innes.gekkota.manifest#cache">
         <Bag>
             <li>app.html</li>
-			<li>logger.js</li>
-			<li>style.css</li>
-			<li>example.pdf</li>
+            <li>innes-2018.png</li>
         </Bag>
     </Description>
     <Description about="ns.innes.gekkota.manifest#launcher"

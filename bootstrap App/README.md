@@ -2,7 +2,7 @@
 
 To be played on Gekkota, a bootstrap App includes the following files :
 
-- A bootstrap file (eg. *player.html*),
+- A bootstrap file (eg. *app.html*),
 - A manifest file,
 - Resources needed by the App.
 
