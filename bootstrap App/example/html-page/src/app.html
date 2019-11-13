@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta content="6cc1613f-24b0-41b2-b2bc-f3b79e9f81c5" name="uuid">
+		<meta content="2018-11-12T14:43:23.605Z" name="date-revision">
+		<meta content="custom" name="app-name">
+
+		<style type="text/css">
+			html {
+				background-color:#FDFDFD;
+				overflow: hidden;
+			}
+			body {
+				margin: 0px;
+			}
+			p {
+				color: white;
+				font-size: 3em; 
+				text-align: center;
+				position:fixed;
+				background-color: rgba(221, 22, 22, 0.5);
+				left: 0;
+   				top: 0;
+    			width: 100%;
+				margin-top: 0.25em;
+			}
+			iframe { 
+				position:fixed;
+				top:0px;
+				left:0px;
+				z-index:0;
+				opacity:1;
+				width:100%;
+				height:100%;
+			}
+		
+		</style>
+
+		<script>
+			function load() {
+				// nothing to do
+				// Create iframe
+				var frame = document.createElement("iframe");
+				
+				frame.setAttribute("src", "https://www.qeedji.tech/en/");
+				
+				//frame.setAttribute("src", "http://innes.fr:8080/?id=" + systemGeneralSettings.hostname);
+				//frame.setAttribute("src", "https://player.twitch.tv/?video=v342349953");
+				frame.setAttribute("mozbrowser", "mozbrowser");
+				frame.setAttribute("id", "mainframe");
+				frame.setAttribute("scrolling", "no");
+				document.body.appendChild(frame);
+			}
+		</script>
+	</head>
+
+	<body onload="load()">
+		<body>
+			<p>Hello World!</p>	
+	</body>
+
+</html>
