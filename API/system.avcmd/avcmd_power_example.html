@@ -1,0 +1,90 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>System AVCmd power test example</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="logger.js"></script>
+  <script type="text/javascript">
+    /**
+     * This script repeatedly switches the connected screen on and off every 30 seconds.
+     *
+     */
+    /************************************************************************/
+    /*************** Here is the Test Suite you should modify ***************/
+    /************************************************************************/
+    (function () {
+      window.onload = function () {
+        var testRunner = new window.AvcmdPowerTestRunner("example.system.avcmd");
+        var value = 1;
+        setInterval(function () {
+          if (value === 1) {
+            testRunner.avcmdPowerTest("cec", window.Components.interfaces.nsISystemAPBAVCmd.POWER_MODE_ON);
+            value = 0;
+          } else {
+            testRunner.avcmdPowerTest("cec", window.Components.interfaces.nsISystemAPBAVCmd.POWER_MODE_STANDBY);
+            value = 1;
+          }
+        }, 30000);
+      };
+    })();
+    /************************************************************************/
+    /*************** From here don't need to modify anything ****************/
+    /************************************************************************/
+    (function () {
+      function AvcmdPowerTestRunner(name) {
+        this._logger = new window.Logger(name);
+        this._logger.log("AvcmdPowerTestRunner");
+        this._logger.log("The power of the screen will switch every 30 seconds");
+      }
+
+      AvcmdPowerTestRunner.prototype = {
+        avcmdPowerTest: function (adapterFilter, powerModeValue) {
+          try {
+            const ifaceName = "av-cmd";
+            const iface = window.Components.interfaces.nsISystemAPBAVCmd;
+            const profiles = window.systemManager.getApplicationProfileBindingsByProfileUri(ifaceName);
+            this._logger.log("avcmdPowerTest");
+            if (profiles !== null) {
+              for (var i = 0; i < profiles.length; ++i) {
+                var profile = profiles.queryElementAt(i, iface);
+                this._logger.log("Found profile : " + profile);
+                label = profile.properties.get("label");
+                this._logger.log("    Label : "+ label);
+                // filtering profiles depending on adapter
+                if (label.includes(adapterFilter)) {
+                  // setting power mode attribute to required value
+                  profile.powerMode = powerModeValue;
+                  switch (powerModeValue) {
+                    case iface.POWER_MODE_OFF : valueString = "POWER_MODE_OFF";
+                      break;
+                    case iface.POWER_MODE_ON : valueString = "POWER_MODE_ON";
+                      break;
+                    case iface.POWER_MODE_SUSPEND : valueString = "POWER_MODE_SUSPEND";
+                      break;
+                    case iface.POWER_MODE_STANDBY : valueString = "POWER_MODE_STANDBY";
+                      break;
+                    case iface.POWER_MODE_OFF_POWER_BUTTON : valueString = "POWER_MODE_OFF_POWER_BUTTON";
+                      break;
+                  }
+                  this._logger.log("    Sent value " + valueString + " to screen through " + adapterFilter + " adapter");
+                }
+              }
+            }
+          } catch (error) {
+            this._logger.error(error);
+          }
+        },
+      };
+      window.AvcmdPowerTestRunner = AvcmdPowerTestRunner;
+    })();
+  </script>
+</head>
+
+<body>
+  <h1>System AVCmd power test example</h1>
+  <div class="container"></div>
+  <textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>

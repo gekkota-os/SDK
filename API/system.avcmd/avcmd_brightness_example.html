@@ -1,0 +1,78 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>System AVCmd brightness test example</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <script src="logger.js"></script>
+  <script type="text/javascript">
+    /**
+     * This script repeatedly changes the brightness of the connected screen every 30 seconds.
+     *
+     */
+    /************************************************************************/
+    /*************** Here is the Test Suite you should modify ***************/
+    /************************************************************************/
+    (function () {
+      window.onload = function () {
+        var testRunner = new window.AvcmdBrightnessTestRunner("example.system.avcmd");
+        var value = 1;
+        setInterval(function () {
+          if (value === 1) {
+            testRunner.avcmdBrightnessTest("ddc", 30);
+            value = 0;
+          } else {
+            testRunner.avcmdBrightnessTest("ddc", 80);
+            value = 1;
+          }
+        }, 30000);
+      };
+    })();
+    /************************************************************************/
+    /*************** From here don't need to modify anything ****************/
+    /************************************************************************/
+    (function () {
+      function AvcmdBrightnessTestRunner(name) {
+        this._logger = new window.Logger(name);
+        this._logger.log("AvcmdBrightnessTestRunner");
+        this._logger.log("The brightness of the screen will change every 30 seconds");
+      }
+
+      AvcmdBrightnessTestRunner.prototype = {
+        avcmdBrightnessTest: function (adapterFilter, brightnessValue) {
+          try {
+            const ifaceName = "av-cmd";
+            const iface = window.Components.interfaces.nsISystemAPBAVCmd;
+            const profiles = window.systemManager.getApplicationProfileBindingsByProfileUri(ifaceName);
+            this._logger.log("avcmdBrightnessTest");
+            if (profiles !== null) {
+              for (var i = 0; i < profiles.length; ++i) {
+                var profile = profiles.queryElementAt(i, iface);
+                this._logger.log("Found profile : " + profile);
+                label = profile.properties.get("label");
+                this._logger.log("    Label : "+ label);
+                // filtering profiles depending on adapter
+                if (label.includes(adapterFilter)) {
+                  // setting power mode attribute to required value
+                  profile.brightness = brightnessValue;
+                  this._logger.log("    Sent value " + brightnessValue + "through " + adapterFilter + " adapter");
+                }
+              }
+            }
+          } catch (error) {
+            this._logger.error(error);
+          }
+        },
+      };
+      window.AvcmdBrightnessTestRunner = AvcmdBrightnessTestRunner;
+    })();
+  </script>
+</head>
+
+<body>
+  <h1>System AVCmd brightness test example</h1>
+  <div class="container"></div>
+  <textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+</body>
+
+</html>

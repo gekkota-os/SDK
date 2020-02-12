@@ -35,144 +35,74 @@ graph TD
 ## Example
 
 ````xml
-<?xml version="1.0" encoding="UTF-8"?>
-<device-status version="1.0" xmlns="ns.innes.gekkota">
-<device>
-    <!— identificator used in status file name. Can be MAC,HOSTNAME,UUID -->
-    <id-type>MAC</id-type>
-    <!— mac address used as id in lower case and with “-” -->
-    <mac>ff-ff-ff-ff-ff-ff</mac>
-    <hostname>sma200_fbar</hostname>
-    <uuid>00000000-0000-0000-0001-00e04b3b3e9a</uuid>
-    <ip-addresses>
-        <ip-address>
-            <!--Can be LAN, WLAN, ...-->
-            <if-type>LAN</if-type>
-            <!--Can be auto, dhcp or static-->
-            <origin>auto</origin>
-            <value>fc00::d141:cb74:2caa:a6a2</value>
-        </ip-address>
-        <ip-address>
-            <if-type>LAN</if-type>
-            <origin>auto</origin>
-            <value>fc00::f832:bf5f:4520:5b1b</value>
-        </ip-address>
-        <ip-address>
-            <if-type>LAN</if-type>
-            <origin>dhcp</origin>
-            <value>192.168.1.4</value>
-        </ip-address>
-        <ip-address>
-            <if-type>LAN</if-type>
-            <if-type>auto</if-type>
-            <value>fc01::1</value>
-        </ip-address>
-        <ip-address>
-            <if-type>LAN</if-type>
-            <origin>static</origin>
-            <value>192.168.156.1</value>
-        </ip-address>
-    </ip-addresses>
-    <storage>
-        <total-size>104857600</total-size>
-        <used-size>63963136</used-size>
-    </storage>
-    <firmware>
-        <version>3.10.39</version>
-        <extensions>
-            <extension>
-                <id>ns.innes.playzilla.extensions.example</id>
-                <label>Label d’exemple</label>
-                <version>1.10.10</version>
-            </extension>
-        </extension>
-    </firmware>
-</device>
-<status>
-    <!-- device timezone required! ISO 8601 -->
-    <date>2013-10-16T14:41:50.783+02:00</date>
-    <launcher>
-        <!-- metadata extracted from the manifest -->
-        <manifest-metadata xmlns:pzpm="ns.innes.playzilla.manifest" xmlns:ex="ns.innes.example">
-            <pzpm:publish-id>e5fdaa88-7eb3-4e20-8602-1d94030d2bcc</pzpm:publish-id>
-            <pzpm:publish-size>654681689</pzpm:publish-size>
-            <pzpm:publish-generator>Screen Composer</pzpm:publish-generator>
-            <pzpm:publish-date>2013-10-16T14:41:50.783Z</pzpm:publish-date>
-            <ex:playout-id>e5fdaa88-7eb3-4e20-8602-1d94030d2bcd</ex:playout-id>
-            <!-- other metadata -->
-        </manifest-metadata>
-        <!-- UTC timezone -->
-        <start>2013-10-16T12:41:50.783Z</start>
-        <state>PLAY</state>
-        <!--<state>STOP</state>-->
-        <!--<state>NO_CONTENT</state>-->
-        <!--<state>SYSTEM</state>-->
-        <!--<state>MIRE</state>-->
-        <!--<state>FAILSOFT_CLEANUP</state>-->
-        <!--<state>FAILSOFT</state>-->
-        <messages>
-            <message>
-                <!--severity can be INFO, WARN, ERROR-->
-                <severity>INFO</severity>
-                <!--subject can be SYSTEM, NETWORK, FILESYSTEM OR PLAYOUT-->
-                <subject>SYSTEM</subject>
-                <!--description is free and in english-->
-                <description></description>
-                <!--date in UTC timezone-->
-                <date>2013-10-16T12:41:50.783Z </date>
-            </message>
-        </messages>
-    </launcher>
-    <screens>
-        <screen>
-            <state>on</state>
-        </screen>
-        <screen>
-            <state>off</state>
-        </screen>
-    </screens>
-    <commands>
-        <command>
-            <urn>urn:innes:owl:display-cmd:1#standby</urn>
-            <arguments>
-                <argument>
-                    <value>true</value>
-                    <type>xsd:boolean</type>
-                </argument>
-            </arguments>
-        </command>
-    </commands>
-    <downloader>
-        <!-- metadata extracted from the manifest -->
-        <manifest-metadata xmlns:pzpm="ns.innes.playzilla.manifest" xmlns:ex="ns.innes.example">
-            <pzpm:publish-id>e5fdaa88-7eb4-5653-a456-165984135795</pzpm:publish-id>
-            <pzpm:publish-size>654681689</pzpm:publish-size>
-            <pzpm:publish-generator>Screen Composer</pzpm:publish-generator>
-            <pzpm:publish-date>2013-10-17T14:41:50.783Z</pzpm:publish-date>
-            <ex:playout-id>e5fdaa88-7eb3-4e20-8602-1d94030d2bcd</ex:playout-id>
-        </manifest-metadata>
-        <!-- UTC timezone -->
-        <start>2013-10-16T14:41:50.783Z</start>
-        <!-- double between 0 and 1 -->
-        <progress>0.8</progress>
-        <!-- octet/s -->
-        <bitrate>1111</bitrate>
-        <!--state is an enum and can be : MANIFEST, INTERNAL_RESOURCES, EXTERNAL_RESOURCES, TERMINATED-->
-        <state>INTERNAL_RESOURCES</state>
-        <messages>
-            <message>
-                <!--severity can be INFO, WARN, ERROR-->
-                <severity>ERROR</severity>
-                <!--subject can be SYSTEM, NETWORK, FILESYSTEM OR PLAYOUT-->
-                <subject>NETWORK</subject>
-                <!--description is free and in english-->
-                <description>HTTP 404 on .medias/monImage.jpg</description>
-                <!--date in UTC timezone-->
-                <date>2013-10-16T12:41:50.783Z </date>
-            </message>
-        </messages>
-    </downloader>
-</status>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<device-status xmlns="ns.innes.device-status">
+    <device>
+        <id-type>MAC</id-type>
+        <mac>00-1c-e6-02-25-7f</mac>
+        <hostname>00912-01394</hostname>
+        <uuid>05b001ea-0000-0000-0000-001ce602257f</uuid>
+        <modelName>dmb400</modelName>
+        <modelNumber>4.12.10</modelNumber>
+        <serialNumber>00910-00490</serialNumber>
+        <middleware>gekkota-4</middleware>
+        <field1></field1>
+        <field2></field2>
+        <field3></field3>
+        <field4></field4>
+        <field5></field5>
+        <ip-addresses>
+            <ip-address>
+                <if-type>LAN</if-type>
+                <origin>dhcp</origin>
+                <value>192.168.1.124/17</value>
+            </ip-address>
+            <ip-address>
+                <if-type>LAN</if-type>
+                <origin>auto</origin>
+                <value>fc00::21c:e6ff:fe02:257f/64</value>
+            </ip-address>
+        </ip-addresses>
+        <addons/>
+    </device>
+    <status>
+        <date>2019-07-04T14:03:23.397783+02:00</date>
+        <launcher>
+            <power-manager level="MAX"/>
+            <start>2019-06-21T09:10:10Z</start>
+            <manifest-metadata xmlns:cms="ns.innes.custom">
+                <cms:app-name>custom</cms:app-name>
+                <cms:app-version>1.10.10</cms:app-version>
+            </manifest-metadata>
+            <state>PLAY</state>
+        </launcher>
+        <storage>
+            <total unit="byte">15695020032</total>
+            <used unit="byte">44486656</used>
+        </storage>
+        <display-outputs>
+            <display-output>
+                <connector-id>hdmi_2</connector-id>
+                <connector-label>HDMI1 OUT</connector-label>
+                <connected>true</connected>
+                <screens>
+                    <screen>
+                        <manufacturer-id>SAM</manufacturer-id>
+                        <product-name>SAMSUNG</product-name>
+                        <product-code>A7D</product-code>
+                        <serial-number>00000001</serial-number>
+                        <power-mode>ON</power-mode>
+                        <input-source/>
+                        <is-active-source/>
+                        <cec-version>1.4</cec-version>
+                        <menu-language/>
+                        <manufacturer-OUI>0000F0</manufacturer-OUI>
+                    </screen>
+                </screens>
+            </display-output>
+        </display-outputs>
+        <setup/>
+    </status>
 </device-status>
 ````
 
@@ -414,11 +344,71 @@ This state deals with the downloading of the resources of the the manifest cache
 
 This state deals with the finalization of which was downloaded (eg. purge) before playing new content.
 
-### Element <*screens*>
+### Element <*display-outputs*> 
 
-This element contains informations about the screens connected to the device.
+This element contains information about the display outputs of the device.
+
+#### Element <*display-output*>
+
+This element contains information about a display output of the device.
+
+##### Element <*connector-id*>
+
+This element contains the connector identifier related to the display output.
+
+##### Element <*connector-label*>
+
+This element contains the connector label related to the display output.
+
+##### Element <*connected*>
+
+This element indicates if a screen is connected to the connector of the related display output 
+
+##### Element <*screens*>
+
+This element contains information about the screens connected to the device.
+
+###### Element <*screen*>
+
+This element contains information about a screen connected to the device.
+
+####### Element <*manufacturer-id*>
+
+This element contains the screen manufacturer identifier.
+ 
+####### Element <*product-name*>
+
+This element contains the screen product name.
+
+####### Element <*product-code*>
+
+This element contains the screen product code.
+
+####### Element <*serial-number*>
+
+This element contains the screen serial number.
+
+####### Element <*power-mode*>
+
+This element contains the current power mode of the screen.
+
+####### Element <*input-source*>
+
+This element contains the current input source of the screen.
+
+####### Element <*cec-version*>
+
+This element contains the cec version of the screen. This element is only required if the screen supports HDMI-CEC. 
+
+####### Element <*menu-language*>
+
+This element contains the current menu language of the screen. 
+
+####### Element <*manufacturer-OUI*>
+
+This element contains the screen manufactuer OUI.
 
 ### Element <*commands*>
 
-This element contains informations about the commands run from the device.
+This element contains information about the commands run from the device.
 (eg. standby screen)

@@ -33,8 +33,14 @@ The PPTX slideshow viewer API allows you to play and interract with a PPTX docum
 **system.avCapture:**
 This Audio Video Capture API provides a set of methods to capture input streams.
 
+**system.avcmd:**
+This API allows to send commands to an audio/video device (e.g. TV).
+
 **system.ddcOutput:**
-This API allows to send commands on the DDC bus.
+This API provides communication with the DDC bus through the DDC adapter.
+
+**system.cec:**
+This API provides communication with the CEC bus through the CEC adapter.
 
 **system.generalSettings:**
 This API allows to retrieve general settings for your platform such as the MAC address, the version etc.
