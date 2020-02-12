@@ -371,7 +371,7 @@ Public Attributes
 Detailed Description
 --------------------
 
-Interface XPCOM nsISystemAPBAVCmd the urn of profile is : `urn:innes:owl:av-cmd:1`. For the examples, set the configuration of your platform following the instructions in the avcmd\_brightness\_configuration.js and avcmd\_power\_configuration.js files. Once it is done, you can find the examples here : [avcmd\_brightness\_example.html [avcmd\_power\_example.html.](avcmd_power_example.html)](avcmd_brightness_example.html)
+Interface XPCOM nsISystemAPBAVCmd the urn of profile is : `urn:innes:owl:av-cmd:1`. For the examples, set the configuration of your platform following the instructions in the avcmd\_brightness\_configuration.js and avcmd\_power\_configuration.js files. Once it is done, you can find an example [here.](avcmd_brightness_example.html)
 
 **Build note**: You need to execute the **build.cmd** file to generate the boostrap app. Otherwise there will be a mismatch between the html file name and the one the manifest tries to launch. Find more information in *SDK-G4/bootstrap App/* documentation.
 
