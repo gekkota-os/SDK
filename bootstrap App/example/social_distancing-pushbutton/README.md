@@ -20,7 +20,7 @@ Please respect social distancing measures
 It can run with any tablet or media player `Qeedji` device embedding `Gekkota OS 4.yy.zz`.
 
 The WPAN is not supported by default on the `Qeedji` media player or `Qeedji` tablet. So a `WPAN to USB` adapter needs to be provided to work with this App. For further information, contact sales@qeedji.tech.
-`EnOcean` device example: `PTM 215B` push button. For further information, contact sales@qeedji.tech
+`EnOcean` device example: `PTM 215B` push button. For further information, contact sales@qeedji.tech.
 
 ## App configuration
 
