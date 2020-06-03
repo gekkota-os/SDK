@@ -1,0 +1,22 @@
+{
+   "src_dir":"./Data/",
+   "dst_dir":"./Dst/",
+   "nb_file":120,
+	"dst_file":"./dst_rules.csv",
+	"write_rule_file":"./write_rules.csv",
+	"skip_today":true,
+	"file_edit_only_on_diff":true,
+	"file_no_edit_gzip":true,
+	"file_fix_modtime":true,
+	"verbose":false,
+   "must_have_dst":false,
+	"add_dst_chain_dir":false,
+	"add_dst_site_dir":true,
+	"dst_chain_site_after":">>",
+	"write_entry_sum":true,
+	"write_exit_sum":false,
+	"write_crossing_sum":false,
+	"gzip_older_than":2,
+	"gzip_ext_blacklist_src":".jpg,.gz,.zip,.gzip,.size",
+	"periodic_minute":0
+}

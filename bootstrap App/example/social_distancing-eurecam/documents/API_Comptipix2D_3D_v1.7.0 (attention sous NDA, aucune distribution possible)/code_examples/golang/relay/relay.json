@@ -1,0 +1,15 @@
+{
+   "port":8888,
+   "verbose":false,
+   "verbose_cache":false,
+	"web_dir":"./relay_web/",
+	"web_dir_default":"../../../relay_web/",
+	"no_web":false,
+   "cache_time_tkn":600,
+	"cache_time":3,
+	"cache_time_remove":1200,
+	"cache_strip_tkn":true,
+	"timeout":10,
+	"srv_read_timeout":40,
+	"srv_write_timeout":40
+}

@@ -1,0 +1,17 @@
+{
+   "src_dir":"./Data/",
+   "dst_dir":"./Dst/",
+   "nb_file":250,
+	"data_resolution":1800,
+	"skip_today":false,
+	"verbose":true,
+   "use_enabled_channel":true,
+	"use_access_channel":false,
+	"use_all_channel":false,
+	"gzip_older_than":25,
+	"gzip_ext_blacklist_src":".jpg,.gz,.zip,.gzip,.size",
+	"out_strip_header":false,
+	"out_file_end_line":2,
+	"out_file_ext":"zul",
+	"periodic_minute":-1
+}

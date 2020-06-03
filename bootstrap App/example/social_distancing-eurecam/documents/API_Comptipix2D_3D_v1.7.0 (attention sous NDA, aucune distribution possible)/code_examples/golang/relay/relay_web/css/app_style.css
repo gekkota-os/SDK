@@ -1,0 +1,1297 @@
+/* --------------------------
+   Some basic style
+   --------------------------
+*/
+
+/* For oracle */
+html {
+	height: 100%;
+}
+body {
+	min-height: 100%;
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+.footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	min-height: 5vh;
+	/*border-top-style: dotted;
+	border-top-width: 1px;
+	border-top-color: #181818;*/
+	background-color: #D12023;
+	color: #fff;
+}
+
+.img-footer {
+	vertical-align: middle;
+	height: 35px;
+	width: 35px;
+}
+/* force image reduce < 700px (43.75em)*/
+@media (max-height: 43.75em) {
+	.img-footer {
+		vertical-align: middle;
+		height: 25px;
+		width: 25px;
+	}
+}
+/* force image reduce < 500px (31.25em)*/
+@media (max-height: 31.25em) {
+	.img-footer {
+		vertical-align: middle;
+		height: 17px;
+		width: 17px;
+	}
+}
+
+.align-left-no {
+	position: absolute;
+	left: 0.25em;
+	bottom:0;
+}
+
+.parent-align-center {
+	display: flex; /* contexte sur le parent */
+	flex-direction: column; /* direction d'affichage verticale */
+	justify-content: center; /* alignement vertical */
+
+	display: flex;
+	min-height: 48vh;
+}
+
+.color-entries {
+	background-color: #FFC000;
+	color: rgb(18, 18, 18);
+	border-color: #fff;
+	/*margin: 3px;*/
+}
+
+.color-exits {
+	background-color: #9DC3E6;
+	color: rgb(18, 18, 18);
+	border-color: #fff;
+	/*margin: 3px;*/
+}
+
+.color-occ {
+	background-color: #D12023;
+	color: rgb(255, 255, 255);
+	border-color: #fff;
+	/*margin: 3px;*/
+}
+
+.color-black {
+	background-color: rgb(17, 9, 9);
+	color: rgb(255, 255, 255);
+	/* border-color: #fff; */
+	/*margin: 3px;*/
+}
+
+.color-settings {
+	color: hsl(358, 93%, 63%);
+}
+
+.color-demo {
+	color: #0078E7;
+}
+
+
+/* Change default box-sizing compute mode */
+* {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+#app_infos_general_serial
+{
+	vertical-align: text-top;
+}
+
+body {
+	color: #777;
+}
+
+input:invalid {
+	box-shadow: 0 0 5px 1px red;
+}
+
+input:focus:invalid {
+	outline: none;
+}
+
+/* add cursor: pointer on input it make sense */
+select {
+	cursor: pointer;
+}
+input[type='checkbox'] {
+	cursor: pointer;
+}
+input[type='radio'] {
+	cursor: pointer;
+}
+
+/* Class to mark an element disabled an disalow click on it */
+.disabled {
+	pointer-events: none;
+	opacity: 0.4;
+	cursor: not-allowed !important;
+}
+html.disabled * {
+	cursor: not-allowed !important;
+}
+
+/* Explicitly disable mobile browser odd functionnality on element (300ms delay, double tap is captured for zooming only) */
+.touch-action-manipulation {
+	touch-action: manipulation;
+}
+.touch-action-none {
+	touch-action: none;
+}
+
+/* when a p is inside  pure control group : apply it the same indent as other control */
+.pure-control-group p {
+	margin-left: 10em;
+}
+@media (max-width: 30em) {
+	.pure-control-group p {
+		margin-left: 1em;
+	}
+}
+
+.max-width-70 {
+	max-width: 70em;
+	margin-left: auto !important;
+	margin-right: auto !important;
+}
+.width-12 {
+	width: 12em !important;
+}
+.width-10 {
+	width: 10em !important;
+}
+.width-8 {
+	width: 8em !important;
+}
+.margin-top-0-1 {
+	margin-top: 0.1em !important;
+}
+.margin-top-0-3 {
+	margin-top: 0.3em !important;
+}
+.margin-top-1 {
+	margin-top: 1em;
+}
+.margin-top-1-6 {
+	margin-top: 1.6em;
+}
+.margin-side-0-1 {
+	margin: 0.1em !important;
+}
+.margin-1 {
+	margin: 1em 1em 1em 1em;
+}
+.margin-bottom-1-5 {
+	margin-bottom: 1.5em;
+}
+.padding-top-1-6 {
+	padding-top: 1.6em;
+}
+.height-50vh {
+	height: 50vh;
+}
+
+
+/* force width to 3.3 when screen < 1620px (101em)*/
+.width-3-under-101 {
+}
+@media (max-width: 101em) {
+	.width-3-under-101 {
+		width: 3.3em !important;
+	}
+}
+
+/* force width to 10 when screen > 1028px and < 1174px */
+.width-10-under-64-73 {
+}
+@media (min-width: 64em) and (max-width: 73em) {
+	.width-10-under-64-73 {
+		width: 10em !important;
+	}
+}
+
+/* No print class */
+@media print {
+	.dont-print {
+		display: none;
+	}
+}
+
+/*
+ * A warning message div with border
+ */
+.warning-message {
+	background: #CA5550;
+	color: #FFF;
+	border: 0.5em solid;
+	border-color: #C0514C;
+	width: 95%;
+}
+
+.warning-message-orange {
+	background: #ffcc80;
+	color: #e65100;
+	border: 0.5em solid;
+	border-color: #ffa726;
+	width: 95%;
+}
+
+.warning-message-yellow {
+	background: #fff9c4;
+	color: #777;
+	border: 0.5em solid;
+	border-color: #ffcc80;
+	width: 95%;
+}
+
+/* add this class to a div containing another div : if the content is bigger than screen it will add scrollbar */
+.container-scroll {
+	overflow: auto;
+}
+
+.info-table {
+	margin-top: 1em;
+	margin-bottom: 1em;
+	min-width: 15em;
+	overflow: auto;
+}
+.info-table th {
+	text-align: center;
+}
+
+.save_menu {
+	margin-top: 2em;
+}
+
+.x70 {
+	font-size: 70%;
+}
+.x75 {
+	font-size: 75%;
+}
+.x125 {
+	font-size: 125%;
+}
+.x150 {
+	font-size: 150%;
+}
+.x300 {
+	font-size: 300%;
+}
+.x400 {
+	font-size: 400%;
+}
+.x500 {
+	font-size: 500%;
+}
+
+.font-weight-400 {
+	font-weight: 400;
+}
+.font-weight-600 {
+	font-weight: 600;
+}
+.border-bottom-dotted {
+	border-bottom: 1px dotted;
+}
+
+/* unselectable text */
+.no-select {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+/* not draggable element */
+.no-drag {
+	user-drag: none;
+	-webkit-user-drag: none;
+}
+
+.small-border-bottom-home {
+	border-bottom: 1px solid #607d8b;
+}
+.small-border-bottom-white {
+	border-bottom: 1px dashed #FFFFFF;
+}
+
+/* TODO add media query for gauge and donut */
+.gauge-big {
+	width: 20em;
+	height: 13.125em;
+	display: inline-block;
+	margin-top: -4em;
+}
+@media (min-width: 64em) {
+	.gauge-big {
+		width: 30em;
+		height: 18.125em;
+	}
+}
+.gauge {
+	width: 20em;
+	height: 13.125em;
+	display: inline-block;
+	margin-top: -3em; /* because we don't use title on gauge and we don't want to let space for a title */
+}
+.gauge-small {
+	width: 13em;
+	height: 13.125em;
+	display: inline-block;
+	margin-top: -1em; /* because we don't use title on gauge and we don't want to let space for a title */
+}
+
+.donut {
+	width: 20em;
+	display: inline-block;
+	margin-top: -3em; /* because we don't use title on gauge and we don't want to let space for a title */
+}
+.donut-small {
+	width: 13em;
+	display: inline-block;
+	margin-top: -1.2em; /* because we don't use title on gauge and we don't want to let space for a title */
+}
+
+.pure-table,
+.pure-button {
+	letter-spacing: 0em; /* fix bizarre letter alignement in pure-table */
+}
+@media (min-width: 30.001em) {
+	.pure-button {
+		margin: 0 1.25em; /* apply same alignement s other control in pure-control-group */
+	}
+}
+
+.align-center {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	letter-spacing: 0em; /* fix bizarre letter alignement in pure-table */
+}
+.align-right {
+	position: absolute;
+	right: 0.25em;
+}
+.align-left {
+	position: absolute;
+	left: 0.25em;
+}
+.margin-auto {
+	margin: auto;
+}
+.v-align-txt-bottom {
+	vertical-align: text-bottom;
+}
+.v-align-txt-center {
+	vertical-align: text-center;
+}
+
+.no_button {
+	outline: 0;
+	background: none;
+	border: 0;
+}
+
+.w100 {
+	width: 100%;
+}
+.w50 {
+	width: 50%;
+}
+.w25 {
+	width: 25%;
+}
+.w14 {
+	width: 10%;
+}
+
+.height-12em {
+	height: 12em;
+}
+
+.overflow-x-scroll {
+	overflow-x: scroll;
+}
+
+.noborder,
+.noborder tr,
+.noborder th,
+.noborder td {
+	border: none;
+}
+.noborder_left,
+.noborder_left tr,
+.noborder_left th,
+.noborder_left td {
+	border-left: none;
+}
+.noborder_right,
+.noborder_right tr,
+.noborder_right th,
+.noborder_right td {
+	border-right: none;
+}
+
+.nobullet_li,
+.nobullet_li li,
+.nobullet_li ul {
+	list-style-type: none !important;
+	list-style: none !important;
+}
+
+.little-margin {
+	margin: 1em 0.5em;
+}
+.little-padding {
+	padding: 0.5em 0.5em 0.5em 0.5em;
+}
+.padding-top-one {
+	padding-top: 1.5em;
+}
+
+.no-margin {
+	margin: 0em 0em 0em 0em;
+}
+.no-top-margin {
+	margin: 0em 0em 1em 0em;
+}
+
+.no-indent {
+	text-indent: 0em;
+}
+
+.no_txt_decoration {
+	text-decoration: none;
+}
+
+.striped_err {
+	color: #1A1A1A;
+	background: repeating-linear-gradient(
+		-55deg,
+		#FC3E5F,
+		#FC3E5F 0.625em,
+		#FF858C 0.625em,
+		#FF858C 1.25em
+	);
+}
+
+.bold {
+	font-weight: bold;
+}
+.italic {
+	font-style: italic;
+}
+
+/* content to stay inline */
+.nowrap {
+	white-space: nowrap;
+}
+
+.input_err {
+	background: #FFE5E5;
+	box-shadow: 0 0 0.31em 0.06em red !important; /* force override pure style */
+}
+.input_err:focus {
+	border-color: #E9322D !important; /* force override pure style */
+	color: #B94A48;
+}
+
+/* --------------------------
+   Some more form style
+   --------------------------
+*/
+
+.form-content {
+	margin-left: auto;
+	margin-right: auto;
+	padding-left: 1em;
+	padding-right: 1em;
+	max-width: 48em; /* 768px */
+}
+.form-padding {
+	padding-left: 1.25em;
+	padding-right: 1.25em;
+}
+
+/* --------------------------
+   Some more button style
+   --------------------------
+*/
+
+.button-success,
+.button-error,
+.button-warning,
+.button-secondary {
+	color: white;
+	border-radius: 0.25em;
+	text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.button-success {
+	background: #1CB841; /* this is a green */
+}
+
+.button-error {
+	background: #FC3E5F; /* this is a maroon */
+}
+
+.button-warning {
+	background: #DF7514; /* this is an orange */
+}
+
+.button-secondary {
+	background: #42B8DD; /* this is a light blue */
+}
+
+/* --------------------------
+   Simple cursor helper
+   --------------------------
+*/
+
+/* to add if we want to change cursor to link */
+.cursor-pointer {
+	cursor: pointer;
+}
+
+/* to add if we want to change cursor to helper */
+.cursor-help {
+	cursor: help;
+}
+/* use a special namespace for hint tooltip (so app_dom set_hint can remove this class without messing other presentation rules) */
+.hint-cursor-help {
+	cursor: help;
+}
+
+/* --------------------------
+   Layout and content
+   --------------------------
+*/
+
+/* This is the parent `<div>` that contains the menu and the content area. */
+#app_layout {
+	position: relative;
+	padding-left: 0;
+	z-index:2;
+	background-color:#FFFFFF;
+}
+#app_layout.active {
+	position: relative;
+/*
+	left: 10em;
+*/
+}
+#app_layout.active #app_menu {
+	left: 10em; /* 160px */
+	width: 10em; /* 160px */
+}
+#app_layout.active .menu-link {
+	left: 14em; /* 160px +4em width */
+}
+
+#app_infos_general {
+	padding: 0.1em 0.9em;
+	color: #FFFFFF;
+	background-color: #000000;
+	border-bottom: 1px solid #DFDFDF;/*1px solid #333;*/
+}
+
+/* The content `<div>` is where all your content goes. */
+/*
+.content {
+	margin: 0 auto;
+	padding: 0 2em;
+	max-width: 800px;
+	margin-bottom: 50px;
+	line-height: 1.6em;
+*/
+/*
+	margin-left: auto;
+	margin-right: auto;
+*/
+/*
+}
+*/
+.padding-top-fixed-header {
+	padding-top: 5em;
+}
+/* header-fixed will be added by JS when page is scrolled */
+.header-fixed {
+	transition: font 0.5s ease-in-out;
+	transition: opacity 0.5s ease-in-out;
+	padding: 0.1em 2em !important; /* because header_fixed will override header rules */
+	opacity: 0.85;
+	position: fixed;
+	z-index: 99;
+	width: 100%;
+	margin-left: 0em !important;/* because header_fixed will override header rules */
+	font-size: 1.42em !important;/* because header_fixed will override header rules */
+	will-change: opacity;
+	height: 1.45em;
+	box-shadow: 0 0 0.5em #0F0F0F;/* In material design guide rules only when scrolled header will have a litle shadow */
+}
+.header {
+	transition: font 0.25s ease-in-out;
+	transition: opacity 0.25s ease-in-out;
+	margin: 0em 0em 0.5em;
+	color: #fff;
+	text-align: center;
+	padding: 0.5em 2em 0.5em; /* NOTE: if changing this value you must change on_scroll break point that add header-fixed */
+	font-size: 1.5em;
+	will-change: opacity;
+}
+.header h1 {
+	margin: 0.2em 0;
+	font-weight: 300;
+	padding: 0.3em 2em 0px;
+}
+.header h2 {
+	font-weight: 300;
+	color: #ccc;
+	padding: 0;
+	margin-top: 0;
+}
+
+.sub-header {
+	margin: 0em 0em 0em;
+	color: #fff;
+	text-align: center;
+	padding: 0.5em 2em 0.5em;
+/*
+	padding: 0.5em 2em 0.5em;
+*/
+}
+.sub-content {
+	padding-top: 1em;
+	padding-bottom: 1.5em;
+}
+
+/* --------------------------
+   Main Navigation Bar Styles
+   --------------------------
+*/
+
+/* Add transition to containers so they can push in and out */
+#app_layout,
+#app_menu,
+.menu-link {
+	transition: all 0.2s ease-out;
+}
+
+/*
+The `#app_menu` `<div>` is the parent `<div>` that contains the `.pure-menu` that
+appears on the left side of the page.
+*/
+#app_menu {
+	margin-left: -10em; /* 160px; == #app_menu width */
+	width: 10em; /* 160px; */
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	z-index: 1000; /* so the app_menu or its navicon stays above all content */
+	background: #191818;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+}
+
+/*
+All anchors inside the app_menu should be styled like this.
+*/
+#app_menu a {
+	color: #999;
+	border: none;
+	padding: 0.2em 0 0.4em 0.4em;
+}
+
+/*
+Remove all background/borders, since we are applying them to #app_menu.
+*/
+#app_menu .pure-menu,
+#app_menu .pure-menu ul {
+	border: none;
+	background: transparent;
+}
+
+/*
+Add that light border to separate items into groups.
+*/
+#app_menu .pure-menu ul,
+#app_menu .pure-menu .menu-item-divided {
+	border-top: 1px solid #333;
+}
+
+/*
+Change color of the anchor links on hover/focus.
+*/
+#app_menu .pure-menu li a:hover,
+#app_menu .pure-menu li a:focus {
+	background: #333;
+	transition: all 0.6s ease-in-out 0s;
+}
+
+/*
+This styles the menu heading.
+*/
+#app_menu .pure-menu-heading {
+	background: #000;
+}
+#app_menu .pure-menu-heading {
+	font-size: 105%;
+	font-weight: 300;
+	letter-spacing: 0.1em;
+	color: #fff;
+	margin: 0;
+	padding: 0.5em 0.8em;
+}
+/*
+#app_menu .pure-menu-heading:hover,
+#app_menu .pure-menu-heading:focus {
+	color: #4B6F8C;
+}
+*/
+
+/*
+This styles a link within a selected menu item `<li>`.
+*/
+#app_menu .pure-menu-selected a {
+	color: #fff;
+}
+
+/*
+Item selected style
+*/
+#app_menu .pure-menu-selected a {
+	background: #607D8B;
+}
+/* don't change selected menu background-color on over/focus */
+#app_menu li.pure-menu-selected a:hover,
+#app_menu li.pure-menu-selected a:focus {
+	background: #607D8B;
+	transition: all 0.8s ease-in-out 0s;
+}
+
+/*
+This styles the menu open mode.
+*/
+#app_menu .pure-menu-open {
+	background: transparent;
+	border: 0;
+}
+
+/*
+This menu heading inside menu app left
+This erase and overload some default pure-menu-heading styling
+*/
+#app_menu .pure-menu-heading {
+	font-size: 100%;
+	font-weight: 400;
+	letter-spacing: 0em;
+}
+
+/* -- Dynamic Button For Responsive Menu -------------------------------------*/
+
+/*
+The button to open/close the Menu is custom-made and not part of Pure. Here's
+how it works:
+*/
+
+/*
+`.menu-link` represents the responsive menu toggle that shows/hides on
+small screens.
+*/
+.menu-link {
+	position: fixed;
+	display: block; /* show this only on small screens */
+	top: 0;
+	left: 0; /* #app_menu width */
+	background: transparent;
+	background: rgba(0,0,0,0.7);
+	font-size: 0.6875em; /* change this value to increase/decrease button size */
+	z-index: 1000;
+	width: 4em;
+	height: 3em;/*4em;*/
+	padding: 1em;
+}
+
+.menu-link:hover,
+.menu-link:focus {
+	background: #000;
+}
+
+.menu-link span {
+	position: relative;
+	display: block;
+	margin-top: 0.5em;/*0.9em;*/
+}
+
+.menu-link span,
+.menu-link span:before,
+.menu-link span:after {
+	background-color: #fff;
+	width: 100%;
+	height: 0.2em;
+}
+
+.menu-link span:before,
+.menu-link span:after {
+	position: absolute;
+	margin-top: -0.6em;
+	content: " ";
+}
+
+.menu-link span:after {
+	margin-top: 0.6em;
+}
+
+/* Add smooth transition for button show/hide app_menu */
+.menu-link span,
+.menu-link span:before,
+.menu-link span:after {
+	background-color: #fff;
+	width: 100%;
+	height: .2em;
+	transition: all 0.5s ease-in-out;
+}
+.menu-link.active span {
+	background: transparent;
+}
+.menu-link.active span:before {
+	transform: rotate(45deg) translate(.5em, .4em);
+}
+.menu-link.active span:after {
+	transform: rotate(-45deg) translate(.4em, -.3em);
+}
+
+
+/* -- Responsive Styles (Media Queries) ------------------------------------- */
+
+@media (max-width: 30em) {
+	fieldset {
+		margin-left: 0.6em !important;
+	}
+}
+
+/*
+	When menu is present `48em`
+*/
+@media (max-width: 48em) {
+	.align-left {
+		position: absolute;
+		left: 0.25em;
+	}
+}
+
+/*
+	Hides the menu at `54em` ( = 864px )
+*/
+@media (min-width: 54em) {
+	.header,
+	.content {
+		padding-left: 2em;
+		padding-right: 2em;
+	}
+	#app_layout {
+		padding-left: 10em; /* 160px == left col width #app_menu */
+		left: 0;
+	}
+	#app_menu {
+		left: 10em; /* 160px */
+	}
+	.menu-link {
+		position: fixed;
+		left: 10em; /* 160px */
+		display: none;
+	}
+	#app_layout.active .menu-link {
+		left: 14em; /* 160px +4em width */
+	}
+	.align-left {
+		position: absolute;
+		left: 12em;
+		padding-left: 1em;
+	}
+	.header-fixed {
+		margin-left: -3em !important; /* because there is no more left menu bar */
+		height: 1.38em; /* to be exactly at same height as Serial number diaplay */
+	}
+}
+
+/*
+	Very small screen :
+	- Reduce icon size
+	- Remove home table marging
+	- Decrease padding
+	- Form legend and p without margin
+*/
+@media (max-width: 35.5em) {
+	/* diminue size of big icon in home (x400) */
+	.home-table .x400 {
+		font-size: 300%;
+	}
+
+	/* Remove home table marging and decrease padding */
+	.home-table {
+		margin: 0;
+		padding: 0 0 0;
+	}
+	/* Decrease sub-title padding */
+	.home-table-sub-title {
+		padding-top: 0.5em;
+		padding-bottom: 0.5em;
+	}
+	/* Decrease h2 padding */
+	.home-table-header h2 {
+		padding-top: 1em;
+		padding-bottom: 1em;
+	}
+
+	.info-table {
+		min-width: 15em; /* == 250px; */
+	}
+
+	p {
+		margin: 1em 0.6em;
+	}
+	h5 {
+		margin: 1em 0em;
+	}
+
+	.content_ul_marging {
+		margin: 1em 0em;
+	}
+
+	.pure-form-aligned legend {
+		text-indent: 0em;
+	}
+}
+
+/*
+	All screen execpt very small screen :
+	- Add table marging
+	- increase padding
+	- increase form legend and p margin
+*/
+@media (min-width: 35.5em) {
+	/* Add home table marging */
+	.home-table {
+		margin: 0 0.5em 2em;
+	}
+	.x400 {
+		font-size: 400%;
+	}
+	/* Increase sub-title padding */
+	.home-table-sub-title {
+		padding-top: 2em;
+		padding-bottom: 2em;
+	}
+	/* Increase h2 padding */
+	.home-table-header h2 {
+		padding-top: 2em;
+		padding-bottom: 2em;
+	}
+
+	.info-table {
+		min-width: 17,5em; /* 280px; */
+	}
+
+	p {
+		margin: 1em 1em;
+	}
+	h5 {
+		margin: 1em 1em;
+	}
+
+	.content_ul_marging {
+		margin: 1em 2em;
+	}
+
+	.pure-form-aligned legend {
+		text-indent: 10em;
+	}
+	.pure-form-stacked .no-indent legend {
+		text-indent: 0em;
+	}
+}
+
+/*
+	Screen ≥ 1024px
+	 - increase info table min size
+	 - increase p marging
+*/
+@media (min-width: 64em) {
+	.info-table {
+		min-width: 18em;
+	}
+
+	p {
+		margin: 1em 2em;
+	}
+	h5 {
+		margin: 1em 2em;
+	}
+
+	.content_ul_marging {
+		margin: 1em 3em;
+	}
+}
+
+/*
+	Screen ≥ 1280px
+	 - increase info table min size
+	 - increase p marging
+*/
+@media (min-width: 80em) {
+	.info-table {
+		min-width: 31,25em; /* 500px; */
+	}
+
+	p {
+		margin: 1em 3em;
+	}
+	h5 {
+		margin: 1em 3em;
+	}
+}
+
+/*
+	All screen execpt very small screen :
+	- Add table marging
+	- increase padding
+*/
+@media (max-width: 767px) {
+	.table-responsive {
+		width: 100%;
+		margin-bottom: 0.8em; /* ~15px; */
+		overflow-y: hidden;
+		overflow-x: scroll;
+		-ms-overflow-style: -ms-autohiding-scrollbar;
+		border: 1px solid #DDD;
+		-webkit-overflow-scrolling: touch;
+	}
+}
+
+.hide-screen-30 {
+ /* nothing: just display as normal */
+}
+/*
+	All screen execpt very small screen
+*/
+@media (max-width: 30em) {
+	.hide-screen-30 {
+		display:none;
+	}
+}
+.show-screen-30 {
+ /* nothing: just display as normal */
+}
+/*
+	All small screen
+*/
+@media (min-width: 30.01em) {
+	.show-screen-30 {
+		display:none;
+	}
+}
+
+.hide-screen-40 {
+ /* nothing: just display as normal */
+}
+/*
+	All screen execpt small screen
+*/
+@media (max-width: 40em) {
+	.hide-screen-40 {
+		display:none;
+	}
+}
+.hide-screen-50 {
+ /* nothing: just display as normal */
+}
+/*
+	All screen execpt small screen
+*/
+@media (max-width: 50em) {
+	.hide-screen-50 {
+		display:none;
+	}
+}
+
+.hide-screen-64-82 {
+ /* nothing: just display as normal */
+}
+/*
+	All screen execpt small screen
+*/
+@media (min-width: 64em) and (max-width: 82em) {
+	.hide-screen-64-82 {
+		display:none;
+	}
+}
+
+
+/*	-- HOME TABLE  --
+	Every home table has the .home-table class
+*/
+
+.home-table {
+/*	max-width: 1200px; padding: 0 0 3em; margin: 0 auto;*/   /* to limit the max width of the home grid */
+/*	border: 1px solid #ddd; */
+/*	margin-bottom: 3.125em; */
+	text-align: center;
+}
+.home-table-button {
+	margin-bottom: 3.125em;
+}
+
+/* NOTE: for home table color see colors.css */
+
+
+/*	-- HOME TABLE HEADER --
+	By default, a header is black/white, and has some styles for its <h2> name.
+*/
+.home-table-header {
+	color: #fff;
+	height: 11.6em; /* for multi line header don't be higher than other */
+	overflow-y: hidden;
+	overflow-x: hidden;
+}
+.home-table-header h2 {
+	margin: 0;
+	font-size: 1em;
+	font-weight: 600;
+}
+/*
+	All except small screen
+*/
+@media (min-width: 35.5em) {
+	.home-table-header {
+		height: 14.6em;
+	}
+	.header {
+		font-size: 1.7em;
+	}
+}
+/*
+.home-table-header:hover {
+}
+*/
+
+/*	-- HOME TABLE ICON --
+	Styles for the icon and the corresponding <span>per month</span>
+*/
+.home-table-sub-title {
+	padding: 1.5em 0;
+	display: block;
+	text-transform: uppercase;
+	font-weight: 400;
+	margin: 0;
+}
+
+.home-table-sub-title ul {
+	padding:0;
+	margin:0;
+}
+
+.home-table-sub-title li {
+	display: block;
+	text-transform: uppercase;
+	font-weight: 400;
+}
+
+/*	-- HOME TABLE LIST --
+	Each home table has a <ul> which is denoted by the .home-table-list class
+*/
+.home-table-list {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	transition: all 0.5s ease;
+}
+
+/*	-- HOME TABLE LIST ELEMENTS --
+	Styles for the individual list elements within each home table
+*/
+.home-table-list li {
+	padding: 0.8em 0;
+	background: #f7f7f7;
+	border-bottom: 1px solid #e7e7e7;
+	transition: all 0.5s ease;
+}
+
+/*	-- HOME TABLE BUTTON --s
+	Styles for the 'Choose' button at the bottom of a pricing table.
+	This inherits from Pure Button.
+*/
+.button-choose {
+	border: 1px solid #ccc;
+	background: #fff;
+	color: #333;
+	border-radius: 2em;
+	font-weight: bold;
+	position: relative;
+	bottom: -1.5em;
+}
+.information-head {
+	color: black;
+	font-weight: 500;
+}
+
+.table-responsive {
+	width: 100%;
+	margin-bottom: 0.8em; /* ~15px; */
+	overflow-y: hidden;
+	overflow-x: scroll;
+	-ms-overflow-style: -ms-autohiding-scrollbar;
+	border: 1px solid #DDD;
+	-webkit-overflow-scrolling: touch;
+}
+
+/* --------------------------
+	Footer Module Styles
+	--------------------------
+*/
+
+#footer {
+	background: #111;
+	color: #888;
+	text-align: center;
+	position: fixed;
+	left: 0em;
+	bottom: 0em;
+	max-height: 2em; /* ~33px; */
+	width: 100%;
+	font-size: 0.75em; /* 12px; */
+	z-index: 1;
+	bottom: 0em;
+}
+#footer a {
+	color: #ddd;
+}
+@media (min-width: 48em) {
+	#footer {
+		left: 10em; /* 160px */
+	}
+}
+@media (max-width: 48em) {
+	#footer {
+		left: 0;
+	}
+}

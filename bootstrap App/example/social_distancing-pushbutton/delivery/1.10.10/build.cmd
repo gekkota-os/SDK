@@ -1,0 +1,1 @@
+tar -cf app.tar app.html manifest.xml js images audio

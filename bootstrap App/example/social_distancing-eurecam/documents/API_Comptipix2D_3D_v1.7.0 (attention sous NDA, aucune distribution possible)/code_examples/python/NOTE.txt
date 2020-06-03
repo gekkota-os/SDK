@@ -1,0 +1,2 @@
+Note that this program use python BaseHTTPServer which, at the time of writing, is not a production grade server : use it for debuging not for production !!
+↳ This is a good start example if you want to test http-POST file sending protocol

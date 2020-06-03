@@ -1,0 +1,5 @@
+These files are for demo :
+---
+- app_data_file.js : is a counting + occupancy file parser
+- app_chart.js : is a file ploter (using chart.js) + result parsed by app_data_file.js
+- app_gauge.js : is a gauge plot used to plot occupancy

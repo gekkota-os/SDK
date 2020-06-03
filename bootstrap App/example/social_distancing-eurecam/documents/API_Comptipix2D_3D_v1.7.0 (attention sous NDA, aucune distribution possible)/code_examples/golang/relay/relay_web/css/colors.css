@@ -1,0 +1,890 @@
+/*	-- HOME TABLE HEADER COLORS --
+	Choose a different color based on the type of home table.
+
+	Use material design guideline : http://www.google.com/design/spec/style/color.html#color-color-palette
+
+	One color is ref 500
+	- sub is ref 300
+	- sub1 is ref 200
+	- sub2 is ref 100
+	- sub3 is ref 50
+*/
+
+/* Home */
+.background-home {
+	background: #607d8b;
+}
+.sub-background-home {
+	background: #90a4ae;
+}
+.sub2-background-home {
+	background: #b0bec5;
+}
+.sub3-background-home {
+	background: #cfd8dc;
+}
+.sub4-background-home {
+	background: #eceff1;
+}
+.color-home {
+	color: #607d8b;
+}
+.color-hover-home:hover {
+	color: #607d8b;
+}
+
+.pure-menu .sub-menu-home-selected,
+.pure-menu .sub-menu-home-selected:hover
+.pure-menu .sub-menu-home-selected:focus {
+	background: #607d8b;
+}
+.pure-menu .sub-menu-home-selected a,
+.pure-menu .sub-menu-home-selected a:focus {
+	background: #607d8b;
+	color: #fff;
+}
+.pure-menu .sub-menu-home-unselected a,
+.pure-menu .sub-menu-home-unselected a:hover,
+.pure-menu .sub-menu-home-unselected a:focus {
+	background: #FEFEFE;
+	color: #607d8b;
+}
+
+
+.pure-menu .sub-menu-warning-selected,
+.pure-menu .sub-menu-warning-selected:hover
+.pure-menu .sub-menu-warning-selected:focus {
+	background: #FC3E5F;
+}
+.pure-menu .sub-menu-warning-selected a,
+.pure-menu .sub-menu-warning-selected a:focus {
+	background: #FC3E5F;
+	color: #fff;
+}
+.pure-menu .sub-menu-warning-unselected a,
+.pure-menu .sub-menu-warning-unselected a:hover,
+.pure-menu .sub-menu-warning-unselected a:focus {
+	background: #FEFEFE;
+	color: #FC3E5F;
+}
+
+/* Wizard */
+.background-wizard {
+	background: #CDDC39;
+}
+.sub-background-wizard {
+	background: #dce775;
+}
+.sub2-background-wizard {
+	background: #e6ee9c;
+}
+.sub3-background-wizard {
+	background: #f0f4c3;
+}
+.sub4-background-wizard {
+	background: #f9fbe7;
+}
+.form-wizard legend {
+	border-bottom: 1px solid #CDDC39;
+}
+.color-wizard {
+	color: #CDDC39;
+}
+.color-hover-wizard:hover {
+	color: #CDDC39;
+}
+
+/* Network */
+.background-network {
+	background: #9C27B0;
+}
+.sub-background-network {
+	background: #ba68c8;
+}
+.sub2-background-network {
+	background: #ce93d8;
+}
+.sub3-background-network {
+	background: #e1bee7;
+}
+.sub4-background-network {
+	background: #f3e5f5;
+}
+.form-network legend {
+	border-bottom: 1px solid #9C27B0;
+}
+.color-network {
+	color: #9C27B0;
+}
+.color-hover-network:hover {
+	color: #9C27B0;
+}
+
+/* Date & Hour */
+.background-date_hour {
+	background: #03A9F4;
+}
+.sub-background-date_hour {
+	background: #4fc3f7;
+}
+.sub2-background-date_hour {
+	background: #81d4fa;
+}
+.sub3-background-date_hour {
+	background: #b3e5fc;
+}
+.sub4-background-date_hour {
+	background: #e1f5fe;
+}
+.form-date_hour legend {
+	border-bottom: 1px solid #03A9F4;
+}
+.color-date_hour {
+	color: #03A9F4;
+}
+.color-hover-date_hour:hover {
+	color: #03A9F4;
+}
+
+/* SD card */
+.background-sdcard {
+	background: #FF5722;
+}
+.sub-background-sdcard {
+	background: #ff8a65;
+}
+.sub2-background-sdcard {
+	background: #ffab91;
+}
+.sub3-background-sdcard {
+	background: #ffccbc;
+}
+.sub4-background-sdcard {
+	background: #fbe9e7;
+}
+.form-sdcard legend {
+	border-bottom: 1px solid #FF5722;
+}
+.color-sdcard {
+	color: #FF5722;
+}
+.color-hover-sdcard:hover {
+	color: #FF5722;
+}
+
+/* Sensor */
+.background-sensor {
+	background: #4caf50;
+}
+.sub-background-sensor {
+	background: #81c784;
+}
+.sub2-background-sensor {
+	background: #a5d6a7;
+}
+.sub3-background-sensor {
+	background: #c8e6c9;
+}
+.sub4-background-sensor {
+	background: #e8f5e9;
+}
+.form-sensor legend {
+	border-bottom: 1px solid #4caf50;
+}
+.color-sensor {
+	color: #4caf50;
+}
+.color-hover-sensor:hover {
+	color: #4caf50;
+}
+.pure-menu .sub-menu-sensor-selected,
+.pure-menu .sub-menu-sensor-selected:hover
+.pure-menu .sub-menu-sensor-selected:focus {
+	background: #4caf50;
+}
+.pure-menu .sub-menu-sensor-selected a,
+.pure-menu .sub-menu-sensor-selected a:focus {
+	background: #4caf50;
+	color: #fff;
+}
+.color-sensor-expo-0 {
+	color: #18ffff;
+}
+.color-sensor-expo-1 {
+	color: #e040fb;
+}
+.color-sensor-expo-2 {
+	color: #ff4081;
+}
+.color-sensor-expo-3 {
+	color: #69f0ae;
+}
+
+/* State */
+.background-state {
+	background: #9E9E9E;
+}
+.sub-background-state {
+	background: #e0e0e0;
+}
+.sub2-background-state {
+	background: #eeeeee;
+}
+.sub3-background-state {
+	background: #f5f5f5;
+}
+.sub4-background-state {
+	background: #fafafa;
+}
+.form-state legend {
+	border-bottom: 1px solid #9E9E9E;
+}
+
+/* Sending */
+.background-send {
+	background: #795548;
+}
+.sub-background-send {
+	background: #a1887f;
+}
+.sub2-background-send {
+	background: #bcaaa4;
+}
+.sub3-background-send {
+	background: #d7ccc8;
+}
+.sub4-background-send {
+	background: #efebe9;
+}
+.form-send legend {
+	border-bottom: 1px solid #795548;
+}
+.color-send {
+	color: #795548;
+}
+.color-hover-send:hover {
+	color: #795548;
+}
+#content_send h2 {
+	color: #795548;
+	border-bottom: 2px solid #795548;
+}
+#content_send h3 {
+	color: #795548;
+}
+
+/* Occupancy */
+.background-occupancy {
+	background: #3F51B5;
+}
+.sub-background-occupancy {
+	background: #7986cb;
+}
+.sub2-background-occupancy {
+	background: #9fa8da;
+}
+.sub3-background-occupancy {
+	background: #c5cae9;
+}
+.sub4-background-occupancy {
+	background: #e8eaf6;
+}
+.form-occupancy legend {
+	border-bottom: 1px solid #3F51B5;
+}
+.color-occupancy {
+	color: #3F51B5;
+}
+.color-hover-occupancy:hover {
+	color: #3F51B5;
+}
+
+/* Log  --> for Log we make an exception to color rule (because ref 500 is more like alert style) */
+.background-log {
+	background: #B71C1C;
+}
+.sub-background-log {
+	background: #d32f2f;
+}
+.sub2-background-log {
+	background: #f44336;
+}
+.sub3-background-log {
+	background: #ffcdd2;
+}
+.sub4-background-log {
+	background: #ffebee;
+}
+.form-log legend {
+	border-bottom: 1px solid #B71C1C;
+}
+.color-log {
+	color: #B71C1C;
+}
+.color-hover-log:hover {
+	color: #B71C1C;
+}
+
+.pure-menu .sub-menu-log-counting-selected a,
+.pure-menu .sub-menu-log-counting-selected a:hover,
+.pure-menu .sub-menu-log-counting-selected a:focus {
+	background: #FFC107;
+	color: #fff;
+}
+.pure-menu .sub-menu-log-counting-unselected a,
+.pure-menu .sub-menu-log-counting-unselected a:hover,
+.pure-menu .sub-menu-log-counting-unselected a:focus {
+	background: #FEFEFE;
+	color: #FFC107;
+}
+
+.pure-menu .sub-menu-log-occ-selected a,
+.pure-menu .sub-menu-log-occ-selected a:hover,
+.pure-menu .sub-menu-log-occ-selected a:focus {
+	background: #3F51B5;
+	color: #fff;
+}
+.pure-menu .sub-menu-log-occ-unselected a,
+.pure-menu .sub-menu-log-occ-unselected a:hover,
+.pure-menu .sub-menu-log-occ-unselected a:focus {
+	background: #FEFEFE;
+	color: #3F51B5;
+}
+
+.pure-menu .sub-menu-log-log-selected a,
+.pure-menu .sub-menu-log-log-selected a:hover,
+.pure-menu .sub-menu-log-log-selected a:focus {
+	background: #B71C1C;
+	color: #fff;
+}
+.pure-menu .sub-menu-log-log-unselected a,
+.pure-menu .sub-menu-log-log-unselected a:hover,
+.pure-menu .sub-menu-log-log-unselected a:focus {
+	background: #FEFEFE;
+	color: #B71C1C;
+}
+
+.pure-menu .sub-menu-log-sensor-selected a,
+.pure-menu .sub-menu-log-sensor-selected a:hover,
+.pure-menu .sub-menu-log-sensor-selected a:focus {
+	background: #4caf50;
+	color: #fff;
+}
+.pure-menu .sub-menu-log-sensor-unselected a,
+.pure-menu .sub-menu-log-sensor-unselected a:hover,
+.pure-menu .sub-menu-log-sensor-unselected a:focus {
+	background: #FEFEFE;
+	color: #4caf50;
+}
+
+.pure-menu .sub-menu-log-config-selected a,
+.pure-menu .sub-menu-log-config-selected a:hover,
+.pure-menu .sub-menu-log-config-selected a:focus {
+	background: #607D8B;
+	color: #fff;
+}
+.pure-menu .sub-menu-log-config-unselected a,
+.pure-menu .sub-menu-log-config-unselected a:hover,
+.pure-menu .sub-menu-log-config-unselected a:focus {
+	background: #FEFEFE;
+	color: #607D8B;
+}
+
+.pure-menu .sub-menu-misc-selected a,
+.pure-menu .sub-menu-misc-selected a:hover,
+.pure-menu .sub-menu-misc-selected a:focus {
+	background: #ffeb3b;
+	color: #333333;
+}
+.pure-menu .sub-menu-misc-unselected a,
+.pure-menu .sub-menu-misc-unselected a:hover,
+.pure-menu .sub-menu-misc-unselected a:focus {
+	background: #FEFEFE;
+	color: #83777E;
+}
+.pure-menu .sub-menu-io-selected a,
+.pure-menu .sub-menu-io-selected a:hover,
+.pure-menu .sub-menu-io-selected a:focus {
+	background: #00bcd4;
+	color: #fff;
+}
+.pure-menu .sub-menu-io-unselected a,
+.pure-menu .sub-menu-io-unselected a:hover,
+.pure-menu .sub-menu-io-unselected a:focus {
+	background: #FEFEFE;
+	color: #00bcd4;
+}
+.pure-menu .sub-menu-tools-selected a,
+.pure-menu .sub-menu-tools-selected a:hover,
+.pure-menu .sub-menu-tools-selected a:focus {
+	background: #8bc34a;
+	color: #333333;
+}
+.pure-menu .sub-menu-tools-unselected a,
+.pure-menu .sub-menu-tools-unselected a:hover,
+.pure-menu .sub-menu-tools-unselected a:focus {
+	background: #FEFEFE;
+	color: #83777E;
+}
+
+/* Help */
+.background-help {
+	background: #e91e63;
+}
+.sub-background-help {
+	background: #f06292;
+}
+.sub2-background-help {
+	background: #f48fb1;
+}
+.sub3-background-help {
+	background: #f8bbd0;
+}
+.sub4-background-help {
+	background: #fce4ec;
+}
+.form-help legend {
+	border-bottom: 1px solid #e91e63;
+}
+.color-help {
+	color: #e91e63;
+}
+.color-hover-help:hover {
+	color: #e91e63;
+}
+
+/* Modem */
+.background-modem {
+	background: #673ab7;
+}
+.sub-background-modem {
+	background: #9575cd;
+}
+.sub2-background-modem {
+	background: #b39ddb;
+}
+.sub3-background-modem {
+	background: #d1c4e9;
+}
+.sub4-background-modem {
+	background: #ede7f6;
+}
+.form-modem legend {
+	border-bottom: 1px solid #673ab7;
+}
+.color-modem {
+	color: #673ab7;
+}
+.color-hover-modem:hover {
+	color: #673ab7;
+}
+
+/* Ext IO */
+.background-io {
+	background: #00bcd4;
+}
+.sub-background-io {
+	background: #4dd0e1;
+}
+.sub2-background-io {
+	background: #80deea;
+}
+.sub3-background-io {
+	background: #b2ebf2;
+}
+.sub4-background-io {
+	background: #e0f7fa;
+}
+.form-io legend {
+	border-bottom: 1px solid #00bcd4;
+}
+.color-io {
+	color: #00bcd4;
+}
+.color-hover-io:hover {
+	color: #00bcd4;
+}
+
+/* Statistic */
+.background-statistics {
+	background: #FFC107;
+}
+.sub-background-statistics {
+	background: #ffd54f;
+}
+.sub2-background-statistics {
+	background: #ffe082;
+}
+.sub3-background-statistics {
+	background: #ffecb3;
+}
+.sub4-background-statistics {
+	background: #fff8e1;
+}
+.form-statistics legend {
+	border-bottom: 1px solid #FFC107;
+}
+.color-statistics {
+	color: #FFC107;
+}
+.color-hover-io:hover {
+	color: #FFC107;
+}
+
+/* Password */
+.background-password {
+	background: #000000;
+}
+.sub-background-password {
+	background: #e0e0e0;
+}
+.sub2-background-password {
+	background: #eeeeee;
+}
+.sub3-background-password {
+	background: #f5f5f5;
+}
+.sub4-background-password {
+	background: #fafafa;
+}
+.color-password {
+	color: #000000;
+}
+.color-password {
+	color: #000000;
+}
+.color-hover-password:hover {
+	color: #000000;
+}
+
+/* Misc */
+.background-misc {
+	background: #ffeb3b;
+}
+.sub-background-misc {
+	background: #fff176;
+}
+.sub2-background-misc {
+	background: #fff59d;
+}
+.sub3-background-misc {
+	background: #fff9c4;
+}
+.sub4-background-misc {
+	background: #fffde7;
+}
+.form-misc legend {
+	border-bottom: 1px solid #ffeb3b;
+}
+.color-misc {
+	color: #ffeb3b;
+}
+.color-hover-misc:hover {
+	color: #ffeb3b;
+}
+
+/* Tools */
+.background-tools {
+	background: #8bc34a;
+}
+.sub-background-tools {
+	background: #aed581;
+}
+.sub2-background-tools {
+	background: #c5e1a5;
+}
+.sub3-background-tools {
+	background: #dcedc8;
+}
+.sub4-background-tools {
+	background: #f1f8e9;
+}
+.form-tools legend {
+	border-bottom: 1px solid #8bc34a;
+}
+.color-tools {
+	color: #8bc34a;
+}
+.color-hover-tools:hover {
+	color: #8bc34a;
+}
+
+/*	-- Line color form --
+
+	 plenty of line color using google color palette (http://www.google.com/design/spec/style/color.html#color-ui-color-palette)
+	 - "A700" reference for line color
+	 - "50" reference for background color
+*/
+.form-active-line label {
+	margin: 0em 0em 0.5em 2em;
+}
+/* line 1 */
+.color-line_1 {
+	color: #00b8d4;
+}
+.background-line_1 {
+	background: #00b8d4;
+}
+.form-line_1 legend {
+	color: #00b8d4;
+	border-bottom: 1px solid #00b8d4;
+}
+/*
+.form-line_1 label {
+	color: #00b8d4;
+}
+*/
+.form-line_1 {
+	background: #e0f7fa;
+}
+/* line 2 */
+.color-line_2 {
+	color: #ff6d00;
+}
+.background-line_2 {
+	background: #ff6d00;
+}
+.form-line_2 legend {
+	color: #ff6d00;
+	border-bottom: 1px solid #ff6d00;
+}
+/*
+.form-line_2 label {
+	color: #ff6d00;
+}
+*/
+.form-line_2 {
+	background: #fff3e0;
+}
+/* line 3 */
+.color-line_3 {
+	color: #aa00ff;
+}
+.background-line_3 {
+	background: #aa00ff;
+}
+.form-line_3 legend {
+	color: #aa00ff;
+	border-bottom: 1px solid #aa00ff;
+}
+/*
+.form-line_3 label {
+	color: #aa00ff;
+}
+*/
+.form-line_3 {
+	background: #f3e5f5;
+}
+/* line 4 */
+.color-line_4 {
+	color: #304ffe;
+}
+.background-line_4 {
+	background: #304ffe;
+}
+.form-line_4 legend {
+	color: #304ffe;
+	border-bottom: 1px solid #304ffe;
+}
+/*
+.form-line_4 label {
+	color: #304ffe;
+}
+*/
+.form-line_4 {
+	background: #e8eaf6;
+}
+/* line 5 */
+.color-line_5 {
+	color: #12c700;
+}
+.background-line_5 {
+	background: #12c700;
+}
+.form-line_5 legend {
+	color: #12c700;
+	border-bottom: 1px solid #12c700;
+}
+/*
+.form-line_5 label {
+	color: #12c700;
+}
+*/
+.form-line_5 {
+	background: #d0f8ce;
+}
+/* line 6 */
+.color-line_6 {
+	color: #ffab00;
+}
+.background-line_6 {
+	background: #ffab00;
+}
+.form-line_6 legend {
+	color: #ffab00;
+	border-bottom: 1px solid #ffab00;
+}
+/*
+.form-line_6 label {
+	color: #ffab00;
+}
+*/
+.form-line_6 {
+	background: #fff8e1;
+}
+/* line 7 */
+.color-line_7 {
+	color: #c51162;
+}
+.background-line_7 {
+	background: #c51162;
+}
+.form-line_7 legend {
+	color: #c51162;
+	border-bottom: 1px solid #c51162;
+}
+/*
+.form-line_7 label {
+	color: #c51162;
+}
+*/
+.form-line_7 {
+	background: #fce4ec;
+}
+/* line 8 */
+.color-line_8 {
+	color: #aeea00;
+}
+.background-line_8 {
+	background: #aeea00;
+}
+.form-line_8 legend {
+	color: #aeea00;
+	border-bottom: 1px solid #aeea00;
+}
+/*
+.form-line_8 label {
+	color: #aeea00;
+}
+*/
+.form-line_8 {
+	background: #f9fbe7;
+}
+
+/*
+ * Some usefull color
+ */
+.color-black {
+	color: #000000 !important;
+}
+.color-grey {
+	color: #616161 !important;
+}
+.color-light-grey {
+	color: #bdbdbd !important;
+}
+.color-dark-grey {
+	color: #212121 !important;
+}
+.color-green-blue {
+	color: #1de9b6 !important;
+}
+.color-green {
+	color: #8bc34a !important;
+}
+.color-orange {
+	color: #ff6d00 !important;
+}
+.color-white {
+	color: #fff !important;
+}
+.color-blue {
+	color: #0078E7 !important;
+}
+.color-blue-light {
+	color: #03A9F4 !important;
+}
+.color-table-blue-border {
+	border: 1px solid #03A9F4 !important;
+}
+
+.color-blue-ok {
+	color: #42B8DD !important;
+}
+.color-green-ok {
+	color: #1CB841 !important;
+}
+.color-red-warning {
+	color: #DF7514 !important;
+}
+.background-green-ok {
+	background: #1CB841 !important;
+}
+.color-red-err {
+	color: #FC3E5F !important;
+}
+.background-red-err {
+	background: #FC3E5F !important;
+}
+.background-grey {
+	background: #E0E0E0 !important;
+}
+.background-white {
+	background: #fff !important;
+}
+.background-selected {
+	transition: all 0.5s ease-in-out;
+	background: #e1f5fe !important;
+}
+
+/* LED colors */
+.color-led-off {
+	background: #8f8f8f !important;
+	color: #000;
+}
+
+.color-led-red {
+	background: #ff0000 !important; /* correspond to task_led.h LED_COLOUR_RED */
+	color: #fff;
+}
+.color-led-green {
+	background: #00FF00 !important; /* correspond to task_led.h LED_COLOUR_GREEN */
+	color: #000;
+}
+.color-led-blue-pure {
+	background: #0000FF !important; /* correspond to task_led.h LED_COLOUR_BLUE */
+	color: #fff;
+}
+.color-led-orange {
+	background: #FF7F00 !important; /* correspond to task_led.h LED_COLOUR_ORANGE */
+	color: #fff;
+}
+.color-led-yellow {
+	background: #FFFF00 !important; /* correspond to task_led.h LED_COLOUR_YELLOW */
+	color: #000;
+}
+.color-led-violet {
+	background: #7F00FF !important; /* correspond to task_led.h LED_COLOUR_VIOLET */
+	color: #fff;
+}
+.color-led-pink {
+	background: #FF007F !important; /* correspond to task_led.h LED_COLOUR_PINK */
+	color: #fff;
+}
+.color-led-cyan {
+	background: #00FFFF !important; /* correspond to task_led.h LED_COLOUR_CYAN */
+	color: #000;
+}
+.color-led-lemon {
+	background: #7FFF00 !important; /* correspond to task_led.h LED_COLOUR_LEMON */
+	color: #000;
+}
+.color-led-white {
+	background: #FFF !important; /* correspond to task_led.h LED_COLOUR_WHITE */
+	color: #000;
+}
+
+.color-led-blue-deep {
+	background: #007FFF;
+	color: #fff;
+}

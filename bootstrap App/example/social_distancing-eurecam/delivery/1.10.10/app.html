@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta content="6cc1613f-24b0-41b2-b2bc-f3b79e9f81c5" name="uuid">
+	<meta content="regular-app" name="generator">
+	<meta content="2018-11-12T14:43:23.605Z" name="date-revision">
+	<meta content="social-distanciation_eurecam" name="app-name">
+	<script>
+		//=============================================================================		
+		// Adjust as required (All the duration are in milliseconds)
+
+		// polling frequency of motion sensor 
+		var frequency = 1000;
+
+		// configuration of the image behaviour for the enter state 
+		var imageEnterMainDuration = 10000; /* main image duration */
+		var imageEnterSecondaryDuration = 5000; /* secondary image duration */
+		var imageEnterSecondaryActive = true; /* true: secondary image activated */
+	
+		// configuration of the image behaviour for the wait state  
+		var imageWaitMainDuration = 10000; /* main image duration */
+		var imageWaitSecondaryDuration = 5000; /* secondary image duration */
+		var imageWaitSecondaryActive = false; /* true: secondary image activated */
+
+		// Debug mode  
+		var DEBUG = false; /*true: App in debug mode */
+		var url = "192.168.0.100"; // motion sensor default IP address. The motion sensor IP address must be set by using the field1 variable
+		var backgroundColor = "#FFFFFF";
+
+	</script>
+
+	<script src="js/spin.min.js"></script>
+	<style type="text/css">
+		html {
+			pointer-events: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			overflow: hidden;
+		}
+
+		#main {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		.mainMsg {
+			font-size: 5em;
+			text-align: center;
+			padding-top: 25%;
+		}
+
+		img {
+			position: absolute;
+			left: 100%;
+		}
+
+		#konsole {
+			position: absolute;
+			display: none;
+			top: 5%;
+			left: 5%;
+			height: 90%;
+			width: 90%;
+			overflow: auto;
+			font-size: 1em;
+			font-family: "courier";
+			color: #00FF00;
+			background-color: rgba(0, 0, 0, 0.6);
+		}
+	</style>
+
+	<script>
+
+		//=============================================================================		
+
+		var konsole, main, alarmCall;
+		var state = 0;
+		var hasLED = false;
+		var appLeftLed, appRightLed;
+
+		var spinner;
+		var spinnerEnabled;
+
+		var imageState;
+		var imageTimer;
+		var images = [];
+
+		// Image loading
+		var loadedimages = 0;
+		var imageCount;
+		var imagePassOne = true;
+		var hasErrorState = false;
+
+		function showMedia() {
+
+			clearTimeout(imageTimer);
+			var imageIdx;
+			var delay = 0;
+			var isSlideShow;
+
+			if (state == 1) {
+				imageIdx = 0;
+				isSlideShow = imageEnterSecondaryActive;
+			} else {
+				imageIdx = 2;
+				isSlideShow = imageWaitSecondaryActive;
+			}
+
+			if (imageState == 1) {
+				imageState = 2;
+			} else {
+				imageState = 1;
+				imageIdx++;
+			}
+
+			// imageName = images[imageIdx].src;
+			main.style.backgroundImage = "url('" + images[imageIdx].src + "')";
+
+			if (isSlideShow) {
+				switch (imageIdx) {
+					case 0: delay = imageEnterMainDuration;
+						break;
+					case 1: delay = imageEnterSecondaryDuration;
+						break;
+					case 2: delay = imageWaitMainDuration;
+						break;
+					case 3: delay = imageWaitSecondaryDuration;
+						break;
+				}
+				imageTimer = setTimeout(showMedia, delay);
+			}
+			log("showMedia : " + images[imageIdx].src + " : (slideshow : " + isSlideShow + " " + delay + " ms)");
+		};
+
+		function showError() {
+			log("showError " + images[4].src);
+			if (hasLED) {
+				appLeftLed.color = 0x000000;
+				appRightLed.color = 0x000000;
+			}
+			clearTimeout(imageTimer);
+			main.style.backgroundImage = "url('" + images[4].src + "')";
+			state = 0;
+		}
+
+		function playSound(soundURL) {
+
+			try {
+				alarmCall.src = soundURL;
+				// Wait until the audio is ready before playing
+				alarmCall.oncanplay = function (event) {
+					try {
+						this.play();
+					} catch (ex) {
+						log("oncanplay : EX " + ex);
+					}
+				};
+			}
+			catch (ex) {
+				log("playSound : EX " + ex);
+			}
+		}
+
+		function setState(current, limit, answer) {
+
+			try {
+				var newState;
+
+				if (current < limit) {
+					newState = 1;
+				} else {
+					newState = 2;
+				}
+
+				if (state !== newState) {
+					state = newState;
+					imageState = 1;
+					showMedia();
+					switch (state) {
+						case 1:
+							log("setState : ENTER : " + current + "/" + limit + " " + answer);
+							playSound("audio/enter.mp3");
+							if (hasLED) {
+								appLeftLed.color = 0x00FF00;
+								appRightLed.color = 0x00FF00;
+							}
+							break;
+						case 2:
+							log("setState : WAIT : " + current + "/" + limit + " " + answer);
+							playSound("audio/wait.mp3");
+							if (hasLED) {
+								appLeftLed.color = 0xFF0000;
+								appRightLed.color = 0xFF0000;
+							}
+							break;
+					}
+				}
+			} catch (ex) {
+				log("setState EX : " + ex);
+			}
+		}
+
+		function processState(answer) {
+			var match;
+
+			try {
+				// occupancy_config=19,0,0,2,0 occupancy_state=1,0,0,0
+				var matchState = answer.match(/^[\s\S]*occupancy_state=(\d+),(\d+),(\d+),(\d+)[\s\S]*$/);
+				var matchConfig = answer.match(/^[\s\S]*occupancy_config=(\d+),(\d+),(\d+),(\d+),(\d+)[\s\S]*$/);
+				if ((matchConfig && matchConfig.length > 4) && (matchState && matchState.length > 3)) {
+					var current = parseInt(matchState[2], 10);
+					var limit = parseInt(matchConfig[4], 10);
+					setState(current, limit, answer)
+				}
+
+			} catch (ex) {
+				log("processState EX : " + ex);
+			}
+
+			setTimeout(getState, frequency);
+		}
+
+		function getState() {
+
+			try {
+
+				if (typeof systemGeneralSettings !== 'undefined') {
+					url = systemGeneralSettings.field1;
+				}
+
+				var targetURL = 'http://' + url + '/CONFIG?occupancy_config&occupancy_state';
+				var xhr = new XMLHttpRequest();
+				xhr.addEventListener("error", function (evt) {
+					log("ERROR : readyState : " + this.readyState + "  status : " + this.status);
+				}, false);
+				xhr.addEventListener("abort", function (evt) {
+					log("ABORT : readyState : " + this.readyState + "  status : " + this.status);
+					stopWait();
+					setTimeout(getState, frequency);
+				}, false);
+				xhr.addEventListener("loadend", function (evt) {
+					log("ANSWER : readyState : " + this.readyState + "  status : " + this.status + " text : " + this.responseText);
+					stopWait();
+					if ((this.status > 0) && (this.status < 400)) {
+						processState(this.responseText);
+					} else {
+						showError();
+						setTimeout(getState, frequency);
+					}
+				}, false);
+				xhr.open("GET", targetURL);
+				xhr.send();
+				log("getState : asked state to :" + targetURL);
+			}
+			catch (err) {
+				stopWait();
+				log("getState : Exception:" + err);
+			}
+		};
+
+		function log(msg) {
+
+			if (DEBUG) {
+				var now = new Date();
+				konsole.innerHTML += "<li>" + now.toLocaleTimeString() + " : " + msg + "</li>";
+			}
+		};
+
+
+		function initLEDs() {
+
+			try {
+				var adaptersList = [];
+				if (typeof Components !== 'undefined') {
+					var Ci = Components.interfaces;
+					adaptersList = systemManager.getAdaptersByIId(Ci.nsISystemAdapterAppColorLed);
+					if (adaptersList.length > 0) {
+						appLeftLed = adaptersList.queryElementAt(Ci.nsISystemAdapterAppColorLed.LEFT_COLOR_LED, Ci.nsISystemAdapterAppColorLed);
+						appRightLed = adaptersList.queryElementAt(Ci.nsISystemAdapterAppColorLed.RIGHT_COLOR_LED, Ci.nsISystemAdapterAppColorLed);
+						if (appLeftLed && appRightLed) {
+							appLeftLed.enabled = true;
+							appRightLed.enabled = true;
+							hasLED = true;
+							log("LEDs are enabled.");
+						}
+					}
+				}
+			} catch (ex) {
+				log("initLEDs ex" + ex)
+			}
+		};
+
+		function imageloadpost() {
+
+			loadedimages++;
+			this.loaded = true;
+			log("IMAGE loaded IDX : " + this.idx + " (" + loadedimages + "/" + imageCount + ")");
+			if (loadedimages == imageCount) {
+				log("View : preloadImages finish " + imagePassOne);
+				if (imagePassOne && hasErrorState) {
+					imagePassOne = false;
+					preLoadImages();
+				} else {
+					reviewImageState();
+				}
+
+			}
+		};
+
+		function imageerrorpost() {
+
+			if (!this.error) {
+				loadedimages++;
+				hasErrorState = true;
+				this.src = this.defaultName;
+				this.error = true;
+
+				log("IMAGE ERROR IDX : " + this.idx + " (" + loadedimages + "/" + imageCount + ")");
+				if (loadedimages == imageCount) {
+					log("View : preloadImages finish " + imagePassOne);
+					if (imagePassOne) {
+						imagePassOne = false;
+						preLoadImages();
+					} else {
+						reviewImageState();
+					}
+
+				}
+			}
+		};
+
+		function preLoadImages() {
+			loadedimages = 0;
+			imageCount = 0;
+
+			for (var i = 0; i < images.length; i++) {
+				if (!images[i].loaded) {
+					imageCount++;
+					if (imagePassOne) {
+						images[i].src = images[i].fullName;
+					} else {
+						images[i].src = images[i].defaultName;
+					}
+					images[i].error = false;
+					log("try LOADING : IDX " + images[i].idx + " " + images[i].src);
+				}
+			}
+
+		};
+
+		function reviewImageState() {
+
+			for (var i = 0; i < images.length; i++) {
+				images[i].removeEventListener("load", imageloadpost, false);
+				images[i].removeEventListener("error", imageerrorpost, false);
+			}
+
+			if (!images[0].loaded || !images[2].loaded || !images[4].loaded ||
+				(imageEnterSecondaryActive && !images[1].loaded) ||
+				(imageWaitSecondaryActive && !images[3].loaded)) {
+				main.classList.add("mainMsg");
+				main.textContent = "Error loading images";
+
+			} else {
+				initWait();
+				getState();
+			}
+
+		}
+
+		function initWait() {
+
+			var scale = (window.innerHeight / 1080)
+			var spinRadius = 50 * scale;
+			var spinLgt = spinRadius * 0.7;
+			var spinWidth = 18 * scale;
+
+			var opts = {
+				lines: 13 // The number of lines to draw
+				, length: spinLgt //28 // The length of each line
+				, width: spinWidth //14 // The line thickness
+				, radius: spinRadius // 42 // The radius of the inner circle
+				, scale: 1.75 // Scales overall size of the spinner
+				, corners: 1 // Corner roundness (0..1)
+				, color: '#AAAAAA' // #rgb or #rrggbb or array of colors
+				, opacity: 0.35 // Opacity of the lines
+				, rotate: 0 // The rotation offset
+				, direction: 1 // 1: clockwise, -1: counterclockwise
+				, speed: 1 // Rounds per second
+				, trail: 60 // Afterglow percentage
+				, fps: 20 // Frames per second when using setTimeout() as a fallback for CSS
+				, zIndex: 2e9 // The z-index (defaults to 2000000000)
+				, className: 'spinner' // The CSS class to assign to the spinner
+				, top: '50%' // Top position relative to parent
+				, left: '50%' // Left position relative to parent
+				, shadow: false // Whether to render a shadow
+				, hwaccel: false // Whether to use hardware acceleration
+				, position: 'absolute' // Element positioning
+			}
+			spinner = new Spinner(opts).spin(document.body);
+			spinnerEnabled = true;
+		}
+
+		function stopWait() {
+			if (spinnerEnabled) {
+				spinnerEnabled = false;
+				spinner.stop();
+				main.textContent = "";
+			}
+		}
+
+		function initImageArray() {
+
+			var sizePostFix = window.innerWidth + "x" + window.innerHeight;
+			var imageNames = ["enter_main", "enter_secondary", "wait_main", "wait_secondary", "error"];
+			imagePassOne = true;
+
+			for (var i = 0; i < imageNames.length; i++) {
+				images[i] = new Image();
+				images[i].addEventListener("load", imageloadpost, false);
+				images[i].addEventListener("error", imageerrorpost, false);
+				images[i].idx = i;
+				images[i].fullName = "images/" + imageNames[i] + "-" + sizePostFix + ".jpg";
+				images[i].defaultName = "images/" + imageNames[i] + ".jpg";
+				images[i].loaded = false;
+				images[i].error = false;
+				main.appendChild(images[i]);
+			}
+		}
+
+		function load() {
+
+
+			if (DEBUG) {
+				konsole = document.getElementById("konsole");
+				konsole.style.display = "block";
+				konsole.innerHTML = "Viewport : " + window.innerWidth + " x " + window.innerHeight;
+			}
+
+			main = document.getElementById("main");
+			main.style.backgroundColor = backgroundColor;
+
+			alarmCall = document.getElementById("alarmCall");
+			initLEDs();
+
+			initImageArray();
+			preLoadImages();
+		}
+	</script>
+</head>
+
+<body onload="load()">
+	<div id="main"></div>
+	<audio id="alarmCall">
+	</audio>
+	<div id="konsole"></div>
+</body>
+
+</html>

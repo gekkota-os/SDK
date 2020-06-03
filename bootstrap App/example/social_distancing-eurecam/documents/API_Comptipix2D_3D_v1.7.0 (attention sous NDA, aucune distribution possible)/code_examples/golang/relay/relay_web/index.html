@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+		<title>Relay demo</title>
+		<link rel="stylesheet" href="css/pure/0.5.0/pure-min.css?2015-10-19:38">
+		<link rel="stylesheet" href="css/pure/0.5.0/grids-responsive-min.css?2015-10-19:38">
+		<link rel="stylesheet" href="css/hint.base.min.css?2015-10-19:38">
+		<link rel="stylesheet" href="css/app_style.css?2015-10-19:38">
+		<script type="text/javascript" src="script/lib/raphael.min.js?2016-03-03:19"></script>
+		<script type="text/javascript" src="script/lib/Chart.min.js?2016-03-03:19"></script>
+		<script type="text/javascript" src="script/lib/justgage.min.js?2016-03-03:19"></script>
+		<script type="text/javascript" src="script/demo/app_data_file.js?2016-03-03:19"></script>
+		<script type="text/javascript" src="script/demo/app_chart.js?2016-03-03:19"></script>
+		<script type="text/javascript" src="script/demo/app_gauge.js?2016-03-03:19"></script>
+		<script type="text/javascript" src="script/app_request.js?2016-03-03:19"></script> <!-- NOTE: app_request.js is necessary for app_relay.js -->
+		<script type="text/javascript" src="script/app_relay.js?2016-03-03:19"></script>
+		<!-- <script type="text/javascript" src="demo_msg.js?2016-03-03:17"></script> -->
+		<script type="text/javascript" src="demo.js?2016-03-03:17"></script>
+		<style>
+			canvas {
+				-moz-user-select: none;
+				-webkit-user-select: none;
+				-ms-user-select: none;
+				user-select: none;
+			}
+			.holder-h {
+				height: 80vh;
+				width: 95%;
+			}
+		</style>
+	</head>
+	<body onload="demo.onload();" class="hide-mouse">
+		<div id="buttons">
+			<span>
+				<input id="host" maxlength="128" placeholder="IP address" class="width-10 color-settings" type="text" title="IP adress to relay request">
+				<input id="user" maxlength="64" placeholder="user" class="width-10 color-settings" type="text" title="user level login">
+				<input id="pass" maxlength="64" placeholder="pass" class="width-10 color-settings" type="text" title="password to use">
+				<input id="file_path" placeholder="File path on server" class="width-10 color-settings" type="text" title="Path for file on server Ex:'./Data/CPX3-1190139/'">
+				<input id="old_mode" type="checkbox" onchange="demo.adapt_user_pass_old_mode();" title="Check this for a Contrix, an iComptipix or an Affix">
+				<label for="old_mode" class="hint--bottom hint--info hint--small color-settings" data-hint="Check this for Concentrix/iComptipix/Affix compatibility mode">CTX mode</label>
+				<span class="color-settings">:</span>
+				<button class="margin-side-0-1 pure-button button-error hint--bottom hint--info hint--small" type="button" id="host_btn" onclick="demo.set_host(); document.activeElement.blur();" data-hint="Set host address and user/pass">Set</button>
+			</span>
+			<span class="color-demo">&rarr; Demos :</span>
+			<button class="margin-side-0-1 pure-button pure-button-primary hint--bottom hint--info hint--small" type="button" id="demo_1_btn" onclick="demo.set_demo(1); document.activeElement.blur();" data-hint="Read a local file">Server file</button>
+			<button class="margin-side-0-1 pure-button pure-button-primary hint--bottom hint--info hint--small" type="button" id="demo_2_btn" onclick="demo.set_demo(2); document.activeElement.blur();" data-hint="Show occupancy gauge">Occupancy</button>
+			<button class="margin-side-0-1 pure-button pure-button-primary hint--bottom hint--info hint--small" type="button" id="demo_3_btn" onclick="demo.set_demo(3); document.activeElement.blur();" data-hint="Plot file from sdcard">SDcard</button>
+			<button class="margin-side-0-1 pure-button pure-button-primary hint--bottom hint--info hint--small" type="button" id="demo_4_btn" onclick="demo.set_demo(4); document.activeElement.blur();" data-hint="Display counting in table">Counting</button>
+			<button class="margin-side-0-1 pure-button pure-button-primary hint--bottom hint--info hint--small" type="button" id="demo_5_btn" onclick="demo.set_demo(5); document.activeElement.blur();" data-hint="Display occupancy from file on server">Server Occupancy</button>
+		</div>
+		<!-- Read local file -->
+		<div id="demo_1" hidden>
+			<div>
+				<span>Read/Write local file : </span>
+				<input id="file_read_name" placeholder="filename" class="width-10" type="text">
+				<button class="button-secondary pure-button hint--small hint--top hint--info" type="button" id="btn_read" onclick="console.log('TODO: Update read'); document.activeElement.blur();" data-hint="Read file">Read</button>
+			</div>
+			<div id="file_read" class="color-black"></div>
+		</div>
+
+		<!-- Gauge -->
+		<div id="demo_2" hidden>
+			<br>
+			<div id="occ_gauge" class="holder-h"></div>
+		</div>
+
+		<!-- Read sdcard file -->
+		<div id="demo_3" hidden>
+			<div hidden>Counting plot : </div>
+			<div class="holder-h">
+				<canvas id="plot"></canvas>
+			</div>
+		</div>
+
+		<!-- E/S/P -->
+		<div id="demo_4" hidden>
+			<div class="pure-g">
+
+				<!-- E + X -->
+				<div id="demo_4__counting_e_holder" class="pure-u-1 pure-u-sm-1-2">
+					<div class="parent-align-center color-entries">
+						<div class="align-center">
+							<span class="x400">Entry :</span>
+							<span id="demo_4__counting_e" class="x500 font-weight-600"></span>
+						</div>
+					</div>
+				</div>
+				<div id="demo_4__counting_x_holder" class="pure-u-1 pure-u-sm-1-2">
+					<div class="parent-align-center color-exits">
+						<div class="align-center">
+							<span class="x400">Exit :</span>
+							<span id="demo_4__counting_x" class="x500 font-weight-600"></span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Occ -->
+				<div id="demo_4__counting_occ_holder" class="pure-u-1 parent-align-center">
+					<div class="parent-align-center color-occ">
+						<div class="align-center">
+							<span class="x400">Occupancy :</span>
+							<span id="demo_4__counting_occ" class="x500 font-weight-600"></span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Footer -->
+				<div class="pure-u-1 footer">
+					<span id="footer_hour" class="align-left-no"></span>
+					<span id="footer_eurecam" class="align-right">
+						<span>
+							<img class="img-footer" src="img/logo_small.png" alt="" height="35" width="35" />
+							With EURECAM
+						</span>
+					</span>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

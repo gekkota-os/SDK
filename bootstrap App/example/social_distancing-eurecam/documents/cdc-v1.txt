@@ -1,0 +1,28 @@
+
+Sur la base de l'app Qeedji de base, en faire une app SMT210 et Media Player (s'adapter dans le code de l'app)
+
+Demander régulièrement au capteur EURECAM l'état du seuil de comptage (le seuil est paramétré dans le capteur).
+Nous devons savoir si nous sommes au-dessus ou en dessous du seuil.
+
+SI En-dessous  on affiche en alternance une page avec une image "entry_main" et une page avec une image "entry_secondary-<resolution>" où le temps de page est facilement paramétrable en haut du fichier html app
+SI Au-dessus ou egale on affiche en alternance une page avec une image "wait_main" et une page avec une image "wait_secondary-<resolution>" où le temps de page est facilement paramétrable en haut du fichier html app   
+
+EX: entry_secondary-1024x600.jpg et wait_secondary-1024x600.jpg
+Une app peut avoir des images de plusieurs resolutions entry_secondary-1024x600.jpg, entry_secondary-1920x1080.jpg, etc
+Le plus simple c'est que l'appareil vienne récupérer la taille de l'image correspondant a sa résolution, ce qui permet de traiter les approches SMT210, FHD, UHD, portrait et paysage. 
+
+Comme on a une approche d'image, pas de problème pour la gestion multi langue.
+
+On re-build si on a besoin de modifier les images.
+Je fournirai les images définitives.
+
+
+Dans l'API de EURECAM utiliser l'HTTP RPC décrite dans les "Command list" (voir cpx_protocol.html)
+
+state	occupancy_state	occupancy_state=C,N,N,N	Get occupancy state	reader	All
+
+C,N,N,N : quelles sont ces valeurs ????
+
+
+Franck
+ 

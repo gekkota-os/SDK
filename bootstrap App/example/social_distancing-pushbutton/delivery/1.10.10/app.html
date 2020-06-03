@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta content="6cc1613f-24b0-41b2-b2bc-f3b79e9f81c5" name="uuid">
+	<meta content="regular-app" name="generator">
+	<meta content="2018-11-12T14:43:23.605Z" name="date-revision">
+	<meta content="sociale_distanciation-pushbutton" name="app-name">
+	<script>
+		//=============================================================================		
+		// Adjust as required (All the durations are in milliseconds)
+
+		// configuration of the image behaviour for the enter state 
+		var imageEnterMainDuration = 10000; /* main image duration */
+		var imageEnterSecondaryDuration = 5000; /* secondary image duration */
+		var imageEnterSecondaryActive = true; /* true: secondary image activated */
+		// configuration of the image behaviour for the wait state  
+		var imageWaitMainDuration = 10000; /* main image duration */
+		var imageWaitSecondaryDuration = 5000; /* secondary image duration */
+		var imageWaitSecondaryActive = true; /* true: secondary image activated */
+
+		// configuration of the reenter timeout duration
+		var imageReEnterMainDuration = 5000; /* enter state timeout duration */
+
+		// Other default parameters
+		var DEBUG = false;
+		var backgroundColor = "#FFFFFF";
+
+	</script>
+
+	<script src="js/wpanKeyListener.js"></script>
+	<script src="js/spin.min.js"></script>
+	<style type="text/css">
+		html {
+			pointer-events: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			overflow: hidden;
+		}
+
+		#main {
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			width: 100%;
+			margin: 0;
+			background-size: cover;
+			background-position: center;
+			background-repeat: no-repeat;
+		}
+
+		.mainMsg {
+			font-size: 5em;
+			text-align: center;
+			padding-top: 25%;
+		}
+
+		img {
+			position: absolute;
+			left: 100%;
+		}
+
+		#konsole {
+			position: absolute;
+			display: none;
+			top: 5%;
+			left: 5%;
+			height: 90%;
+			width: 90%;
+			overflow: auto;
+			font-size: 1em;
+			font-family: "courier";
+			color: #00FF00;
+			background-color: rgba(0, 0, 0, 0.6);
+		}
+	</style>
+
+	<script>
+
+		//=============================================================================		
+		var konsole, main, alarmCall;
+		var state = -1;
+		var hasLED = false;
+		var appLeftLed, appRightLed;
+
+		var _serialAdapterManager;
+
+		var imageState;
+		var imageTimer;
+		var images = [];
+
+		// Image loading
+		var loadedimages = 0;
+		var imageCount;
+		var imagePassOne = true;
+		var hasErrorState = false;
+
+		function log(msg, level) {
+			if (DEBUG) {
+				var now = new Date();
+				if (level == 2) {
+					konsole.innerHTML += "<li><b>" + now.toLocaleTimeString() + " : " + msg + "</b></li>";
+				} else {
+					konsole.innerHTML += "<li>" + now.toLocaleTimeString() + " : " + msg + "</li>";
+				}
+
+			}
+		};
+
+		function showMedia() {
+			clearTimeout(imageTimer);
+			var imageIdx;
+			var delay = 0;
+			var isSlideShow;
+
+			if (state == 1) {
+				imageIdx = 0;
+				isSlideShow = imageEnterSecondaryActive;
+			} else if (state == 2) {
+				imageIdx = 2;
+				isSlideShow = imageWaitSecondaryActive;
+			} else {
+				imageIdx = 0;
+				isSlideShow = false;
+			}
+
+			if (imageState == 1) {
+				imageState = 2;
+			} else {
+				imageState = 1;
+				imageIdx++;
+			}
+
+			main.style.backgroundImage = "url('" + images[imageIdx].src + "')";
+
+			if (isSlideShow) {
+				switch (imageIdx) {
+					case 0: delay = imageEnterMainDuration;
+						break;
+					case 1: delay = imageEnterSecondaryDuration;
+						break;
+					case 2: delay = imageWaitMainDuration;
+						break;
+					case 3: delay = imageWaitSecondaryDuration;
+						break;
+				}
+				imageTimer = setTimeout(showMedia, delay);
+			}
+
+			if (state == 3) {
+				imageTimer = setTimeout(showStart, imageReEnterMainDuration);
+			}
+			log("showMedia : " + state + " : " + imageIdx + " src " + images[imageIdx].src + " : (slideshow : " + isSlideShow + " " + delay + " ms)", 1);
+		};
+
+		function showError() {
+			log("showError " + images[4].src, 1);
+			if (hasLED) {
+				appLeftLed.color = 0x000000;
+				appRightLed.color = 0x000000;
+			}
+			clearTimeout(imageTimer);
+			main.style.backgroundImage = "url('" + images[4].src + "')";
+			state = 0;
+		}
+
+		function showStart() {
+			setState(2);
+		}
+
+		function playSound(soundURL) {
+			try {
+				alarmCall.src = soundURL;
+				// Wait until the audio is ready before playing
+				alarmCall.oncanplay = function (event) {
+					try {
+						this.play();
+					} catch (ex) {
+						log("oncanplay : EX " + ex, 2);
+					}
+				};
+			}
+			catch (ex) {
+				log("playSound : EX " + ex, 2);
+			}
+		}
+
+		function setState(newState) {
+			try {
+
+				if (state !== newState) {
+					state = newState;
+					imageState = 1;
+					showMedia();
+					switch (state) {
+						case 1:
+							log("setState : ENTER", 1);
+							playSound("audio/enter.mp3");
+							if (hasLED) {
+								appLeftLed.color = 0x00FF00;
+								appRightLed.color = 0x00FF00;
+							}
+							break;
+						case 2:
+							log("setState : WAIT", 1);
+							playSound("audio/wait.mp3");
+							if (hasLED) {
+								appLeftLed.color = 0xFF0000;
+								appRightLed.color = 0xFF0000;
+							}
+							break;
+						case 3:
+							log("setState : reENTER", 1);
+							playSound("audio/enter.mp3");
+							if (hasLED) {
+								appLeftLed.color = 0x00FF00;
+								appRightLed.color = 0x00FF00;
+							}
+							break;
+					}
+				}
+			} catch (ex) {
+				log("setState EX : " + ex, 2);
+			}
+		}
+
+		function initLEDs() {
+			try {
+				var adaptersList = [];
+				if (typeof Components !== 'undefined') {
+					var Ci = Components.interfaces;
+					adaptersList = systemManager.getAdaptersByIId(Ci.nsISystemAdapterAppColorLed);
+					if (adaptersList.length > 0) {
+						appLeftLed = adaptersList.queryElementAt(Ci.nsISystemAdapterAppColorLed.LEFT_COLOR_LED, Ci.nsISystemAdapterAppColorLed);
+						appRightLed = adaptersList.queryElementAt(Ci.nsISystemAdapterAppColorLed.RIGHT_COLOR_LED, Ci.nsISystemAdapterAppColorLed);
+						if (appLeftLed && appRightLed) {
+							appLeftLed.enabled = true;
+							appRightLed.enabled = true;
+							hasLED = true;
+							log("LEDs are enabled.", 1);
+						}
+					}
+				}
+			} catch (ex) {
+				log("initLEDs ex" + ex, 2)
+			}
+		};
+
+		function imageloadpost() {
+			loadedimages++;
+			this.loaded = true;
+			log("IMAGE loaded IDX : " + this.idx + " (" + loadedimages + "/" + imageCount + ")", 1);
+			if (loadedimages == imageCount) {
+				log("View : preloadImages finish " + imagePassOne, 1);
+				if (imagePassOne && hasErrorState) {
+					imagePassOne = false;
+					preLoadImages();
+				} else {
+					reviewImageState();
+				}
+			}
+		};
+
+		function imageerrorpost() {
+			if (!this.error) {
+				loadedimages++;
+				hasErrorState = true;
+				this.src = this.defaultName;
+				this.error = true;
+
+				log("IMAGE ERROR IDX : " + this.idx + " (" + loadedimages + "/" + imageCount + ")", 1);
+				if (loadedimages == imageCount) {
+					log("View : preloadImages finish " + imagePassOne, 1);
+					if (imagePassOne) {
+						imagePassOne = false;
+						preLoadImages();
+					} else {
+						reviewImageState();
+					}
+
+				}
+			}
+		};
+
+		function preLoadImages() {
+			loadedimages = 0;
+			imageCount = 0;
+
+			for (var i = 0; i < images.length; i++) {
+				if (!images[i].loaded) {
+					imageCount++;
+					if (imagePassOne) {
+						images[i].src = images[i].fullName;
+					} else {
+						images[i].src = images[i].defaultName;
+					}
+					images[i].error = false;
+					log("try LOADING : IDX " + images[i].idx + " " + images[i].src, 1);
+				}
+			}
+		};
+
+		function reviewImageState() {
+
+			for (var i = 0; i < images.length; i++) {
+				images[i].removeEventListener("load", imageloadpost, false);
+				images[i].removeEventListener("error", imageerrorpost, false);
+			}
+
+			if (!images[0].loaded || !images[2].loaded || !images[4].loaded ||
+				(imageEnterSecondaryActive && !images[1].loaded) ||
+				(imageWaitSecondaryActive && !images[3].loaded)) {
+				main.classList.add("mainMsg");
+				main.textContent = "Error loading images";
+
+			} else {
+				initComms();
+			}
+		}
+
+		function initImageArray() {
+			var sizePostFix = window.innerWidth + "x" + window.innerHeight;
+			var imageNames = ["enter_main", "enter_secondary", "wait_main", "wait_secondary", "error"];
+			imagePassOne = true;
+
+			for (var i = 0; i < imageNames.length; i++) {
+				images[i] = new Image();
+				images[i].addEventListener("load", imageloadpost, false);
+				images[i].addEventListener("error", imageerrorpost, false);
+				images[i].idx = i;
+				images[i].fullName = "images/" + imageNames[i] + "-" + sizePostFix + ".jpg";
+				images[i].defaultName = "images/" + imageNames[i] + ".jpg";
+				images[i].loaded = false;
+				images[i].error = false;
+				main.appendChild(images[i]);
+			}
+		}
+
+		function processEnOceanButton(keyValue) {
+			log("processEnOceanButton :  key : " + keyValue, 1);
+			switch (keyValue) {
+				case 'B0': setState(1); break;
+				case 'B1': setState(2); break;
+				case 'A1': setState(3); break;
+			}
+		}
+
+		function load() {
+			if (DEBUG) {
+				konsole = document.getElementById("konsole");
+				konsole.style.display = "block";
+				konsole.innerHTML = "Viewport : " + window.innerWidth + " x " + window.innerHeight;
+			}
+
+			main = document.getElementById("main");
+			main.style.backgroundColor = backgroundColor;
+			alarmCall = document.getElementById("alarmCall");
+
+			initLEDs();
+			initImageArray();
+			preLoadImages();
+		}
+
+		function initComms() {
+			try {
+				_serialAdapterManager = new SerialAdapterManager(processEnOceanButton, showStart, showError, log);
+				_serialAdapterManager.startListenProcess();
+			}
+			catch (ex) {
+				log("initComms Exception  " + ex, 2);
+				showError();
+			}
+		}
+
+		function unload() {
+			log("unload", 1);
+			try {
+				_serialAdapterManager.deinitSerial();
+				_serialAdapterManager = undefined;
+			}
+			catch (ex) {
+				log("Exception  " + ex, 2);
+			}
+		}
+
+	</script>
+</head>
+
+<body onload="load()" onunload="unload()">
+	<div id="main"></div>
+	<audio id="alarmCall">
+	</audio>
+	<div id="konsole"></div>
+</body>
+
+</html>

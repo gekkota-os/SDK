@@ -1,0 +1,312 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Wpan sensor listener</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="font-awesome.css">
+  <script src="logger.js"></script>
+  <script type="text/javascript">
+    /************************************************************************/
+    /*************** Here is the Test Suite you should modify ***************/
+    /************************************************************************/
+    (function () {
+      window.onload = function () {
+        var slateDisplayId = 1; // value from 1 to 20 depending of the player configuration
+        var wpanSensorTestRunner = new window.WpanTestRunner("example.WpanSensorListener", slateDisplayId);
+      };
+    })();
+    /************************************************************************/
+    /*************** From here don't need to modify anything ****************/
+    /************************************************************************/
+    (function () {
+
+      const ID_MASK = 0XFFF; // Mask to retrieve Slate ID from event
+      // Device types that can send HID events
+      const EdeviceTypes = {
+        slate: 1,
+        wpanPushButton: 2,
+        sensor: 3,
+        keyboardWedge: 4,
+        unknown: 5
+      };
+
+      function WpanTestRunner(name, slateDisplayId) {
+        this._logger = new window.Logger(name);
+        this._logger.log("WpanTestRunner");
+        this._avoidRepetition = false;
+        this._keyboardWedgeSeq = "";
+        this._screenshot = null;
+        this._slateDisplayId = slateDisplayId;
+        this._init();
+      }
+      WpanTestRunner.prototype = {
+        _init: function () {
+          try {
+            this._logger.log("init");
+            this._initSensorListener();
+            this._initKeyListener();
+            this._screenshot = new Screenshot();
+          } catch (error) {
+            this._logger.errorEx(error);
+          }
+        },
+        _initSensorListener: function () {
+          try {
+            this._logger.log("_initSensorListener");
+            window.top.focus();
+            if (window.wpanHubSrv) {
+              this._logger.log("Init listener on wpanHubSrv");
+              var self = this;
+              wpanHubSrv.addListener(function (event) {
+                try {
+                  self._onEvent(event);
+                } catch (error) {
+                  self._logger.errorEx(error);
+                }
+              });
+            } else {
+              this._logger.log("WpanHubSrv doesn't exist");
+            }
+          } catch (error) {
+            this._logger.errorEx(error);
+          }
+        },
+        _initKeyListener: function () {
+          try {
+            this._logger.log("WpanKeyListener _initKeyListener");
+            window.top.focus();
+            var self = this;
+            window.top.document.addEventListener("keydown", function (event) {
+              try {
+                self._onEvent(event);
+              } catch (error) {
+                self._logger.errorEx(error);
+              }
+            });
+          } catch (error) {
+            this._logger.errorEx(error);
+          }
+        },
+        _onEvent: function (event) {
+          try {
+            this._logger.clearConsole();
+            var id = -1;
+            var domKeyLocationSlate = event.DOM_KEY_LOCATION_SLATE || 0x80000000;
+            var domKeyLocationWpanPushButton = event.DOM_KEY_LOCATION_PUSHBUTTON || 0x10000000;
+            var domLocationWpanSensor = event.DOM_LOCATION_SENSOR || 0x8000000;
+            var domLocationKeyboardWedge = event.DOM_KEY_LOCATION_KEYBOARD_WEDGE || 0x4000000;
+            var deviceType = EdeviceTypes.unknown;
+            var strType;
+            if (event.location & domKeyLocationSlate) {
+              deviceType = EdeviceTypes.slate;
+              strType = "SLATE";
+            }
+            else if (event.location & domKeyLocationWpanPushButton) {
+              deviceType = EdeviceTypes.wpanPushButton;
+              strType = "PUSHBUTTON";
+            }
+            else if (event.location & domLocationWpanSensor) {
+              deviceType = EdeviceTypes.sensor;
+              strType = "SENSOR";
+            }
+            else if (event.location & domLocationKeyboardWedge) {
+              deviceType = EdeviceTypes.keyboardWedge;
+              strType = "KEYBOARDWEDGE";
+            }
+            if (deviceType != EdeviceTypes.unknown) {
+              id = event.location & ID_MASK;
+            } else {
+              strType = "UNKNOWN";
+            }
+            if (deviceType == EdeviceTypes.sensor) {
+              this._logger.log("Event device id: " + id + ", type: " + strType);
+              if (event.dataPayload != undefined) {
+                this._parsePayload(event.dataPayload);
+              }
+            }
+            else if ((deviceType == EdeviceTypes.wpanPushButton) || (deviceType == EdeviceTypes.slate)){
+              this._logger.log("Event device id: " + id + ", type: " + strType + "\n     Keycode: " + event.keyCode);
+            }
+            else if (deviceType == EdeviceTypes.keyboardWedge) {
+              this._logger.log("Event device id: " + id + ", type: " + strType);
+            }
+
+
+            if (deviceType == EdeviceTypes.keyboardWedge) {
+              if (event.keyCode == 13) {
+                this._logger.log("     Value: " + this._keyboardWedgeSeq);
+                this._keyboardWedgeSeq = "";
+                this._captureWindow(this._slateDisplayId + "/hub.ppk", "image/g4");
+              }
+              else if (event.keyCode) {
+                this._keyboardWedgeSeq += String.fromCharCode(event.keyCode);
+              }
+            }
+            else {
+              this._captureWindow(this._slateDisplayId + "/hub.ppk", "image/g4");
+            }
+          } catch (error) {
+            this._logger.errorEx(error);
+          }
+        },
+        _parsePayload: function (payloadString) {
+          try {
+            var payloadPointer = 0;
+            while (payloadPointer < payloadString.length) {
+              var sensorEndPos = this._parseSensor(payloadString.substring(payloadPointer, payloadString.length));
+              if (sensorEndPos == 0) {
+                this._logger.log("sensorEndPos == 0");
+                break;
+              }
+              payloadPointer += sensorEndPos;
+            }
+          } catch (error) {
+            this._logger.errorEx(error);
+          }
+        },
+        _parseSensor: function (leftCuttedPayloadStringtring) {
+          try {
+            var data_descriptor_str = leftCuttedPayloadStringtring.substring(0, 2);
+            var data_descriptor_int = parseInt(data_descriptor_str, 16);
+            var data_size_int = (data_descriptor_int & 0xC0) >> 6;
+            var data_type_int = data_descriptor_int & 0x3F;
+
+            var sensor_string;
+            if (data_size_int == 0) {
+              sensor_string = leftCuttedPayloadStringtring.substring(2, 4);
+              endPos = 4;
+            }
+            else if (data_size_int == 1) {
+              sensor_string = leftCuttedPayloadStringtring.substring(2, 6);
+              endPos = 6;
+            }
+            else if (data_size_int == 2) {
+              sensor_string = leftCuttedPayloadStringtring.substring(2, 10);
+              endPos = 10;
+            }
+            else if (data_size_int == 3) {
+              //Extended size
+              let sensor_length = leftCuttedPayloadStringtring.substring(2, 4);
+              this._logger.log("Extended size " + sensor_length + " not managed yet");
+              return 0;
+            }
+            else {
+              this._logger.error("impossible data_size value");
+              return 0;
+            }
+
+            sensor_string = this._changeEndianness(sensor_string);
+            if (data_type_int == 0x00) {
+              this._logger.log("    Temperature is " + (this._signedHexStrToInt(sensor_string) / 100) + "°C");
+            }
+            else if (data_type_int == 0x01) {
+              var volt = parseInt(sensor_string, 16);
+              if ((volt & 0x8000) > 0) {
+                volt = volt - 0x10000;
+              }
+              this._logger.log("    Supply voltage " + this._signedHexStrToInt(sensor_string) + "mv");
+            }
+            else if (data_type_int == 0x02) {
+              this._logger.log("    Energy Level " + (parseInt(sensor_string, 16) / 2) + "%");
+            }
+            else if (data_type_int == 0x04) {
+              this._logger.log("    Solar cell light level is " + parseInt(sensor_string, 16) + " lx");
+            }
+            else if (data_type_int == 0x05) {
+              this._logger.log("    Illumination from sensor is " + parseInt(sensor_string, 16) + " lx");
+            }
+            else if (data_type_int == 0x06) {
+              this._logger.log("    Humidity is " + parseInt(sensor_string, 16) + " r.h.");
+            }
+            else if (data_type_int == 0x0A) {
+              let x = parseInt(sensor_string, 16) & 0x3FF;
+              let y = (parseInt(sensor_string, 16) & 0xFFC00) >> 10;
+              let z = (parseInt(sensor_string, 16) & 0x3FF00000) >> 20;
+              let status = (parseInt(sensor_string, 16) & 0xC0000000) >> 30;
+
+              let x_acc = (x - 512) / 100;
+              let y_acc = (y - 512) / 100;
+              let z_acc = (z - 512) / 100;
+
+              this._logger.log("    Acceleration Vector status " + status);
+              this._logger.log("        Z: " + z_acc + "g");
+              this._logger.log("        Y: " + y_acc + "g");
+              this._logger.log("        X: " + x_acc + "g");
+            }
+            else if (data_type_int == 0x23) {
+              var magnet_enum = parseInt(sensor_string, 16);
+              if (magnet_enum == 0x01) {
+                this._logger.log("    Magnet contact Open");
+              } else if (magnet_enum == 0x02) {
+                this._logger.log("    Magnet contact Close");
+              } else {
+                this._logger.log("    Magnet contact wrong enum value");
+              }
+            }
+            else if (data_type_int == 0x20) {
+              var occupancy_status = parseInt(sensor_string, 16);
+              if (occupancy_status == 0x01) {
+                this._logger.log("    Occupancy status is Not Occupied");
+              } else if (occupancy_status == 0x02) {
+                this._logger.log("    Occupancy status is Occupied");
+              } else {
+                this._logger.log("    Occupancy status wrong value");
+              }
+            }
+            return endPos;
+          } catch (error) {
+            this._logger.errorEx(error);
+          }
+        },
+        _changeEndianness: function (string) {
+          try {
+            const result = [];
+            let len = string.length - 2;
+            while (len >= 0) {
+              result.push(string.substr(len, 2));
+              len -= 2;
+            }
+            return result.join('');
+          } catch (error) {
+            this._logger.errorEx(error);
+          }
+        },
+        _signedHexStrToInt: function (hexStr) {
+          try {
+            var tmp = parseInt(hexStr, 16);
+            if ((tmp & 0x8000) > 0) {
+              tmp = tmp - 0x10000;
+            }
+            return tmp;
+          } catch (error) {
+            this._logger.errorEx(error);
+          }
+        },
+        _captureWindow: function (outputDirPath, imageType) {
+          try {
+            this._screenshot.captureObject(window, outputDirPath, imageType, 0);
+          } catch (error) {
+            this._logger.errorEx(error);
+          }
+        }
+      };
+      window.WpanTestRunner = WpanTestRunner;
+
+    })();
+  </script>
+</head>
+
+
+<body>
+  <h1>Qeedji Slate106 demo for EnOcean <img src="NFC_logo_black.png" width="36" height="36" class="nfc_logo"> </h1>
+  <textarea type="text" id="console" placeholder="Console logs" readonly></textarea>
+  <div id="buttonBar">
+    <div id="buttonRefresh">
+      <div>Refresh </div>
+      <div class="labelButtonIcon"><i class="fa fa-chevron-down"></i></div>
+    </div>
+  </div>
+</body>
+
+</html>
