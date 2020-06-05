@@ -9,19 +9,16 @@
 	<meta content="social-distanciation_eurecam" name="app-name">
 	<script>
 		//=============================================================================		
-		// Adjust as required (All the duration are in milliseconds)
-
-		// polling frequency of motion sensor 
-		var frequency = 1000;
+		var frequency = 1000; /* connection frequency to the motion sensor every <n> ms */  
 
 		// configuration of the image behaviour for the enter state 
-		var imageEnterMainDuration = 10000; /* main image duration */
-		var imageEnterSecondaryDuration = 5000; /* secondary image duration */
+		var imageEnterMainDuration = 10000; /* main image duration in ms */
+		var imageEnterSecondaryDuration = 5000; /* secondary image duration in ms */
 		var imageEnterSecondaryActive = true; /* true: secondary image activated */
 	
 		// configuration of the image behaviour for the wait state  
-		var imageWaitMainDuration = 10000; /* main image duration */
-		var imageWaitSecondaryDuration = 5000; /* secondary image duration */
+		var imageWaitMainDuration = 10000; /* main image duration in ms*/
+		var imageWaitSecondaryDuration = 5000; /* secondary image duration in ms */
 		var imageWaitSecondaryActive = false; /* true: secondary image activated */
 
 		// Debug mode  
