@@ -1,4 +1,4 @@
-#  PDF viewer
+#  PPTX viewer
 
 The gekkota PPTX viewer allows you to play PPTX files in an HTML div element. in order to create the PPTX viewer, you need to load its script:
 
