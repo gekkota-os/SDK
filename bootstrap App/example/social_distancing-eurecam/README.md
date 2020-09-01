@@ -95,7 +95,10 @@ The error image naming pattern is `error-<device_output_resolution>.jpg`
 If not all the required images are present, the application is entering in `error` state and displays an error message `Error loading images`, with a white background.
 
 ## Motion sensor configuration
-Install the motion sensor as preconised by the `Eurecam` manufacturer. Ensure that the `COMPTIPIX 3D` motion sensor is running, available in your local network. Connect to its Web server, and in the menu `Occupancy` of the `Settings` pane, set the max. threshold of number of people authorized to enter in the room at the same time. Qeedji does not bring support on the `COMPTIPIX 3D` motion sensor configuration.
+Install the motion sensor as preconised by the `Eurecam` manufacturer. 
+Ensure that the `COMPTIPIX 3D` motion sensor is running, available in your local network. Connect to its Web server, and in the menu `Occupancy` of the `Settings` pane, set the max. threshold of number of people authorized to enter in the room at the same time. 
+Qeedji does not bring support on the `COMPTIPIX 3D` motion sensor configuration.
+Check that the `COMPTIPIX 3D` motion sensor has a recent software version (V1.8 or above).
 
 ## Qeedji device configuration
 Set the IP address of the `COMPTIPIX 3D` motion sensor camera (for example: `192.168.0.100`) as `field1` variable value of your Qeedji device.
