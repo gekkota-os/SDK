@@ -111,7 +111,7 @@ If not all the required images are present, the application is entering in `erro
 Plug the `WPAN to USB` adapter to an USB connector of the `Qeedji` media-player or the `Qeedji` tablet.
 
 ## Qeedji device configuration
-It is possible to filter the key-pressed values of the `EnOcean` WPAN device by defining the MAC address of the target button in the `field1` variable value of the `Qeedji` media-player. 
+It is possible to filter the key-pressed values of the `EnOcean` WPAN device by defining the MAC address, with the format AABBCCDDEEFF, of the appropriate push button in the `field1` variable value of the `Qeedji` media-player. 
 If no value is defined in this field, the App does not apply filter and accept the key-pressed values of any push button.
 
 That implies also to set the appropriate value for the `innes.adapters.serial.uart_1.syspath` user preference in the Qeedji device:
