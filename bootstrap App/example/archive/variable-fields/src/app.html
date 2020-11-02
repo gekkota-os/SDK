@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta content="6cc1613f-24b0-41b2-b2bc-f3b79e9f81c5" name="uuid">
+		<meta content="custom-app" name="generator">
+		<meta content="2018-11-12T14:43:23.605Z" name="date-revision">
+		<meta content="itce-app" name="app-name">
+
+		<style type="text/css">
+			html {
+				background-color:#FDFDFD;
+				overflow: hidden;
+			}
+			body {
+				margin: 0px;
+			}
+			iframe {
+				position:fixed;
+				top:0px;
+				left:0px;
+				width:134%;
+				height:134%;
+				z-index:0;
+				opacity:1;
+				transform: scale(0.7462);
+				transform-origin: 0px 0px;
+			}
+		</style>
+
+		<script>
+			function load() {
+				/**/
+				// LEDs
+				try {
+					var adaptersList = [];
+					Ci = Components.interfaces;
+					adaptersList = systemManager.getAdaptersByIId(Ci.nsISystemAdapterAppColorLed);
+					// Use field1 value as left LED color
+					var appColorLed = adaptersList.queryElementAt(Ci.nsISystemAdapterAppColorLed.LEFT_COLOR_LED,Ci.nsISystemAdapterAppColorLed);
+					appColorLed.enabled = true;
+					appColorLed.color = systemGeneralSettings.field1;
+					// Use field2 value as right LED color
+					var appColorLed = adaptersList.queryElementAt(Ci.nsISystemAdapterAppColorLed.RIGHT_COLOR_LED,Ci.nsISystemAdapterAppColorLed);
+					appColorLed.enabled = true;
+					appColorLed.color = systemGeneralSettings.field2;
+				} catch(e) {}
+
+				// Show field3 content directly in the html page
+				document.getElementById("1").innerHTML = "---->" + systemGeneralSettings.field3;
+
+				// Use field4 value as the src attribute (URL) of an iframe
+				var frame = document.createElement("iframe");	
+				frame.setAttribute("src",  systemGeneralSettings.field4);
+				frame.setAttribute("mozbrowser", "mozbrowser");
+				frame.setAttribute("id", "mainframe");
+				frame.setAttribute("scrolling", "no");
+				document.body.appendChild(frame);
+			}
+		</script>
+	</head>
+
+	<body onload="load()">
+	<p id="1"></>
+	</body>
+
+</html>

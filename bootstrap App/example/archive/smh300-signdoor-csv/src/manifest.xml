@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RDF
+    xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <Description about="ns.innes.gekkota.manifest#metadata"
+        xmlns:cms="ns.innes.custom">
+        <cms:app-name>custom</cms:app-name>
+        <cms:app-version>1.10.10</cms:app-version>
+    </Description>
+    <Description about="ns.innes.gekkota.manifest#cache">
+        <Bag>
+            <li>app.html</li>
+			<li>logger.js</li>
+			<li>wpanKeyListener.js</li>
+			<li>fileMonitor.js</li>
+			<li>wpanFileInfo.js</li>
+			<li>style.css</li>	
+			<li>logo.png</li>
+			<li>data.csv</li>
+        </Bag>
+    </Description>
+    <Description about="ns.innes.gekkota.manifest#launcher"
+        xmlns:gktm="ns.innes.gekkota.manifest">
+        <gktm:bootstrap>app.html</gktm:bootstrap>
+    </Description>
+</RDF>

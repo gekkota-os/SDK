@@ -43,7 +43,7 @@ graph TD
   <!--List of resources-->
   <Description about=" ns.innes.gekkota.manifest#cache">
     <Bag>
-      <li>.medias/videos/1280-720-25-p-high-3.1-90-innes_counter.mp4</li>
+      <li>.medias/videos/1280-720-25-p-high-3.1-90_counter.mp4</li>
       <li src="http://monServeur/fichier.jpg" username="username" password="password" refresh="120">.medias/remote.jpg</li>
       <li src="urn:innes:storage:removable/videos/">.domain-repository/videos/</li>
       <li src="urn:innes:storage:local">.domain-repository/audios/</li>

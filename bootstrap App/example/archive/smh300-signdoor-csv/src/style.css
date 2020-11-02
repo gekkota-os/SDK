@@ -1,0 +1,96 @@
+html,
+body {
+	height: 600px;
+	width: 800px;
+	margin: 0;
+	background-color: rgb(255, 255, 255);
+	display: flex;
+	flex-direction: column;
+}
+
+#container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width   : 800px;
+	height  : 600px;
+	font-weight: bold;
+	background-color: white;
+}
+
+#mainTopDivContainer {
+    position: absolute;
+    top : 2%;
+    left : 0%;
+    width   : 100%;
+    height  : 10%;
+    border-bottom: solid 3px black;
+}
+
+#officeDiv {
+    position: absolute;
+    font-size :2.5em;
+    white-space: nowrap;
+    line-height: 1.4em;
+    width: 70%;
+		overflow:hidden;
+		float: left;
+		padding-left: 0.1em;
+		max-width: 45%;
+}
+
+#logoDiv {
+    position: absolute;
+    height: 90%;
+    top: 5%;
+    right: 1%;
+    max-width: 20%;
+}
+
+#mainBottomDivContainer {
+	position: absolute;
+	top: 15%;
+	width: 96%;
+	height:84%;
+	text-align: center;
+	padding-left: 2%;
+	padding-right: 2%;
+}
+
+#name1Div {
+	font-size: 3.8em;
+	max-height: 1.75em;
+	line-height: 1em;
+	padding-bottom: 0.2em;
+	padding-top: 1em;
+	overflow: hidden;
+}
+
+#title1Div {
+	font-size: 3em;
+	max-height: 1.85em;
+	line-height: 1.2em;
+	padding-top: 0.3em;
+	overflow: hidden;
+	color: gray;
+	font-style: italic;
+}
+
+#name2Div {
+	font-size: 3.8em;
+	max-height: 1.75em;
+	line-height: 1em;
+	padding-bottom: 0.2em;
+	padding-top: 1em;
+	overflow: hidden;
+}
+
+#title2Div {
+	font-size: 3em;
+	max-height: 1.85em;
+	line-height: 1.2em;
+	padding-top: 0.3em;
+	overflow: hidden;
+	color: gray;
+	font-style: italic;
+}

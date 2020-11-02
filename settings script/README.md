@@ -1,5 +1,5 @@
 # Settings script
-An Innes equipment can be configured via a script.  
+An Qeedji equipment can be configured via a script.  
 If the *innes.app-profile.addon-manager.\*.\*.\*.authorized* preference is set to true, then the equipment downloads a settings script and executes its Javascript code as an application extension.   
 
 The process to  get the settings script via the network is based on the DHCP auto configuration feature.   
